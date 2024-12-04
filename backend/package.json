@@ -1,24 +1,35 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "type": "module",
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
-    "dev": "nodemon src/index.ts"
+    "vercel-build": "tsc",
+    "dev": "nodemon --watch src --exec \"node --loader ts-node/esm src/index.ts\"",
+    "lint": "eslint './src/**/*.{js,jsx,ts,tsx}' --fix",
+    "format": "prettier --write './src/**/*.{js,jsx,ts,tsx,json,css,md}'",
+    "format:check": "prettier --check \"**/*.{ts,js,json,md}\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "express": "^4.21.1",
-    "monorepo": "file:.."
+    "express": "^4.21.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.1",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "eslint": "^9.16.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "nodemon": "^3.1.7",
+    "prettier": "^3.4.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
   }
