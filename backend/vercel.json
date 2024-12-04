@@ -1,11 +1,17 @@
 {
   "version": 2,
+  "name": "backend-calendario-istepo",
   "builds": [
     {
-      "src": "src/index.ts",
+      "src": "dist/index.js",
       "use": "@vercel/node",
-      "config": { "includeFiles": ["src/**/*"] }
+      "config": { "includeFiles": ["dist/**"] }
     }
   ],
-  "routes": [{ "src": "/(.*)", "dest": "src/index.ts" }]
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "dist/index.js"
+    }
+  ]
 }

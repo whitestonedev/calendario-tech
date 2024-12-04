@@ -18,12 +18,19 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22
 
       - name: Install Dependencies
         run: npm install --prefix ./backend
 
-      - name: Deploy to Vercel
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: npx vercel --prod --cwd ./backend
+      - name: Build Project Artifacts
+        run: npm run build --prefix ./backend
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }} --cwd ./backend
+
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --yes --prod --token=${{ secrets.VERCEL_TOKEN }} --cwd ./backend
