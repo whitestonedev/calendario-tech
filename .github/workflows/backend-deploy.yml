@@ -21,7 +21,7 @@ jobs:
           node-version: 18
 
       - name: Install Dependencies
-        run: pnpm --filter ./backend install
+        run: npm install --prefix ./backend
 
       - name: Deploy to Vercel
         env:
