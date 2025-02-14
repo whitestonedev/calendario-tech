@@ -1,45 +1,41 @@
-Com certeza\! Aqui está o README completamente novo e atualizado, refletindo todas as funcionalidades e o tema escuro que adicionamos à sua API de eventos.
+# API de Eventos Baseada em Flask com Filtros, Tema Escuro e Documentação OpenAPI (Scalar)
 
-\#\# README da API de Eventos
-
-# API de Eventos Baseada em Flask com Filtros, Tema Escuro e Documentação OpenAPI (Swagger UI)
-
-Este projeto consiste em uma API RESTful construída com Flask que fornece dados de eventos armazenados em arquivos YAML. A API permite filtrar eventos por diversos critérios, apresenta uma página inicial estilizada com tema escuro e gera documentação interativa utilizando OpenAPI (Swagger UI).
+Este projeto consiste em uma API RESTful construída com Flask que fornece dados de eventos armazenados em arquivos YAML. A API permite filtrar eventos por diversos critérios, apresenta uma página inicial estilizada com tema escuro e gera documentação interativa utilizando OpenAPI (Scalar).
 
 ## Sumário
 
-1.  [Visão Geral]()
-2.  [Demonstração]()
-3.  [Começando]()
-      * [Pré-requisitos]()
-      * [Instalação]()
-      * [Configuração]()
-4.  [Executando a API]()
-5.  [Endpoints da API]()
-      * [`/api/data_events` [GET]]()
-          * [Parâmetros de Filtro]()
-          * [Tabela de Filtros]()
-          * [Exemplos de Requisição]()
-6.  [Documentação da API (OpenAPI - Swagger UI)]()
-7.  [Página Inicial com README Estilizado]()
-8.  [Estrutura dos Arquivos YAML de Eventos]()
-      * [Exemplo de Arquivo YAML]()
-9.  [Próximos Passos e Contribuições]()
+1.  [Visão Geral](#visão-geral)
+2.  [Demonstração](#demonstração)
+3.  [Começando](#começando)
+    * [Pré-requisitos](#pré-requisitos)
+    * [Instalação](#instalação)
+    * [Configuração](#configuração)
+4.  [Executando a API](#executando-a-api)
+5.  [Endpoints da API](#endpoints-da-api)
+    * [`/events` [GET]](#events-get)
+        * [Parâmetros de Filtro](#parâmetros-de-filtro)
+        * [Tabela de Filtros](#tabela-de-filtros)
+        * [Exemplos de Requisição](#exemplos-de-requisição)
+6.  [Documentação da API (OpenAPI - Scalar)](#documentação-da-api-openapi---scalar)
+7.  [Página Inicial com README Estilizado](#página-inicial-com-readme-estilizado)
+8.  [Estrutura dos Arquivos YAML de Eventos](#estrutura-dos-arquivos-yaml-de-eventos)
+    * [Exemplo de Arquivo YAML](#exemplo-de-arquivo-yaml)
+9.  [Próximos Passos e Contribuições](#próximos-passos-e-contribuições)
 
 ## Visão Geral
 
-Esta API foi desenvolvida para agregar e fornecer informações sobre eventos a partir de arquivos YAML localizados na pasta `data_events`. Ela oferece um endpoint principal que retorna uma lista de eventos em formato JSON, com a capacidade de filtrar esses eventos utilizando vários parâmetros de consulta.  A API também se destaca por apresentar:
+Esta API foi desenvolvida para agregar e fornecer informações sobre eventos a partir de arquivos YAML localizados na pasta `events` **(um nível acima da pasta `backend`)**. Ela oferece um endpoint principal que retorna uma lista de eventos em formato JSON, com a capacidade de filtrar esses eventos utilizando vários parâmetros de consulta.  A API também se destaca por apresentar:
 
   * **Página Inicial Estilizada:** A URL raiz (`/`) renderiza este `README.md` formatado com um tema escuro elegante, proporcionando uma apresentação visualmente agradável e um ponto de acesso central para a documentação.
-  * **Documentação Interativa OpenAPI (Swagger UI):** Utilizando `flask-openapi3`, a API gera automaticamente documentação interativa e completa no padrão OpenAPI (Swagger UI), acessível através do endpoint `/openapi/swagger`. Isso facilita a exploração dos endpoints, parâmetros e modelos de dados da API.
+  * **Documentação Interativa OpenAPI (Scalar):** Utilizando `flask-openapi3`, a API gera automaticamente documentação interativa e completa no padrão OpenAPI (Scalar), acessível através do endpoint `/openapi/scalar`. Isso facilita a exploração dos endpoints, parâmetros e modelos de dados da API.
   * **Filtragem Robusta:** Permite filtrar eventos por tags, nome, organização, tipo (online/presencial), faixa de preço, endereço e datas, com a possibilidade de combinar múltiplos filtros para buscas precisas.
-  * **Dados em YAML:** Os dados dos eventos são armazenados em arquivos YAML simples e fáceis de editar, localizados na pasta `data_events`.
+  * **Dados em YAML com Recarregamento Automático:** Os dados dos eventos são armazenados em arquivos YAML simples e fáceis de editar, localizados na pasta `events` **(um nível acima do backend)**. A API recarrega automaticamente os dados dos eventos periodicamente, sem necessidade de reiniciar o servidor, garantindo que as informações estejam sempre atualizadas.
 
 ## Demonstração
 
-*Página inicial da API (`/`) renderizando o README.md com tema escuro e link para a documentação Swagger UI.*
+*Página inicial da API (`/`) renderizando o README.md com tema escuro e link para a documentação Scalar.*
 
-*Documentação interativa da API gerada pelo Swagger UI, acessível em `/openapi/swagger`.*
+*Documentação interativa da API gerada pelo Scalar, acessível em `/openapi/scalar`.*
 
 ## Começando
 
@@ -54,7 +50,7 @@ Verifique se o Python e o `pip` estão instalados corretamente abrindo o termina
 ```bash
 python --version
 pip --version
-```
+````
 
 Se você não tiver o Python instalado, você pode baixá-lo em https://www.python.org/downloads/.
 
@@ -65,7 +61,7 @@ Se você não tiver o Python instalado, você pode baixá-lo em https://www.pyth
     Se você recebeu o código através de um repositório Git, clone-o para sua máquina local. Caso contrário, pule este passo e prossiga para o próximo.
 
     ```bash
-    git clone https://docs.github.com/en/repositories
+    git clone [https://github.com/VStahelin/calendario-tech.git](https://github.com/VStahelin/calendario-tech.git)
     cd backend_api_eventos
     ```
 
@@ -107,43 +103,65 @@ Se você não tiver o Python instalado, você pode baixá-lo em https://www.pyth
     flask-openapi3
     pydantic
     mistune
+    gunicorn # Adicionado Gunicorn à lista de dependências
     ```
 
 ### Configuração
 
-1.  **Pasta `data_events`:**
+1.  **Pasta `events`:**
 
-    Certifique-se de que a pasta `data_events` exista no diretório raiz do projeto. Esta pasta é onde a API busca os arquivos YAML contendo os dados dos eventos.
+    Certifique-se de que a pasta `events` exista **um nível acima** do diretório `backend` do projeto. Esta pasta é onde a API busca os arquivos YAML contendo os dados dos eventos. **(Corrigido o nome da pasta e a localização)**
 
 2.  **Arquivos YAML:**
 
-    Dentro da pasta `data_events`, adicione arquivos YAML (`.yml` ou `.yaml`) seguindo a estrutura definida. Cada arquivo YAML representará um evento. Você pode criar arquivos de exemplo como `evento1.yml`, `evento2.yml`, etc., com os dados dos eventos. Consulte a seção [Estrutura dos Arquivos YAML de Eventos]() para mais detalhes sobre a estrutura esperada.
+    Dentro da pasta `events`, adicione arquivos YAML (`.yml` ou `.yaml`) seguindo a estrutura definida. Cada arquivo YAML representará um evento. Você pode criar arquivos de exemplo como `evento1.yml`, `evento2.yml`, etc., com os dados dos eventos. Consulte a seção [Estrutura dos Arquivos YAML de Eventos](https://www.google.com/url?sa=E&source=gmail&q=#estrutura-dos-arquivos-yaml-de-eventos) para mais detalhes sobre a estrutura esperada.
 
 3.  **Arquivo `README.md`:**
 
-    Certifique-se de que o arquivo `README.md` esteja presente no diretório raiz do projeto. Este arquivo será renderizado na página inicial da API (`/`).
+    Certifique-se de que o arquivo `README.md` esteja presente no diretório raiz do projeto, **na pasta `backend`**. Este arquivo será renderizado na página inicial da API (`/`). **(Corrigido para refletir a localização do README dentro de `backend`)**
+
+4.  **Arquivo `gunicorn.conf.py` (Opcional - para produção):**
+
+    Para executar a API em um ambiente de produção, você pode configurar o Gunicorn. Crie um arquivo chamado `gunicorn.conf.py` no diretório raiz do projeto (`backend`) com as configurações do Gunicorn (exemplo abaixo). **(Adicionada menção e exemplo de configuração do Gunicorn)**
+
+    ```python
+    # gunicorn.conf.py
+    import os
+
+    def num_cores():
+        return os.cpu_count()
+
+    bind = "0.0.0.0:8000" # Endereço e porta que o Gunicorn vai usar
+    workers = num_cores()  # Número de workers (padrão: número de cores da CPU)
+    timeout = 120          # Timeout em segundos
+    ```
 
 ## Executando a API
 
-Para iniciar o servidor Flask da API, abra o terminal no diretório raiz do projeto (onde o arquivo `app.py` está localizado) e execute o seguinte comando:
+Para iniciar o servidor Flask da API, abra o terminal no diretório raiz do projeto **(`backend` folder)** (onde o arquivo `app.py` e `gunicorn.conf.py` estão localizados) e execute o seguinte comando **para usar Gunicorn em produção (ou simular produção)**: **(Comando de execução atualizado para Gunicorn)**
+
+```bash
+gunicorn -c gunicorn.conf.py app:app
+```
+
+Para executar em **modo de desenvolvimento (com hot-reload e debug)**, você ainda pode usar (mas **não recomendado para produção**):
 
 ```bash
 python app.py
 ```
 
-Você deverá ver uma saída no terminal indicando que o servidor Flask está rodando. Por padrão, ele estará disponível em:
+Você deverá ver uma saída no terminal indicando que o servidor Gunicorn/Flask está rodando. Por padrão, ao usar Gunicorn com a configuração de exemplo, ele estará disponível em:
 
 ```
- * Serving Flask app 'app'
- * Debug mode: on
- * Running on [http://127.0.0.1:5000](http://127.0.0.1:5000)
+[... logs do Gunicorn ...]
+[INFO] Listening at: [URL inválido removido] (process <pid>)
 ```
 
-Abra um navegador web e acesse o endereço `http://127.0.0.1:5000` para visualizar a página inicial com o README estilizado e o link para a documentação.
+Abra um navegador web e acesse o endereço `http://localhost:8000` ou `http://127.0.0.1:8000` (dependendo da configuração do `bind` no `gunicorn.conf.py`) para visualizar a página inicial com o README estilizado e o link para a documentação.  Se estiver usando `python app.py`, acesse `http://127.0.0.1:5000`.
 
 ## Endpoints da API
 
-### `/api/data_events` [GET]
+### `/events` [GET]
 
 Este é o endpoint principal da API. Ele retorna uma lista de eventos em formato JSON. É possível utilizar parâmetros de consulta na URL para filtrar os eventos retornados.
 
@@ -172,50 +190,50 @@ A tabela abaixo detalha todos os parâmetros de consulta disponíveis para filtr
   * **Obter todos os eventos (sem filtros):**
 
     ```
-    http://127.0.0.1:5000/api/data_events
+    http://localhost:8000/events  # Ou [http://127.0.0.1:5000](http://127.0.0.1:5000) se usar `python app.py`
     ```
 
   * **Filtrar por eventos com a tag "python" e "django":**
 
     ```
-    http://127.0.0.1:5000/api/data_events?tags=python&tags=django
+    http://localhost:8000/events?tags=python&tags=django
     ```
 
   * **Filtrar por eventos com nome contendo "Python":**
 
     ```
-    http://127.0.0.1:5000/api/data_events?name=Python
+    http://localhost:8000/events?name=Python
     ```
 
   * **Filtrar por eventos online e gratuitos:**
 
     ```
-    http://127.0.0.1:5000/api/data_events?online=true&price_type=free
+    http://localhost:8000/events?online=true&price_type=free
     ```
 
   * **Filtrar por eventos pagos com preço entre R$20 e R$50:**
 
     ```
-    http://127.0.0.1:5000/api/data_events?price_type=paid&price_min=20&price_max=50
+    http://localhost:8000/events?price_type=paid&price_min=20&price_max=50
     ```
 
   * **Filtrar por eventos que começam a partir de 10 de abril de 2025:**
 
     ```
-    http://127.0.0.1:5000/api/data_events?date_from=2025-04-10
+    http://localhost:8000/events?date_from=2025-04-10
     ```
 
-## Documentação da API (OpenAPI - Swagger UI)
+## Documentação da API (OpenAPI - Scalar)
 
-A API gera documentação interativa e completa utilizando OpenAPI com Swagger UI, através da biblioteca `flask-openapi3`. Para acessar a documentação, abra seu navegador web e acesse o seguinte endereço enquanto a API estiver rodando:
+A API gera documentação interativa e completa utilizando OpenAPI com **Scalar** através da biblioteca `flask-openapi3`. Para acessar a documentação, abra seu navegador web e acesse o seguinte endereço enquanto a API estiver rodando:
 
 ```
-http://127.0.0.1:5000/openapi/swagger
+http://localhost:8000/openapi/scalar # Ou [http://127.0.0.1:5000](http://127.0.0.1:5000) se usar `python app.py`
 ```
 
-A página do Swagger UI exibirá a documentação detalhada da API, incluindo:
+A página do **Scalar** exibirá a documentação detalhada da API, incluindo:
 
-  * **Endpoints:** Descrição e métodos HTTP disponíveis (neste caso, apenas `GET` para `/api/data_events`).
+  * **Endpoints:** Descrição e métodos HTTP disponíveis (neste caso, apenas `GET` para `/events`).
   * **Parâmetros:** Detalhes de todos os parâmetros de filtro de consulta, seus tipos, formatos, descrições e exemplos.
   * **Modelos de Dados (Schemas):** Estrutura do objeto de evento retornado pela API, com os tipos de dados de cada campo.
   * **Exemplos de Requisição e Resposta:**  Exemplos de como fazer requisições e a estrutura das respostas JSON esperadas.
@@ -224,15 +242,15 @@ Você pode usar esta documentação interativa para explorar a API, testar os en
 
 ## Página Inicial com README Estilizado
 
-Ao acessar a URL raiz da API (`http://127.0.0.1:5000/`), você será apresentado a uma página inicial que renderiza o conteúdo deste arquivo `README.md` formatado em HTML com um tema escuro. No topo da página, há um link direto para a documentação da API no Swagger UI, facilitando a navegação e o acesso à documentação completa.
+Ao acessar a URL raiz da API (`http://localhost:8000/` ou `http://127.0.0.1:5000`), você será apresentado a uma página inicial que renderiza o conteúdo deste arquivo `README.md` formatado em HTML com um tema escuro. No topo da página, há um link direto para a documentação da API no **Scalar**, facilitando a navegação e o acesso à documentação completa.
 
 Esta página inicial estilizada serve como um ponto de entrada amigável para a API, oferecendo tanto uma visão geral do projeto quanto um acesso rápido à documentação técnica detalhada.
 
-*Página inicial da API (`/`) com README.md estilizado em tema escuro e link de fácil acesso para a documentação Swagger UI.*
+*Página inicial da API (`/`) com README.md estilizado em tema escuro e link de fácil acesso para a documentação Scalar.*
 
 ## Estrutura dos Arquivos YAML de Eventos
 
-Os arquivos YAML dentro da pasta `data_events` devem seguir a seguinte estrutura para que a API possa ler e interpretar os dados corretamente.
+Os arquivos YAML dentro da pasta `events` **(um nível acima da pasta `backend`)** devem seguir a seguinte estrutura para que a API possa ler e interpretar os dados corretamente. **(Corrigido para o nome da pasta 'events' e localização)**
 
 Cada arquivo YAML deve conter as seguintes chaves no nível raiz:
 
@@ -286,11 +304,9 @@ intl:
 Este projeto é um ponto de partida para uma API de eventos ainda mais completa e robusta. Considere os seguintes próximos passos e contribuições para aprimorá-la:
 
   * **Validação de Dados Aprimorada:** Implementar validações mais rigorosas para os dados nos arquivos YAML, garantindo a consistência e integridade dos dados da API. Isso pode incluir validação de tipos de dados, formatos de data/hora, presença de campos obrigatórios, etc.
-  * **Paginação:** Adicionar paginação à resposta do endpoint `/api/data_events`. Isso é crucial para APIs que podem retornar um grande número de resultados, permitindo que os resultados sejam divididos em páginas para melhorar o desempenho e a usabilidade.
+  * **Paginação:** Adicionar paginação à resposta do endpoint `/events`. Isso é crucial para APIs que podem retornar um grande número de resultados, permitindo que os resultados sejam divididos em páginas para melhorar o desempenho e a usabilidade.
   * **Sistema de Cache:** Integrar um mecanismo de cache (como Redis ou Memcached) para armazenar em cache os resultados de consultas frequentes. Isso pode reduzir drasticamente a carga no servidor e melhorar os tempos de resposta da API, especialmente sob alta demanda.
   * **Testes Unitários e de Integração:** Desenvolver testes unitários para as funções de filtragem e outros componentes lógicos da API, bem como testes de integração para garantir que todos os componentes funcionem corretamente em conjunto. Testes são essenciais para manter a qualidade do código e facilitar futuras modificações e expansões.
   * **Suporte a Mais Idiomas:** Expandir o suporte para internacionalização para incluir mais idiomas além de `pt-br` e `en-us`. Isso envolveria adicionar mais seções `intl` nos arquivos YAML e possivelmente ajustar a API para selecionar a informação de idioma correta com base em preferências do usuário (e.g., headers de `Accept-Language`).
 
 Contribuições para este projeto são sempre bem-vindas\! Sinta-se à vontade para abrir *issues* para reportar problemas ou sugerir melhorias, e *pull requests* com suas implementações e correções.
-
-Este README atualizado deve fornecer uma visão completa e clara de como usar e contribuir para a API de eventos. Se você tiver mais alguma pergunta ou precisar de ajuda em qualquer aspecto, é só perguntar\!
