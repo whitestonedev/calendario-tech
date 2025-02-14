@@ -5,8 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "backend/**" # Opcional: Dispara apenas se houver mudanças na pasta backend
-      - "events/**" # Opcional: Dispara apenas se houver mudanças na pasta events
+      - "backend/**" 
 
 jobs:
   deploy-to-render:
@@ -14,16 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout código
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Copiar pasta de eventos para o backend
+      - name: Deploy to Render via Webhook
+        env:
+          RENDER_DEPLOY_WEBHOOK_URL: ${{ secrets.RENDER_DEPLOY_WEBHOOK_URL }}
         run: |
-          mkdir -p backend/data_events # Garante que a pasta data_events existe
-          cp -r ./events/* ./backend/data_events/ # Copia recursivamente o conteúdo de events para data_events
-
-      - name: Deploy para Render
-        uses: johnbeynon/render-deploy-action@v0.0.8
-        with:
-          service-id: ${{ secrets.RENDER_SERVICE_ID }}
-          api-key: ${{ secrets.RENDER_API_KEY }}
+          curl -X POST "$RENDER_DEPLOY_WEBHOOK_URL"
