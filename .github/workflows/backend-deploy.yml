@@ -1,39 +1,29 @@
-name: Deploy Backend to Vercel
+name: Deploy Backend to Render
 
 on:
   push:
     branches:
       - main
     paths:
-      - "backend/**"
+      - "backend/**" # Opcional: Dispara apenas se houver mudanças na pasta backend
+      - "events/**" # Opcional: Dispara apenas se houver mudanças na pasta events
 
 jobs:
-  build-and-deploy:
+  deploy-to-render:
+    name: Deploy to Render
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+      - name: Checkout código
+        uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Copiar pasta de eventos para o backend
+        run: |
+          mkdir -p backend/data_events # Garante que a pasta data_events existe
+          cp -r ./events/* ./backend/data_events/ # Copia recursivamente o conteúdo de events para data_events
+
+      - name: Deploy para Render
+        uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-          node-version: 22
-
-      - name: Copy events to backend
-        run: cp -r ./events ./backend/data
-
-      - name: Install Dependencies
-        run: npm install --prefix ./backend
-
-      - name: Build Project Artifacts
-        run: npm run build --prefix ./backend
-
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }} --cwd ./backend
-
-      - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --yes --prod --token=${{ secrets.VERCEL_TOKEN }} --cwd ./backend
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
