@@ -319,7 +319,7 @@ def index():
             html_with_style = f"""
             <div class="container">
                 <div style="text-align: right; margin-bottom: 20px;">
-                    <a href="/openapi/swagger" target="_blank">API Documentation (Swagger UI)</a>
+                    <a href="/openapi/scalar" target="_blank">API Documentation (Swagger UI)</a>
                 </div>
                 {readme_style}
                 {html_readme}
