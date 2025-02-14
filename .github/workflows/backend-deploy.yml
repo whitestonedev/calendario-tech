@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "backend/**" 
+      - "backend/**"
 
 jobs:
   deploy-to-render:
@@ -15,6 +15,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Log Webhook URL 
+        run: echo "Webhook URL is: $RENDER_DEPLOY_WEBHOOK_URL" 
 
       - name: Deploy to Render via Webhook
         env:
