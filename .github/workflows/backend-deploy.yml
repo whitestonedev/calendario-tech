@@ -20,6 +20,9 @@ jobs:
         with:
           node-version: 22
 
+      - name: Copy events to backend
+        run: cp -r ./events ./backend/data
+
       - name: Install Dependencies
         run: npm install --prefix ./backend
 
