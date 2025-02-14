@@ -220,7 +220,7 @@ def filter_events(filters: EventQuery):
 
 
 @app.get(
-    "/api/data_events",
+    "/events",
     tags=[event_tag],
     summary="List events",
     description="Returns a list of events filtered by query parameters.",
