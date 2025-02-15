@@ -1,0 +1,24 @@
+organization_name: 'PyLadies São Paulo'
+event_name: 'PyLadies SP - Encontro de Pythonistas'
+start_datetime: '2025-02-22T14:00:00'
+end_datetime: '2025-02-22T17:00:00'
+address: 'Avenida Paulista, 123, São Paulo, Brasil'
+maps_link: 'https://maps.app.goo.gl/e654JbvsiSYbh4zx9'
+online: false
+event_link: 'https://www.meetup.com/pyladies-sao-paulo/'
+tags:
+  - 'python'
+  - 'programacao'
+  - 'comunidade'
+  - 'mulheres na tecnologia'
+intl:
+  pt-br:
+    event_edition: 'Fevereiro 2025'
+    cost: 'Grátis'
+    banner_link: 'https://exemplo.com/banner_pyladies_sp.png'
+    short_description: 'Encontro mensal da comunidade PyLadies São Paulo para discutir Python e programação.'
+  en-us:
+    event_edition: 'February 2025'
+    cost: 'Free'
+    banner_link: 'https://example.com/banner_pyladies_sp_en.png'
+    short_description: 'Monthly meetup of the PyLadies São Paulo community to discuss Python and programming.'

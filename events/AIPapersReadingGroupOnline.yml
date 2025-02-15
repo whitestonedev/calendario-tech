@@ -1,0 +1,25 @@
+organization_name: 'AI Research Group - Rio'
+event_name: 'AI Papers Reading Group - Online'
+start_datetime: '2025-02-25T18:00:00'
+end_datetime: '2025-02-25T20:00:00'
+address: 'Online'
+maps_link: 'https://maps.google.com/?q=event+location'
+online: true
+event_link: 'https://www.meetup.com/ai-research-group-rio-de-janeiro/'
+tags:
+  - 'ai'
+  - 'artificial intelligence'
+  - 'research'
+  - 'online'
+  - 'papers'
+intl:
+  pt-br:
+    event_edition: 'Fevereiro 2025'
+    cost: 'Grátis'
+    banner_link: 'https://exemplo.com/banner_ai_papers.png'
+    short_description: 'Grupo de leitura e discussão online de artigos científicos sobre Inteligência Artificial.'
+  en-us:
+    event_edition: 'February 2025'
+    cost: 'Free'
+    banner_link: 'https://example.com/banner_ai_papers_en.png'
+    short_description: 'Online reading and discussion group for scientific papers on Artificial Intelligence.'

@@ -1,0 +1,24 @@
+organization_name: 'IA Garage - São Paulo'
+event_name: 'IA para Negócios - Workshop Presencial'
+start_datetime: '2025-03-18T14:00:00'
+end_datetime: '2025-03-18T18:00:00'
+address: 'Espaço de Coworking, São Paulo, Brasil'
+maps_link: 'https://maps.app.goo.gl/bZyt9Uo7Vt8Vt9Vt5R'
+online: false
+event_link: 'https://www.iagarage.com.br/'
+tags:
+  - 'ia'
+  - 'negocios'
+  - 'workshop'
+  - 'presencial'
+intl:
+  pt-br:
+    event_edition: 'Março 2025'
+    cost: 'R$ 350'
+    banner_link: 'https://exemplo.com/banner_ia_negocios.png'
+    short_description: 'Workshop prático presencial sobre como aplicar Inteligência Artificial em negócios.'
+  en-us:
+    event_edition: 'March 2025'
+    cost: 'USD 70'
+    banner_link: 'https://example.com/banner_ia_negocios_en.png'
+    short_description: 'Practical in-person workshop on how to apply Artificial Intelligence in business.'

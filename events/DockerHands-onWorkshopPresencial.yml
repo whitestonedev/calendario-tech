@@ -1,0 +1,24 @@
+organization_name: 'Docker São Paulo Meetup'
+event_name: 'Docker Hands-on - Workshop Presencial'
+start_datetime: '2025-03-25T19:00:00'
+end_datetime: '2025-03-25T22:00:00'
+address: 'Escola Linux, São Paulo, Brasil'
+maps_link: 'https://maps.app.goo.gl/dVt9Vt5Rt7Zyt9Uo7V'
+online: false
+event_link: 'https://www.meetup.com/docker-sao-paulo/'
+tags:
+  - 'docker'
+  - 'containers'
+  - 'devops'
+  - 'workshop'
+intl:
+  pt-br:
+    event_edition: 'Março 2025'
+    cost: 'R$ 50'
+    banner_link: 'https://exemplo.com/banner_docker_sp.png'
+    short_description: 'Workshop prático presencial sobre Docker e conteinerização de aplicações.'
+  en-us:
+    event_edition: 'March 2025'
+    cost: 'USD 10'
+    banner_link: 'https://example.com/banner_docker_sp_en.png'
+    short_description: 'Practical in-person workshop on Docker and application containerization.'
