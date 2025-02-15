@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://vstahelin.github.io/",
+  "homepage": "https://www.calendario.tech/",
   "scripts": {
     "dev": "vite --mode development --host --port 3000",
     "build": "tsc -b && vite build",
