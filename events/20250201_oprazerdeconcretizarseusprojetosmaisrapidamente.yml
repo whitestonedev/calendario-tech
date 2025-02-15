@@ -1,0 +1,20 @@
+organization_name: Fonseca
+event_name: O Prazer De Concretizar Seus Projetos Mais Rapidamente
+start_datetime: '2025-02-01T12:49:00'
+end_datetime: '2025-02-01T18:03:00'
+address: Favela Bryan Sá, 95, Andrade de da Luz, Egito
+maps_link: https://maps.google.com/?q=Favela+Bryan+Sá,+95,+Andrade+de+da+Luz,+Egito
+online: true
+event_link: http://duarte.com/
+intl:
+  pt-br:
+    event_edition: Edição 9
+    cost: R$119,00
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Quae maxime quos ex libero sequi fuga ut officiis accusamus.
+  en-us:
+    event_edition: Edition 9
+    cost: R$119,00
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Facilis explicabo fugit id accusamus dolor dolore eligendi
+      aut ex hic.

@@ -1,0 +1,20 @@
+organization_name: Alves - ME
+event_name: A Arte De Mudar De Maneira Eficaz
+start_datetime: '2025-02-01T08:34:00'
+end_datetime: '2025-02-01T16:34:00'
+address: Recanto da Mota, da Cunha, Camarões
+maps_link: https://maps.google.com/?q=Recanto+da+Mota,+da+Cunha,+Camarões
+online: false
+event_link: https://porto.br/
+intl:
+  pt-br:
+    event_edition: Edição 2
+    cost: Grátis
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Cum ad maxime magnam aut quidem fugit quia porro temporibus
+      repudiandae similique itaque.
+  en-us:
+    event_edition: Edition 2
+    cost: Grátis
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Voluptate amet modi nihil eligendi occaecati quo eos ullam.

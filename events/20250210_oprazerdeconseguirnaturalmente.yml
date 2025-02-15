@@ -1,0 +1,21 @@
+organization_name: Farias Marques - EI
+event_name: O Prazer De Conseguir Naturalmente
+start_datetime: '2025-02-10T12:04:00'
+end_datetime: '2025-02-10T18:08:00'
+address: Travessa Costela, 12, Pires, México
+maps_link: https://maps.google.com/?q=Travessa+Costela,+12,+Pires,+México
+online: false
+event_link: http://www.castro.net/
+intl:
+  pt-br:
+    event_edition: Edição 7
+    cost: R$168,00
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Vitae praesentium ipsum molestias recusandae atque quae officia
+      adipisci similique.
+  en-us:
+    event_edition: Edition 7
+    cost: R$168,00
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Dolorum molestiae debitis eum commodi nesciunt culpa enim deserunt
+      impedit voluptates dicta corrupti.

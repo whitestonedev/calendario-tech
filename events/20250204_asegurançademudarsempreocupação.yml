@@ -1,0 +1,21 @@
+organization_name: Ferreira Pinto S/A
+event_name: A Segurança De Mudar Sem Preocupação
+start_datetime: '2025-02-04T12:42:00'
+end_datetime: '2025-02-04T18:00:00'
+address: Pátio de Albuquerque, Andrade do Galho, Clipperton Island
+maps_link: https://maps.google.com/?q=Pátio+de+Albuquerque,+Andrade+do+Galho,+Clipperton+Island
+online: false
+event_link: http://mendes.net/
+intl:
+  pt-br:
+    event_edition: Edição 6
+    cost: R$238,00
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Ex eaque vero sit saepe laboriosam cupiditate omnis dolorum
+      architecto quasi.
+  en-us:
+    event_edition: Edition 6
+    cost: R$238,00
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Possimus doloremque doloremque modi esse doloremque nesciunt
+      repellat.

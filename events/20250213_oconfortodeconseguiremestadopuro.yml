@@ -1,0 +1,20 @@
+organization_name: Aparecida das Neves e Filhos
+event_name: O Conforto De Conseguir Em Estado Puro
+start_datetime: '2025-02-13T11:48:00'
+end_datetime: '2025-02-13T15:48:00'
+address: Lago Casa Grande, 50, Peixoto, Senegal
+maps_link: https://maps.google.com/?q=Lago+Casa+Grande,+50,+Peixoto,+Senegal
+online: false
+event_link: https://peixoto.org/
+intl:
+  pt-br:
+    event_edition: Edição 2
+    cost: Grátis
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Consequatur quia ea aspernatur ipsa dolore cum illum perferendis.
+  en-us:
+    event_edition: Edition 2
+    cost: Grátis
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Necessitatibus voluptas praesentium est provident voluptas
+      quis accusantium.

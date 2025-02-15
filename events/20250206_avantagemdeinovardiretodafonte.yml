@@ -1,0 +1,20 @@
+organization_name: Barros
+event_name: A Vantagem De Inovar Direto Da Fonte
+start_datetime: '2025-02-06T09:34:00'
+end_datetime: '2025-02-06T18:54:00'
+address: Viela de Azevedo, 676, Pinto, Quênia
+maps_link: https://maps.google.com/?q=Viela+de+Azevedo,+676,+Pinto,+Quênia
+online: true
+event_link: https://www.casa.com/
+intl:
+  pt-br:
+    event_edition: Edição 8
+    cost: Grátis
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Id non animi explicabo ipsa laborum deserunt ab odio.
+  en-us:
+    event_edition: Edition 8
+    cost: Grátis
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Soluta aut voluptatum quam molestias vero corporis pariatur
+      sunt sint at.

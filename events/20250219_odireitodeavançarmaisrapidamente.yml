@@ -1,0 +1,21 @@
+organization_name: Nogueira Farias - EI
+event_name: O Direito De Avançar Mais Rapidamente
+start_datetime: '2025-02-19T12:20:00'
+end_datetime: '2025-02-19T17:53:00'
+address: Condomínio Gustavo Henrique Melo, 13, Souza, Alemanha
+maps_link: https://maps.google.com/?q=Condomínio+Gustavo+Henrique+Melo,+13,+Souza,+Alemanha
+online: false
+event_link: https://www.almeida.br/
+intl:
+  pt-br:
+    event_edition: Edição 2
+    cost: Grátis
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Quidem exercitationem repellat quae quae deleniti totam vitae
+      ipsum hic provident.
+  en-us:
+    event_edition: Edition 2
+    cost: Grátis
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Repudiandae eos expedita consectetur enim corporis iure expedita
+      aperiam nisi.

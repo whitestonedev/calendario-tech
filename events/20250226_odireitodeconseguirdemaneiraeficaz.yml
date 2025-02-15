@@ -1,0 +1,20 @@
+organization_name: Pinto
+event_name: O Direito De Conseguir De Maneira Eficaz
+start_datetime: '2025-02-26T08:30:00'
+end_datetime: '2025-02-26T16:33:00'
+address: Distrito de Barbosa, 8, da Conceição do Norte, Andorra
+maps_link: https://maps.google.com/?q=Distrito+de+Barbosa,+8,+da+Conceição+do+Norte,+Andorra
+online: true
+event_link: http://www.campos.org/
+intl:
+  pt-br:
+    event_edition: Edição 7
+    cost: R$490,00
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Quae inventore in dicta quis aut reprehenderit.
+  en-us:
+    event_edition: Edition 7
+    cost: R$490,00
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Velit harum soluta explicabo consequuntur iusto non ea corporis
+      totam fugit illo.

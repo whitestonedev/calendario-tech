@@ -1,0 +1,21 @@
+organization_name: Vieira
+event_name: A Possibilidade De Concretizar Seus Projetos Naturalmente
+start_datetime: '2025-02-18T10:04:00'
+end_datetime: '2025-02-18T18:58:00'
+address: Alameda Luiz Felipe Rios, 88, Cavalcante, Indonésia
+maps_link: https://maps.google.com/?q=Alameda+Luiz+Felipe+Rios,+88,+Cavalcante,+Indonésia
+online: false
+event_link: http://caldeira.br/
+intl:
+  pt-br:
+    event_edition: Edição 9
+    cost: R$49,00
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Saepe commodi accusantium minus pariatur explicabo earum modi
+      atque explicabo vel mollitia.
+  en-us:
+    event_edition: Edition 9
+    cost: R$49,00
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Suscipit veniam et beatae tenetur molestiae accusamus nesciunt
+      cumque a dolores.
