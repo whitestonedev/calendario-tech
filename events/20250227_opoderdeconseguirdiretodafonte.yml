@@ -1,0 +1,21 @@
+organization_name: Camargo Pacheco S/A
+event_name: O Poder De Conseguir Direto Da Fonte
+start_datetime: '2025-02-27T11:22:00'
+end_datetime: '2025-02-27T17:33:00'
+address: Condomínio Daniela Moraes, Moreira de Marques, Coral Sea Islands
+maps_link: https://maps.google.com/?q=Condomínio+Daniela+Moraes,+Moreira+de+Marques,+Coral+Sea+Islands
+online: true
+event_link: http://martins.org/
+intl:
+  pt-br:
+    event_edition: Edição 6
+    cost: &id001 !!python/tuple
+    - Grátis
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Perspiciatis molestiae nemo eaque occaecati nemo quam sed error
+      sapiente quasi recusandae earum.
+  en-us:
+    event_edition: Edition 6
+    cost: *id001
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Illum quas corrupti magni facere facere tenetur vel.

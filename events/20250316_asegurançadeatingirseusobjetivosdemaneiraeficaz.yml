@@ -1,0 +1,21 @@
+organization_name: Ferreira
+event_name: A Segurança De Atingir Seus Objetivos De Maneira Eficaz
+start_datetime: '2025-03-16T12:55:00'
+end_datetime: '2025-03-16T14:57:00'
+address: Núcleo Samuel Casa Grande, 5, Teixeira, Somália
+maps_link: https://maps.google.com/?q=Núcleo+Samuel+Casa+Grande,+5,+Teixeira,+Somália
+online: false
+event_link: http://www.vieira.com/
+intl:
+  pt-br:
+    event_edition: Edição 10
+    cost: &id001 !!python/tuple
+    - Grátis
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Illo dicta incidunt eius doloribus explicabo laudantium quos
+      ipsam numquam accusantium voluptatibus nesciunt.
+  en-us:
+    event_edition: Edition 10
+    cost: *id001
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Sapiente tempora dolorum consequatur temporibus officiis quisquam.

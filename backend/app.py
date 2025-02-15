@@ -1,4 +1,5 @@
 from flask import jsonify, render_template_string
+from flask_cors import CORS
 import yaml
 import os
 from datetime import datetime
@@ -13,6 +14,7 @@ from flask_openapi3 import OpenAPI, Info, Tag
 # API Info
 info = Info(title="Events API", version="1.0.0")
 app = OpenAPI(__name__, info=info)
+CORS(app)
 
 # API Tags
 event_tag = Tag(name="events", description="Operations related to events")

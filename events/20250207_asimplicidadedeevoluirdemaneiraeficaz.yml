@@ -1,0 +1,22 @@
+organization_name: Correia
+event_name: A Simplicidade De Evoluir De Maneira Eficaz
+start_datetime: '2025-02-07T09:42:00'
+end_datetime: '2025-02-07T15:09:00'
+address: Travessa Lima, 7, Novaes das Pedras, Cazaquistão
+maps_link: https://maps.google.com/?q=Travessa+Lima,+7,+Novaes+das+Pedras,+Cazaquistão
+online: true
+event_link: https://www.mendonca.com/
+intl:
+  pt-br:
+    event_edition: Edição 3
+    cost: &id001 !!python/tuple
+    - R$309,00
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Aut veniam cum quam deserunt quo nisi ab nisi libero rem fugiat
+      doloremque.
+  en-us:
+    event_edition: Edition 3
+    cost: *id001
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Possimus veniam ab aut consequatur commodi laboriosam harum
+      labore magni.

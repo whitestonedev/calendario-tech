@@ -1,0 +1,21 @@
+organization_name: Castro Pinto - EI
+event_name: A Certeza De Concretizar Seus Projetos De Maneira Eficaz
+start_datetime: '2025-02-03T09:01:00'
+end_datetime: '2025-02-03T15:40:00'
+address: Loteamento de Viana, 265, Guerra, Geórgia
+maps_link: https://maps.google.com/?q=Loteamento+de+Viana,+265,+Guerra,+Geórgia
+online: true
+event_link: https://www.vasconcelos.com/
+intl:
+  pt-br:
+    event_edition: Edição 3
+    cost: &id001 !!python/tuple
+    - Grátis
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Vero eos impedit consequuntur quibusdam amet quisquam illum.
+  en-us:
+    event_edition: Edition 3
+    cost: *id001
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Quisquam molestiae mollitia ipsa voluptate placeat cum voluptatem
+      voluptate architecto dolorum debitis aut.

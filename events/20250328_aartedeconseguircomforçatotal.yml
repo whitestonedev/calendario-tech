@@ -1,0 +1,21 @@
+organization_name: Peixoto e Filhos
+event_name: A Arte De Conseguir Com Força Total
+start_datetime: '2025-03-28T11:20:00'
+end_datetime: '2025-03-28T14:23:00'
+address: Pátio Vargas, 62, Caldeira de Cavalcante, Guatemala
+maps_link: https://maps.google.com/?q=Pátio+Vargas,+62,+Caldeira+de+Cavalcante,+Guatemala
+online: true
+event_link: http://www.fernandes.com/
+intl:
+  pt-br:
+    event_edition: Edição 4
+    cost: &id001 !!python/tuple
+    - Grátis
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Nesciunt voluptates unde earum vitae maiores.
+  en-us:
+    event_edition: Edition 4
+    cost: *id001
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Voluptas accusamus reprehenderit veniam atque veritatis quam
+      necessitatibus excepturi inventore alias eum qui illum.

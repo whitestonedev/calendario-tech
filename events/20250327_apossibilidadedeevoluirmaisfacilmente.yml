@@ -1,0 +1,21 @@
+organization_name: Fonseca - ME
+event_name: A Possibilidade De Evoluir Mais Facilmente
+start_datetime: '2025-03-27T12:00:00'
+end_datetime: '2025-03-27T15:22:00'
+address: Sítio Lima, Borges, Zâmbia
+maps_link: https://maps.google.com/?q=Sítio+Lima,+Borges,+Zâmbia
+online: false
+event_link: http://barbosa.com/
+intl:
+  pt-br:
+    event_edition: Edição 7
+    cost: &id001 !!python/tuple
+    - Grátis
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Expedita laboriosam vitae voluptatem dolorem quis itaque doloremque
+      omnis natus nisi.
+  en-us:
+    event_edition: Edition 7
+    cost: *id001
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Doloremque nemo sequi incidunt odit officiis non animi.

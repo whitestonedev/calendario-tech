@@ -1,0 +1,21 @@
+organization_name: Oliveira
+event_name: O Conforto De Mudar Com Confiança
+start_datetime: '2025-03-04T09:55:00'
+end_datetime: '2025-03-04T17:27:00'
+address: Conjunto de da Cruz, 26, Rodrigues do Campo, Eslovênia
+maps_link: https://maps.google.com/?q=Conjunto+de+da+Cruz,+26,+Rodrigues+do+Campo,+Eslovênia
+online: true
+event_link: https://souza.com/
+intl:
+  pt-br:
+    event_edition: Edição 7
+    cost: &id001 !!python/tuple
+    - Grátis
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Velit quisquam mollitia debitis deserunt sunt nobis.
+  en-us:
+    event_edition: Edition 7
+    cost: *id001
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Earum laboriosam unde hic ut veritatis sunt quibusdam excepturi
+      amet.

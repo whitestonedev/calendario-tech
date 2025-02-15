@@ -1,0 +1,20 @@
+organization_name: Machado
+event_name: O Direito De Avançar Naturalmente
+start_datetime: '2025-03-12T11:32:00'
+end_datetime: '2025-03-12T17:47:00'
+address: Campo da Mota, 305, Moreira, Maldivas
+maps_link: https://maps.google.com/?q=Campo+da+Mota,+305,+Moreira,+Maldivas
+online: false
+event_link: http://costela.com/
+intl:
+  pt-br:
+    event_edition: Edição 7
+    cost: &id001 !!python/tuple
+    - R$442,00
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Quibusdam iste ullam delectus quas necessitatibus debitis.
+  en-us:
+    event_edition: Edition 7
+    cost: *id001
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Voluptas doloremque vitae occaecati minus doloremque.

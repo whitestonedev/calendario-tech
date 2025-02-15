@@ -1,0 +1,20 @@
+organization_name: Pastor
+event_name: A Vantagem De Conseguir Mais Rapidamente
+start_datetime: '2025-02-01T12:56:00'
+end_datetime: '2025-02-01T14:13:00'
+address: Rua Zoe Vargas, da Conceição da Praia, Papua-Nova Guiné
+maps_link: https://maps.google.com/?q=Rua+Zoe+Vargas,+da+Conceição+da+Praia,+Papua-Nova+Guiné
+online: true
+event_link: http://www.da.com/
+intl:
+  pt-br:
+    event_edition: Edição 4
+    cost: &id001 !!python/tuple
+    - Grátis
+    banner_link: https://via.placeholder.com/600x200.png?text=Banner+do+Evento
+    short_description: Consequatur consequatur sapiente fugit excepturi reprehenderit.
+  en-us:
+    event_edition: Edition 4
+    cost: *id001
+    banner_link: https://via.placeholder.com/600x200.png?text=Event+Banner
+    short_description: Molestiae dolore odit voluptas voluptates magnam magni.
