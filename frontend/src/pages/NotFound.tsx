@@ -6,7 +6,7 @@ const NotFound = () => {
       <h1 className="text-4xl font-bold text-red-500">404</h1>
       <p className="mt-2 text-lg text-gray-700">Page not found</p>
       <Link
-        to={process.env.NODE_ENV === 'production' ? '/calendario-istepo/' : '/'}
+        to={'/'}
         className="mt-4 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
       >
         Go back home
