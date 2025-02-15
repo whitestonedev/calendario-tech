@@ -1,3 +1,11 @@
+---
+name: Pull request para sugestão de Evento
+about: Sugestão de Evento
+title: ''
+labels: Sugestao de evento
+assignees: ''
+---
+
 ### Título do Pull Request:
 
 `Nome do Evento - Edição do Evento - Data do Evento (DD/MM/AAAA)`
