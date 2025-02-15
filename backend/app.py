@@ -332,6 +332,12 @@ def index():
         return "README.md not found.", 404
 
 
+@app.route("/health_check", methods=["GET"])
+def health_check():
+    """Route for health check."""
+    return "OK", 200
+
+
 def start_periodic_reload():
     """Starts periodic reload of events in background."""
 
