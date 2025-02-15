@@ -1,0 +1,21 @@
+organization_name: Barbosa
+event_name: A Certeza De Avançar Mais Facilmente
+start_datetime: '2025-02-11T11:58:00'
+end_datetime: '2025-02-11T15:43:00'
+address: Residencial Mendes, 841, da Costa da Prata, Jamaica
+maps_link: https://maps.google.com/?q=Residencial+Mendes,+841,+da+Costa+da+Prata,+Jamaica
+online: true
+event_link: http://www.araujo.br/
+intl:
+  pt-br:
+    event_edition: Edição 2
+    cost: Grátis
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Quasi impedit tenetur harum nesciunt atque tenetur cumque quia
+      odit minima.
+  en-us:
+    event_edition: Edition 2
+    cost: Grátis
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Esse consequuntur distinctio nemo culpa inventore nisi incidunt
+      quod fugit quaerat architecto.

@@ -1,0 +1,20 @@
+organization_name: Pires - EI
+event_name: O Poder De Ganhar Mais Rapidamente
+start_datetime: '2025-02-12T11:47:00'
+end_datetime: '2025-02-12T18:34:00'
+address: Trevo Castro, 73, das Neves, Mali
+maps_link: https://maps.google.com/?q=Trevo+Castro,+73,+das+Neves,+Mali
+online: true
+event_link: https://www.castro.br/
+intl:
+  pt-br:
+    event_edition: Edição 10
+    cost: R$380,00
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Sint exercitationem quo perferendis dolore ipsam magni repellendus.
+  en-us:
+    event_edition: Edition 10
+    cost: R$380,00
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Vero saepe laborum vitae quibusdam debitis voluptatibus quis
+      vitae vero nam nostrum vitae soluta.

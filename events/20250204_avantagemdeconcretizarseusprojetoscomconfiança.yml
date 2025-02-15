@@ -1,0 +1,21 @@
+organization_name: Costa
+event_name: A Vantagem De Concretizar Seus Projetos Com Confiança
+start_datetime: '2025-02-04T11:40:00'
+end_datetime: '2025-02-04T15:42:00'
+address: Condomínio Ana Liz Cavalcante, Vieira do Sul, Kuwait
+maps_link: https://maps.google.com/?q=Condomínio+Ana+Liz+Cavalcante,+Vieira+do+Sul,+Kuwait
+online: true
+event_link: http://www.cunha.org/
+intl:
+  pt-br:
+    event_edition: Edição 4
+    cost: R$411,00
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Asperiores odit ducimus est consequatur vero in consequatur
+      nisi.
+  en-us:
+    event_edition: Edition 4
+    cost: R$411,00
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Qui eius dolorum vel repudiandae magnam aliquam neque natus
+      sequi labore quia ullam.

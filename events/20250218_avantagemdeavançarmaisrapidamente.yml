@@ -1,0 +1,20 @@
+organization_name: Sá - ME
+event_name: A Vantagem De Avançar Mais Rapidamente
+start_datetime: '2025-02-18T10:16:00'
+end_datetime: '2025-02-18T14:36:00'
+address: Estrada de Fonseca, 4, Peixoto, Guiana
+maps_link: https://maps.google.com/?q=Estrada+de+Fonseca,+4,+Peixoto,+Guiana
+online: false
+event_link: https://www.montenegro.br/
+intl:
+  pt-br:
+    event_edition: Edição 9
+    cost: R$173,00
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Rem dignissimos voluptate optio vitae vero quibusdam ratione
+      pariatur voluptate perferendis.
+  en-us:
+    event_edition: Edition 9
+    cost: R$173,00
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Totam quam atque repellat a odio est ullam repudiandae.

@@ -1,0 +1,19 @@
+organization_name: Azevedo
+event_name: O Direito De Conseguir Com Confiança
+start_datetime: '2025-02-19T08:46:00'
+end_datetime: '2025-02-19T15:28:00'
+address: Sítio Câmara, 7, Gonçalves, São Vicente e Granadinas
+maps_link: https://maps.google.com/?q=Sítio+Câmara,+7,+Gonçalves,+São+Vicente+e+Granadinas
+online: false
+event_link: https://www.lopes.com/
+intl:
+  pt-br:
+    event_edition: Edição 10
+    cost: Grátis
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Quasi ut exercitationem facilis maiores accusamus.
+  en-us:
+    event_edition: Edition 10
+    cost: Grátis
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Incidunt officiis optio soluta vitae pariatur reiciendis fuga.

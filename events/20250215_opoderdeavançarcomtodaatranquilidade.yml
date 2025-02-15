@@ -1,0 +1,19 @@
+organization_name: Freitas Ltda.
+event_name: O Poder De Avançar Com Toda A Tranquilidade
+start_datetime: '2025-02-15T11:11:00'
+end_datetime: '2025-02-15T14:34:00'
+address: Trevo Rocha, 78, Peixoto, Sri Lanka
+maps_link: https://maps.google.com/?q=Trevo+Rocha,+78,+Peixoto,+Sri+Lanka
+online: true
+event_link: http://www.barbosa.com/
+intl:
+  pt-br:
+    event_edition: Edição 1
+    cost: Grátis
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Eum voluptate fuga ea dolores veniam.
+  en-us:
+    event_edition: Edition 1
+    cost: Grátis
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Tempore aperiam vitae ex delectus facere dolore nisi dicta.

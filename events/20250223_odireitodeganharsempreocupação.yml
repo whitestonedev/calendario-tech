@@ -1,0 +1,20 @@
+organization_name: Oliveira
+event_name: O Direito De Ganhar Sem Preocupação
+start_datetime: '2025-02-23T12:36:00'
+end_datetime: '2025-02-23T14:46:00'
+address: Conjunto Sophie Vargas, 33, Câmara do Sul, Costa do Marfim
+maps_link: https://maps.google.com/?q=Conjunto+Sophie+Vargas,+33,+Câmara+do+Sul,+Costa+do+Marfim
+online: true
+event_link: https://www.machado.net/
+intl:
+  pt-br:
+    event_edition: Edição 10
+    cost: R$389,00
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Iste iusto eligendi nulla quo possimus saepe expedita perferendis
+      enim illum aspernatur excepturi.
+  en-us:
+    event_edition: Edition 10
+    cost: R$389,00
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Cumque maxime a quas sunt quia temporibus repellendus ab.

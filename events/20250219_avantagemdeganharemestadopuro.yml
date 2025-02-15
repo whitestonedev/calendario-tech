@@ -1,0 +1,21 @@
+organization_name: Leão S/A
+event_name: A Vantagem De Ganhar Em Estado Puro
+start_datetime: '2025-02-19T12:52:00'
+end_datetime: '2025-02-19T16:50:00'
+address: Trecho Danilo da Cunha, Machado, Svalbard e Jan Mayen
+maps_link: https://maps.google.com/?q=Trecho+Danilo+da+Cunha,+Machado,+Svalbard+e+Jan+Mayen
+online: false
+event_link: http://www.costela.br/
+intl:
+  pt-br:
+    event_edition: Edição 3
+    cost: R$141,00
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Quam eaque eum illum impedit quos maxime quisquam atque culpa
+      cumque omnis cumque.
+  en-us:
+    event_edition: Edition 3
+    cost: R$141,00
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Eum illum nihil sint asperiores consectetur accusantium sint
+      hic ullam dicta.

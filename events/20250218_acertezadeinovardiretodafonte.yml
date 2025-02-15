@@ -1,0 +1,20 @@
+organization_name: Rodrigues Ltda.
+event_name: A Certeza De Inovar Direto Da Fonte
+start_datetime: '2025-02-18T08:48:00'
+end_datetime: '2025-02-18T14:20:00'
+address: Distrito de Leão, 724, Alves, Jordânia
+maps_link: https://maps.google.com/?q=Distrito+de+Leão,+724,+Alves,+Jordânia
+online: false
+event_link: https://da.br/
+intl:
+  pt-br:
+    event_edition: Edição 10
+    cost: R$155,00
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Explicabo dolores soluta libero blanditiis esse hic.
+  en-us:
+    event_edition: Edition 10
+    cost: R$155,00
+    banner_link: https://technode.com/wp-content/uploads/2023/04/BEYOND-2023-Banner.jpeg
+    short_description: Magnam iure repellendus culpa explicabo totam praesentium culpa
+      voluptatibus aperiam eveniet quidem possimus deleniti.
