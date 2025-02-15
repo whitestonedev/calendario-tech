@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
 
-import { faMoon } from '@fortawesome/free-solid-svg-icons/faMoon';
-import { faSun } from '@fortawesome/free-solid-svg-icons/faSun';
-import { useDispatch, useSelector } from 'react-redux';
+// import { faMoon } from '@fortawesome/free-solid-svg-icons/faMoon';
+// import { faSun } from '@fortawesome/free-solid-svg-icons/faSun';
+// import { useDispatch, useSelector } from 'react-redux';
 
 import useScreenSize from '../../hooks/useScreenSize';
-import { RootState } from '../../store';
-import { toggleDarkMode } from '../../store/reducers/themeSlice';
-import Button from '../atoms/Button';
-import Icon from '../atoms/Icon';
+// import { RootState } from '../../store';
+// import { toggleDarkMode } from '../../store/reducers/themeSlice';
+// import Button from '../atoms/Button';
+// import Icon from '../atoms/Icon';
+import LanguageSwitcher from '../molecules/LanguageSwitcher';
 
 interface NavbarProps {
   className?: string;
@@ -18,8 +19,8 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ className }) => {
   const [isMobileScreen, setIsMobileScreen] = React.useState(false);
   const screenSize = useScreenSize();
-  const dispatch = useDispatch();
-  const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
+  // const dispatch = useDispatch();
+  // const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
 
   useEffect(() => {
     setIsMobileScreen(screenSize.isMobileView);
@@ -32,7 +33,9 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
       >
         <div className="w-full max-w-[1200px] mx-auto flex items-center justify-end">
           <div className="flex items-center space-x-4">
-            <Button
+            <LanguageSwitcher className="mr-4" />{' '}
+            {/* Adicione o LanguageSwitcher aqui */}
+            {/* <Button
               onClick={() => dispatch(toggleDarkMode())}
               className={'!bg-transparent'}
             >
@@ -45,7 +48,7 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
                     : 'rotate-180 text-accent'
                 }`}
               />
-            </Button>
+            </Button> */}
           </div>
         </div>
       </nav>

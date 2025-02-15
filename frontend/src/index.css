@@ -1,3 +1,69 @@
+@import 'react-big-calendar/lib/css/react-big-calendar.css'; /* Mova para cá! ANTES de @tailwind components e utilities */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.rbc-container {
+  @apply rounded-lg shadow-md bg-background-light dark:bg-background-dark border border-neutral-200 dark:border-neutral-700 overflow-hidden; /* Container geral arredondado, sombra, fundo e borda */
+}
+
+/* Estilos para atoolbar (navegação do calendário - mês, ano, botões) */
+.rbc-toolbar {
+  @apply flex justify-between items-center p-4 bg-neutral-100 dark:bg-neutral-800 border-b border-neutral-200 dark:border-neutral-700;
+}
+
+.rbc-toolbar-label {
+  @apply text-xl font-semibold text-text-primary dark:text-text-light; /* Título do mês/ano maior e cor primária */
+}
+
+.rbc-btn-group button {
+  @apply bg-transparent hover:bg-neutral-200 dark:hover:bg-neutral-700 text-text-primary dark:text-text-light font-medium py-2 px-4 rounded-md transition-colors duration-200; /* Botões da toolbar transparentes com hover sutil e cor primária */
+}
+
+.rbc-btn-group button:focus {
+  @apply outline-none ring-2 ring-primary-500 dark:ring-accent-500; /* Foco com anel de cor primária/acento */
+}
+
+/* Estilos para o header da semana (dias da semana - Dom, Seg, Ter...) */
+.rbc-header {
+  @apply text-sm font-medium text-neutral-500 dark:text-neutral-400 py-2 border-b border-neutral-200 dark:border-neutral-700 text-center; /* Header da semana mais sutil */
+}
+
+/* Estilos para as células dos dias */
+.rbc-date-cell {
+  @apply p-1 text-sm text-text-primary dark:text-text-light border-r border-b border-neutral-200 dark:border-neutral-700; /* Células dos dias com bordas discretas */
+}
+
+.rbc-date-cell.rbc-now {
+  @apply bg-accent-100 dark:bg-accent-700; /* Dia atual com background de cor de acento sutil */
+}
+
+.rbc-date-cell.rbc-off-range {
+  @apply text-neutral-400 dark:text-neutral-500 bg-neutral-100 dark:bg-neutral-900; /* Dias fora do range do mês com cor e background mais sutis */
+}
+
+/* Estilos para eventos */
+.rbc-event {
+  @apply rounded-md shadow-sm bg-primary-500 text-white text-sm font-medium py-1 px-2 overflow-hidden whitespace-nowrap text-ellipsis; /* Eventos com fundo primário, texto branco, arredondados e com sombra */
+  /* Pode adicionar estilos de hover para eventos se desejar */
+}
+
+.rbc-event-label,
+.rbc-row-segment {
+  /* Ajuste para rótulos de eventos e segmentos de linha */
+  @apply overflow-hidden whitespace-nowrap text-ellipsis; /* Garante que os rótulos e segmentos não quebrem o layout */
+}
+
+/* Estilos para o corpo do calendário (onde os dias são exibidos) */
+.rbc-month-view {
+  @apply border-none; /* Remove a borda padrão do corpo do calendário se houver */
+}
+
+.rbc-row-content {
+  @apply h-full; /* Garante que as linhas de conteúdo preencham a altura das células */
+}
+
+.rbc-day-bg {
+  @apply h-full; /* Garante que o background dos dias preencha a altura das células */
+}
