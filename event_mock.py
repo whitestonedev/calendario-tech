@@ -128,7 +128,7 @@ def gerar_arquivos_yml_eventos(quantidade_arquivos, data_inicio_range, data_fim_
         print(f"Arquivo YAML '{nome_arquivo}' gerado com sucesso em '{diretorio_output}'.")
 
 if __name__ == "__main__":
-    quantidade = 40
+    quantidade = 1
     data_inicio_range = "2025-02-01"
     data_fim_range = "2026-03-30"
 

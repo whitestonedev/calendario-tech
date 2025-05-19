@@ -1,3 +1,4 @@
+import logging
 from flask import jsonify, render_template_string
 from flask_cors import CORS
 import yaml
@@ -6,15 +7,25 @@ from datetime import datetime
 import mistune
 import threading
 import time
+from apscheduler.schedulers.background import BackgroundScheduler
+
 
 from pydantic import BaseModel, Field
 from flask_openapi3 import OpenAPI, Info, Tag
-from db import create_table, insert_event, list_all_events, query_events
+
+from services.version_db import run_db_versioning_job
+from services.db import create_table, insert_event, list_all_events, query_events
 
 # API Info
 info = Info(title="Events API", version="1.0.0")
 app = OpenAPI(__name__, info=info)
 CORS(app)
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
 
 # API Tags
 event_tag = Tag(name="events", description="Operations related to events")
@@ -23,6 +34,11 @@ event_tag = Tag(name="events", description="Operations related to events")
 EVENTS_FOLDER_NAME = "events"
 README_FILE = "README.md"
 aggregated_events = []
+
+# Scheduler for database versioning
+scheduler = BackgroundScheduler()
+scheduler.add_job(run_db_versioning_job, "cron", hour=0, minute=0)  # Daily at midnight
+scheduler.start()
 
 
 def initial_data_load():
@@ -126,9 +142,6 @@ class EventIn(BaseModel):
 
 
 def filter_events(filters: EventQuery) -> list[dict]:
-    """
-    Encapsula a busca no banco usando todos os parâmetros de EventQuery.
-    """
     return query_events(
         tags=filters.parsed_tags,
         name=filters.name,

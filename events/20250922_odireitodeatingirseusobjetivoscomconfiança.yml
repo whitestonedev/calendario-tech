@@ -1,0 +1,26 @@
+organization_name: Abreu
+event_name: O Direito De Atingir Seus Objetivos Com Confiança
+start_datetime: '2025-09-22T10:43:00'
+end_datetime: '2025-09-22T18:38:00'
+address: Praia de Vasconcelos, 81, Viana Grande, São Tomé e Príncipe
+maps_link: https://maps.google.com/?q=Praia+de+Vasconcelos,+81,+Viana+Grande,+São+Tomé+e+Príncipe
+online: true
+event_link: http://www.brito.br/
+tags:
+- tecnologia
+- cloud computing
+- negócios
+- inteligência artificial
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 4
+    cost: R$114,00
+    banner_link: https://placehold.co/600x400/E8F0F2/5F5F5F?text=O+Direito+De+Atingir+Seus+Objetivos+Com+Confiança
+    short_description: A dignissimos similique eligendi voluptatem dolorem voluptates
+      ratione.
+  en-us:
+    event_edition: Edition 4
+    cost: R$114,00
+    banner_link: https://placehold.co/600x400/E8F0F2/5F5F5F?text=O+Direito+De+Atingir+Seus+Objetivos+Com+Confiança
+    short_description: Nisi ipsam eligendi voluptas nobis labore rem a earum.
