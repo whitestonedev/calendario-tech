@@ -9,7 +9,7 @@ import time
 
 from pydantic import BaseModel, Field
 from flask_openapi3 import OpenAPI, Info, Tag
-
+from db import create_table, insert_event, list_all_events, query_events
 
 # API Info
 info = Info(title="Events API", version="1.0.0")
@@ -25,40 +25,37 @@ README_FILE = "README.md"
 aggregated_events = []
 
 
-def load_events_from_yaml():
-    """Loads events from all YAML files in the 'events' folder (one level up)."""
-    global aggregated_events
-    aggregated_events_temp = []
+def initial_data_load():
+    create_table()
+    print("[DB] Tabela de eventos criada (se não existir)")
+
+    existing = list_all_events()
+    if existing:
+        print(
+            f"[DB] Já existem {len(existing)} eventos no banco — pulando carga inicial"
+        )
+        return
+
     app_dir = os.path.dirname(__file__)
     parent_dir = os.path.dirname(app_dir)
     events_dir = os.path.join(parent_dir, EVENTS_FOLDER_NAME)
 
     if not os.path.isdir(events_dir):
-        print(f"Folder '{EVENTS_FOLDER_NAME}' not found at: {events_dir}")
-        return []
+        print(f"[DB] Pasta '{EVENTS_FOLDER_NAME}' não encontrada em: {events_dir}")
+        return
 
     for filename in os.listdir(events_dir):
-        if filename.endswith(".yml") or filename.endswith(".yaml"):
+        if filename.endswith((".yml", ".yaml")):
             filepath = os.path.join(events_dir, filename)
-            with open(filepath, "r", encoding="utf-8") as file:
+            with open(filepath, "r", encoding="utf-8") as f:
                 try:
-                    event_data = yaml.safe_load(file)
-                    aggregated_events_temp.append(event_data)
+                    event_data = yaml.safe_load(f)
+                    insert_event(event_data)
+                    print(f"[DB] Evento inserido: {event_data.get('id', 'sem ID')}")
                 except yaml.YAMLError as e:
-                    print(f"Error reading YAML file {filename}: {e}")
+                    print(f"[DB] Erro lendo {filename}: {e}")
 
-    aggregated_events = aggregated_events_temp
-    print(f"Events reloaded: {datetime.now()}")
-    return aggregated_events
-
-
-def get_numeric_price(price_str):
-    """Extracts the numeric value from a price string."""
-    price_numeric_str = "".join(filter(str.isdigit, price_str))
-    try:
-        return float(price_numeric_str) / 100.0 if price_numeric_str else 0.0
-    except ValueError:
-        return 0.0
+    print(f"[DB] Carga inicial concluída: {datetime.now()}")
 
 
 class EventQuery(BaseModel):
@@ -66,9 +63,7 @@ class EventQuery(BaseModel):
     Model for event filter query parameters.
     """
 
-    tags: list[str] | None = Field(
-        None, description="Filters events by tags (multiple tags allowed)"
-    )
+    tags: str | None = Field(default=None, description="Comma-separated list of tags")
     name: str | None = Field(
         None, description="Filters events by name (case-insensitive, partial match)"
     )
@@ -103,122 +98,50 @@ class EventQuery(BaseModel):
         None, description="Filters events from this date (YYYY-MM-DD)"
     )
 
+    @property
+    def parsed_tags(self) -> list[str] | None:
+        if self.tags:
+            return [t.strip() for t in self.tags.split(",") if t.strip()]
+        return None
 
-def filter_events(filters: EventQuery):
-    """Filters the aggregated events list based on provided filters."""
-    filtered_events = aggregated_events
-    if filters.tags:
-        tags_filter = filters.tags
-        filtered_events = [
-            event
-            for event in filtered_events
-            if "tags" in event and any(tag in event["tags"] for tag in tags_filter)
-        ]
-    if filters.name:
-        name_filter = filters.name.lower()
-        filtered_events = [
-            event
-            for event in filtered_events
-            if "event_name" in event and name_filter in event["event_name"].lower()
-        ]
-    if filters.org:
-        org_filter = filters.org.lower()
-        filtered_events = [
-            event
-            for event in filtered_events
-            if "organization_name" in event
-            and org_filter in event["organization_name"].lower()
-        ]
-    if filters.online is not None:
-        filtered_events = [
-            event
-            for event in filtered_events
-            if "online" in event and event["online"] == filters.online
-        ]
-    if filters.price_type:
-        price_type = filters.price_type.lower()
-        if price_type == "free":
-            filtered_events = [
-                event
-                for event in filtered_events
-                if "intl" in event
-                and "pt-br" in event["intl"]
-                and event["intl"]["pt-br"].get("cost", "").lower()
-                == "grátis"  # Assuming 'grátis' means free in pt-br
-            ]
-        elif price_type == "paid":
-            filtered_events = [
-                event
-                for event in filtered_events
-                if "intl" in event
-                and "pt-br" in event["intl"]
-                and event["intl"]["pt-br"].get("cost", "").lower()
-                != "grátis"  # Assuming 'grátis' means free in pt-br
-            ]
-    if filters.price_min:
-        min_price_num = filters.price_min
-        filtered_events = [
-            event
-            for event in filtered_events
-            if "intl" in event
-            and "pt-br" in event["intl"]
-            and "cost" in event["intl"]["pt-br"]
-            and not event["intl"]["pt-br"]["cost"].lower()
-            == "grátis"  # Excludes free events
-            and get_numeric_price(event["intl"]["pt-br"]["cost"]) >= min_price_num
-        ]
-    if filters.price_max:
-        max_price_num = filters.price_max
-        filtered_events = [
-            event
-            for event in filtered_events
-            if "intl" in event
-            and "pt-br" in event["intl"]
-            and "cost" in event["intl"]["pt-br"]
-            and not event["intl"]["pt-br"]["cost"].lower()
-            == "grátis"  # Excludes free events
-            and get_numeric_price(event["intl"]["pt-br"]["cost"]) <= max_price_num
-        ]
-    if filters.address:
-        address_filter = filters.address.lower()
-        filtered_events = [
-            event
-            for event in filtered_events
-            if "address" in event and address_filter in event["address"].lower()
-        ]
-    if filters.date_start_range and filters.date_end_range:
-        start_date_str = filters.date_start_range
-        end_date_str = filters.date_end_range
-        try:
-            start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
-            end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
-            filtered_events = [
-                event
-                for event in filtered_events
-                if "start_datetime" in event
-                and "end_datetime" in event
-                and datetime.strptime(event["start_datetime"][:10], "%Y-%m-%d").date()
-                >= start_date.date()
-                and datetime.strptime(event["end_datetime"][:10], "%Y-%m-%d").date()
-                <= end_date.date()
-            ]
-        except ValueError:
-            pass
-    if filters.date_from:
-        from_date_str = filters.date_from
-        try:
-            from_date = datetime.strptime(from_date_str, "%Y-%m-%d")
-            filtered_events = [
-                event
-                for event in filtered_events
-                if "start_datetime" in event
-                and datetime.strptime(event["start_datetime"][:10], "%Y-%m-%d").date()
-                >= from_date.date()
-            ]
-        except ValueError:
-            pass
 
-    return filtered_events
+class IntlData(BaseModel):
+    event_edition: str
+    cost: str
+    banner_link: str
+    short_description: str
+
+
+class EventIn(BaseModel):
+    organization_name: str
+    event_name: str
+    start_datetime: datetime
+    end_datetime: datetime
+    address: str | None = None
+    maps_link: str | None = None
+    online: bool
+    event_link: str | None = None
+    tags: list[str] = []
+    intl: dict[str, IntlData] = {}
+
+
+def filter_events(filters: EventQuery) -> list[dict]:
+    """
+    Encapsula a busca no banco usando todos os parâmetros de EventQuery.
+    """
+    return query_events(
+        tags=filters.parsed_tags,
+        name=filters.name,
+        org=filters.org,
+        online=filters.online,
+        price_type=filters.price_type,
+        price_min=filters.price_min,
+        price_max=filters.price_max,
+        address=filters.address,
+        date_start_range=filters.date_start_range,
+        date_end_range=filters.date_end_range,
+        date_from=filters.date_from,
+    )
 
 
 @app.get(
@@ -233,6 +156,25 @@ def get_events(query: EventQuery):
     """
     filtered_events = filter_events(query)
     return jsonify(filtered_events)
+
+
+@app.post(
+    "/events",
+    tags=[event_tag],
+    summary="Create event",
+    description="Inserts a new event into the database and returns it with its generated ID.",
+)
+def create_event(body: EventIn):
+    data = body.dict()
+
+    data["start_datetime"] = data["start_datetime"].isoformat()
+    data["end_datetime"] = data["end_datetime"].isoformat()
+
+    new_id = insert_event(data)
+
+    created = next(e for e in list_all_events() if e["id"] == new_id)
+
+    return jsonify(created), 201
 
 
 @app.route("/", methods=["GET"])
@@ -343,7 +285,7 @@ def start_periodic_reload():
 
     def reload_task():
         while True:
-            load_events_from_yaml()
+            initial_data_load()
             time.sleep(60)  # Reload every 60 seconds (1 minute) - Adjust as needed
 
     thread = threading.Thread(target=reload_task)
@@ -352,5 +294,5 @@ def start_periodic_reload():
 
 
 # Load events initially and start periodic reload
-load_events_from_yaml()
+initial_data_load()
 start_periodic_reload()

@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  backend:
+    container_name: calendario-backend
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ./events:/events
+    environment:
+      - APP_ENV=${APP_ENV}
+      - FLASK_ENV=${FLASK_ENV}
+      - FLASK_APP=${FLASK_APP}

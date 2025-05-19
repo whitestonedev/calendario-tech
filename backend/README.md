@@ -7,20 +7,18 @@ Este projeto consiste em uma API RESTful construída com Flask que fornece dados
 1.  [Visão Geral](#visão-geral)
 2.  [Demonstração](#demonstração)
 3.  [Começando](#começando)
-    * [Pré-requisitos](#pré-requisitos)
-    * [Instalação](#instalação)
-    * [Configuração](#configuração)
-4.  [Executando a API](#executando-a-api)
-5.  [Endpoints da API](#endpoints-da-api)
+    * [🐳 Executando a API com Docker](#-executando-a-api-com-docker)
+    * [Instalação Manual](#instalação-manual)
+4.  [Endpoints da API](#endpoints-da-api)
     * [`/events` [GET]](#events-get)
         * [Parâmetros de Filtro](#parâmetros-de-filtro)
         * [Tabela de Filtros](#tabela-de-filtros)
         * [Exemplos de Requisição](#exemplos-de-requisição)
-6.  [Documentação da API (OpenAPI - Scalar)](#documentação-da-api-openapi---scalar)
-7.  [Página Inicial com README Estilizado](#página-inicial-com-readme-estilizado)
-8.  [Estrutura dos Arquivos YAML de Eventos](#estrutura-dos-arquivos-yaml-de-eventos)
+5.  [Documentação da API (OpenAPI - Scalar)](#documentação-da-api-openapi---scalar)
+6.  [Página Inicial com README Estilizado](#página-inicial-com-readme-estilizado)
+7.  [Estrutura dos Arquivos YAML de Eventos](#estrutura-dos-arquivos-yaml-de-eventos)
     * [Exemplo de Arquivo YAML](#exemplo-de-arquivo-yaml)
-9.  [Próximos Passos e Contribuições](#próximos-passos-e-contribuições)
+8.  [Próximos Passos e Contribuições](#próximos-passos-e-contribuições)
 
 ## Visão Geral
 
@@ -39,7 +37,40 @@ Esta API foi desenvolvida para agregar e fornecer informações sobre eventos a 
 
 ## Começando
 
-Para executar a API localmente, siga os passos abaixo.
+### 🐳 Executando a API com Docker
+
+A forma mais prática de rodar a API é utilizando Docker. Com o Docker instalado, basta executar os seguintes comandos na raiz do projeto:
+
+```bash
+docker compose up --build
+```
+
+Isso criará e executará o container `backend`, que estará acessível em:
+
+```
+http://localhost:8000
+```
+
+A API automaticamente escolherá entre rodar em modo **desenvolvimento** (`flask run --reload`) ou **produção** (`gunicorn`) com base na variável de ambiente `APP_ENV`.
+
+Você pode configurar isso em um arquivo `.env` (já esta assim no repo). Exemplo:
+
+```env
+# .env
+APP_ENV=development
+FLASK_ENV=development
+FLASK_APP=app.py
+```
+
+Para produção, altere para:
+
+```env
+APP_ENV=production
+FLASK_ENV=production
+```
+
+<details>
+<summary><b>Instalação Manual (alternativa ao Docker)</b></summary>
 
 ### Pré-requisitos
 
@@ -136,7 +167,7 @@ Se você não tiver o Python instalado, você pode baixá-lo em https://www.pyth
     timeout = 120          # Timeout em segundos
     ```
 
-## Executando a API
+### Executando a API
 
 Para iniciar o servidor Flask da API, abra o terminal no diretório raiz do projeto **(`backend` folder)** (onde o arquivo `app.py` e `gunicorn.conf.py` estão localizados) e execute o seguinte comando **para usar Gunicorn em produção (ou simular produção)**: **(Comando de execução atualizado para Gunicorn)**
 
@@ -158,6 +189,8 @@ Você deverá ver uma saída no terminal indicando que o servidor Gunicorn/Flask
 ```
 
 Abra um navegador web e acesse o endereço `http://localhost:8000` ou `http://127.0.0.1:8000` (dependendo da configuração do `bind` no `gunicorn.conf.py`) para visualizar a página inicial com o README estilizado e o link para a documentação.  Se estiver usando `python app.py`, acesse `http://127.0.0.1:5000`.
+
+</details>
 
 ## Endpoints da API
 
