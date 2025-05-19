@@ -1,0 +1,26 @@
+organization_name: Lopes
+event_name: O Poder De Avançar Sem Preocupação
+start_datetime: '2025-10-08T11:41:00'
+end_datetime: '2025-10-08T18:50:00'
+address: Núcleo João Gabriel da Cruz, 580, Rezende de Vasconcelos, Ilha Wake
+maps_link: https://maps.google.com/?q=Núcleo+João+Gabriel+da+Cruz,+580,+Rezende+de+Vasconcelos,+Ilha+Wake
+online: true
+event_link: http://teixeira.br/
+tags:
+- desenvolvimento
+- startup
+- machine learning
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 8
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/E8F0F2/5F5F5F?text=O+Poder+De+Avançar+Sem+Preocupação
+    short_description: Quas voluptas doloremque ratione dolor amet neque porro veniam
+      alias.
+  en-us:
+    event_edition: Edition 8
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/E8F0F2/5F5F5F?text=O+Poder+De+Avançar+Sem+Preocupação
+    short_description: Quod eum doloremque repellat minima veniam omnis voluptates
+      possimus minima libero fuga molestias.

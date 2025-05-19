@@ -1,0 +1,25 @@
+organization_name: Borges Borges - ME
+event_name: O Direito De Mudar Com Confiança
+start_datetime: '2026-02-16T09:59:00'
+end_datetime: '2026-02-16T18:43:00'
+address: Favela da Rosa, Cavalcanti da Prata, Singapura
+maps_link: https://maps.google.com/?q=Favela+da+Rosa,+Cavalcanti+da+Prata,+Singapura
+online: false
+event_link: http://cavalcante.br/
+tags:
+- ciência de dados
+- inteligência artificial
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 1
+    cost: R$360,00
+    banner_link: https://placehold.co/600x400/F7F0F5/2A2A2A?text=O+Direito+De+Mudar+Com+Confiança
+    short_description: Hic iste maiores reiciendis pariatur veniam ab possimus id
+      in.
+  en-us:
+    event_edition: Edition 1
+    cost: R$360,00
+    banner_link: https://placehold.co/600x400/F7F0F5/2A2A2A?text=O+Direito+De+Mudar+Com+Confiança
+    short_description: Repellat occaecati placeat eveniet eaque voluptatum praesentium
+      voluptatum facere laborum.

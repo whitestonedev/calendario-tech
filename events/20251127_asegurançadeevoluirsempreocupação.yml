@@ -1,0 +1,24 @@
+organization_name: Aparecida Castro - EI
+event_name: A Segurança De Evoluir Sem Preocupação
+start_datetime: '2025-11-27T10:30:00'
+end_datetime: '2025-11-27T17:28:00'
+address: Setor Garcia, 6, Ferreira, Iêmen
+maps_link: https://maps.google.com/?q=Setor+Garcia,+6,+Ferreira,+Iêmen
+online: true
+event_link: https://rios.com/
+tags:
+- desenvolvimento
+- cloud computing
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 7
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/E8F0F2/4F4F4F?text=A+Segurança+De+Evoluir+Sem+Preocupação
+    short_description: Laboriosam totam expedita earum aspernatur consequuntur.
+  en-us:
+    event_edition: Edition 7
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/E8F0F2/4F4F4F?text=A+Segurança+De+Evoluir+Sem+Preocupação
+    short_description: Magni eaque odio eum beatae et architecto porro error saepe
+      omnis ipsa aliquid.

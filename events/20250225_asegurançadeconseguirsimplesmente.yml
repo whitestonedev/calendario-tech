@@ -1,0 +1,26 @@
+organization_name: Santos
+event_name: A Segurança De Conseguir Simplesmente
+start_datetime: '2025-02-25T09:51:00'
+end_datetime: '2025-02-25T15:42:00'
+address: Campo Ana Lívia das Neves, 445, Leão, Singapura
+maps_link: https://maps.google.com/?q=Campo+Ana+Lívia+das+Neves,+445,+Leão,+Singapura
+online: false
+event_link: http://www.moreira.com/
+tags:
+- inovação
+- ciência de dados
+- cloud computing
+- big data
+- startup
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 9
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/FDE6E2/9F9F9F?text=A+Segurança+De+Conseguir+Simplesmente
+    short_description: Provident eos consequatur et nam odio.
+  en-us:
+    event_edition: Edition 9
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/FDE6E2/9F9F9F?text=A+Segurança+De+Conseguir+Simplesmente
+    short_description: Ipsam maxime non quis hic est natus vitae neque.

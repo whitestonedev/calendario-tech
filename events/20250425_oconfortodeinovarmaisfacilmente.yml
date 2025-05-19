@@ -1,0 +1,24 @@
+organization_name: da Costa Novaes S/A
+event_name: O Conforto De Inovar Mais Facilmente
+start_datetime: '2025-04-25T12:19:00'
+end_datetime: '2025-04-25T15:55:00'
+address: Quadra de Mendes, 962, Leão das Flores, Pitcairn
+maps_link: https://maps.google.com/?q=Quadra+de+Mendes,+962,+Leão+das+Flores,+Pitcairn
+online: true
+event_link: https://www.melo.com/
+tags:
+- networking
+- inteligência artificial
+- big data
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 5
+    cost: R$466,00
+    banner_link: https://placehold.co/600x400/EBF4FA/7F7F7F?text=O+Conforto+De+Inovar+Mais+Facilmente
+    short_description: Autem ullam labore minima accusantium temporibus id.
+  en-us:
+    event_edition: Edition 5
+    cost: R$466,00
+    banner_link: https://placehold.co/600x400/EBF4FA/7F7F7F?text=O+Conforto+De+Inovar+Mais+Facilmente
+    short_description: Laborum modi aperiam inventore repudiandae voluptatem.

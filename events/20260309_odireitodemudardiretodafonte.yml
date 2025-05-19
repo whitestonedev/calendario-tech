@@ -1,0 +1,24 @@
+organization_name: Viana
+event_name: O Direito De Mudar Direto Da Fonte
+start_datetime: '2026-03-09T12:32:00'
+end_datetime: '2026-03-09T17:18:00'
+address: Colônia de Pires, 24, da Mota Verde, República Centro-Africana
+maps_link: https://maps.google.com/?q=Colônia+de+Pires,+24,+da+Mota+Verde,+República+Centro-Africana
+online: false
+event_link: https://www.cunha.com/
+tags:
+- marketing
+- empreendedorismo
+- criatividade
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 1
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/F7F0F5/8F8F8F?text=O+Direito+De+Mudar+Direto+Da+Fonte
+    short_description: Deserunt sunt mollitia laboriosam esse eveniet sit qui inventore.
+  en-us:
+    event_edition: Edition 1
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/F7F0F5/8F8F8F?text=O+Direito+De+Mudar+Direto+Da+Fonte
+    short_description: Illum eum distinctio ab explicabo suscipit voluptates.

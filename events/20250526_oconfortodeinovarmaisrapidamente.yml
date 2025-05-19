@@ -1,0 +1,24 @@
+organization_name: Camargo
+event_name: O Conforto De Inovar Mais Rapidamente
+start_datetime: '2025-05-26T12:25:00'
+end_datetime: '2025-05-26T14:38:00'
+address: Esplanada Carvalho, 446, Moreira, Antártica
+maps_link: https://maps.google.com/?q=Esplanada+Carvalho,+446,+Moreira,+Antártica
+online: true
+event_link: https://www.viana.com/
+tags:
+- negócios
+- big data
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 8
+    cost: R$176,00
+    banner_link: https://placehold.co/600x400/FAF3DD/9F9F9F?text=O+Conforto+De+Inovar+Mais+Rapidamente
+    short_description: Consequatur sit sit iure qui nulla.
+  en-us:
+    event_edition: Edition 8
+    cost: R$176,00
+    banner_link: https://placehold.co/600x400/FAF3DD/9F9F9F?text=O+Conforto+De+Inovar+Mais+Rapidamente
+    short_description: Iusto mollitia suscipit aperiam incidunt architecto saepe quam
+      dignissimos.

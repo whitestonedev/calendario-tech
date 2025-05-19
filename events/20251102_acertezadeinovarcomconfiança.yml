@@ -1,0 +1,27 @@
+organization_name: Ribeiro
+event_name: A Certeza De Inovar Com Confiança
+start_datetime: '2025-11-02T08:23:00'
+end_datetime: '2025-11-02T14:59:00'
+address: Esplanada de Sales, 21, Sá das Flores, Lituânia
+maps_link: https://maps.google.com/?q=Esplanada+de+Sales,+21,+Sá+das+Flores,+Lituânia
+online: true
+event_link: http://alves.net/
+tags:
+- big data
+- networking
+- ciência de dados
+- inovação
+- inovação
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 10
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/E8F0F2/4F4F4F?text=A+Certeza+De+Inovar+Com+Confiança
+    short_description: Eaque quia facere enim architecto hic qui quo possimus.
+  en-us:
+    event_edition: Edition 10
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/E8F0F2/4F4F4F?text=A+Certeza+De+Inovar+Com+Confiança
+    short_description: Error perferendis ullam sit id suscipit cumque distinctio officia
+      ipsum et incidunt doloribus.

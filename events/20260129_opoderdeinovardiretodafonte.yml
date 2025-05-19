@@ -1,0 +1,23 @@
+organization_name: Caldeira Rios Ltda.
+event_name: O Poder De Inovar Direto Da Fonte
+start_datetime: '2026-01-29T08:17:00'
+end_datetime: '2026-01-29T15:10:00'
+address: Lago da Cunha, 6, Casa Grande Alegre, Paracel Islands
+maps_link: https://maps.google.com/?q=Lago+da+Cunha,+6,+Casa+Grande+Alegre,+Paracel+Islands
+online: true
+event_link: https://www.vasconcelos.br/
+tags:
+- cloud computing
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 6
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/FDE6E2/5F5F5F?text=O+Poder+De+Inovar+Direto+Da+Fonte
+    short_description: Quaerat illum est perferendis quis vero minus consequuntur
+      necessitatibus assumenda repudiandae ipsum nam.
+  en-us:
+    event_edition: Edition 6
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/FDE6E2/5F5F5F?text=O+Poder+De+Inovar+Direto+Da+Fonte
+    short_description: Aliquam harum magni dolore nam neque placeat.

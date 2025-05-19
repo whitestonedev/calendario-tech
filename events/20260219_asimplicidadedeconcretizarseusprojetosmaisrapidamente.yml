@@ -1,0 +1,23 @@
+organization_name: Dias
+event_name: A Simplicidade De Concretizar Seus Projetos Mais Rapidamente
+start_datetime: '2026-02-19T09:06:00'
+end_datetime: '2026-02-19T16:46:00'
+address: Setor Sales, 35, Pinto dos Dourados, Serra Leoa
+maps_link: https://maps.google.com/?q=Setor+Sales,+35,+Pinto+dos+Dourados,+Serra+Leoa
+online: false
+event_link: http://www.rocha.org/
+tags:
+- machine learning
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 6
+    cost: R$24,00
+    banner_link: https://placehold.co/600x400/FDE6E2/7F7F7F?text=A+Simplicidade+De+Concretizar+Seus+Projetos+Mais+Rapidamente
+    short_description: Rerum fugiat sit praesentium voluptas officiis autem nisi.
+  en-us:
+    event_edition: Edition 6
+    cost: R$24,00
+    banner_link: https://placehold.co/600x400/FDE6E2/7F7F7F?text=A+Simplicidade+De+Concretizar+Seus+Projetos+Mais+Rapidamente
+    short_description: Quis maiores quis at at necessitatibus in iste laudantium repellat
+      laborum incidunt.

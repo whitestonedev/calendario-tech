@@ -1,0 +1,27 @@
+organization_name: Costa
+event_name: A Simplicidade De Mudar Mais Rapidamente
+start_datetime: '2026-02-12T08:29:00'
+end_datetime: '2026-02-12T14:07:00'
+address: Conjunto de Porto, 65, Guerra Paulista, Santa Helena
+maps_link: https://maps.google.com/?q=Conjunto+de+Porto,+65,+Guerra+Paulista,+Santa+Helena
+online: false
+event_link: http://www.da.com/
+tags:
+- empreendedorismo
+- marketing
+- criatividade
+- big data
+- criatividade
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 3
+    cost: R$317,00
+    banner_link: https://placehold.co/600x400/EFFAF1/6F6F6F?text=A+Simplicidade+De+Mudar+Mais+Rapidamente
+    short_description: Doloribus in amet illo esse earum accusantium ex.
+  en-us:
+    event_edition: Edition 3
+    cost: R$317,00
+    banner_link: https://placehold.co/600x400/EFFAF1/6F6F6F?text=A+Simplicidade+De+Mudar+Mais+Rapidamente
+    short_description: Veritatis fugit neque nemo iste sequi reprehenderit assumenda
+      officiis consectetur.

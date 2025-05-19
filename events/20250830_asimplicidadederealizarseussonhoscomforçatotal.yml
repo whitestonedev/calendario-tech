@@ -1,0 +1,27 @@
+organization_name: Sales
+event_name: A Simplicidade De Realizar Seus Sonhos Com Força Total
+start_datetime: '2025-08-30T11:10:00'
+end_datetime: '2025-08-30T14:28:00'
+address: Conjunto Rodrigues, 70, Casa Grande de Silva, Clipperton Island
+maps_link: https://maps.google.com/?q=Conjunto+Rodrigues,+70,+Casa+Grande+de+Silva,+Clipperton+Island
+online: false
+event_link: http://www.santos.com/
+tags:
+- big data
+- inovação
+- design
+- cloud computing
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 8
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/F5F5F5/4F4F4F?text=A+Simplicidade+De+Realizar+Seus+Sonhos+Com+Força+Total
+    short_description: Provident explicabo at rerum officiis atque reiciendis aliquid
+      fugit aspernatur.
+  en-us:
+    event_edition: Edition 8
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/F5F5F5/4F4F4F?text=A+Simplicidade+De+Realizar+Seus+Sonhos+Com+Força+Total
+    short_description: Sed ea voluptatibus optio ipsa assumenda nemo eius consequatur
+      ex.

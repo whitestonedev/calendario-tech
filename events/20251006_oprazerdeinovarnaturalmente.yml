@@ -1,0 +1,24 @@
+organization_name: Pereira - ME
+event_name: O Prazer De Inovar Naturalmente
+start_datetime: '2025-10-06T11:56:00'
+end_datetime: '2025-10-06T15:02:00'
+address: Núcleo Gabrielly Rocha, 768, Vasconcelos da Praia, Quênia
+maps_link: https://maps.google.com/?q=Núcleo+Gabrielly+Rocha,+768,+Vasconcelos+da+Praia,+Quênia
+online: true
+event_link: http://melo.org/
+tags:
+- big data
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 6
+    cost: R$370,00
+    banner_link: https://placehold.co/600x400/FFF9E6/2A2A2A?text=O+Prazer+De+Inovar+Naturalmente
+    short_description: Excepturi incidunt voluptates et fuga impedit unde facere ullam
+      expedita.
+  en-us:
+    event_edition: Edition 6
+    cost: R$370,00
+    banner_link: https://placehold.co/600x400/FFF9E6/2A2A2A?text=O+Prazer+De+Inovar+Naturalmente
+    short_description: Pariatur odio quasi est explicabo deleniti quam occaecati in
+      animi nostrum.

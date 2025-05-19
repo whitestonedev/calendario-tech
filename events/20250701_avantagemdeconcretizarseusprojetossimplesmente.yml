@@ -1,0 +1,25 @@
+organization_name: Ferreira Ltda.
+event_name: A Vantagem De Concretizar Seus Projetos Simplesmente
+start_datetime: '2025-07-01T11:52:00'
+end_datetime: '2025-07-01T17:41:00'
+address: Ladeira da Cruz, 5, Peixoto, Antígua e Barbuda
+maps_link: https://maps.google.com/?q=Ladeira+da+Cruz,+5,+Peixoto,+Antígua+e+Barbuda
+online: true
+event_link: https://www.carvalho.br/
+tags:
+- ciência de dados
+- programação
+- design
+- marketing
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 1
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/EBF4FA/5F5F5F?text=A+Vantagem+De+Concretizar+Seus+Projetos+Simplesmente
+    short_description: Accusamus doloribus fugit amet neque incidunt soluta vitae.
+  en-us:
+    event_edition: Edition 1
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/EBF4FA/5F5F5F?text=A+Vantagem+De+Concretizar+Seus+Projetos+Simplesmente
+    short_description: Nulla nostrum officiis eveniet dicta ratione architecto fugit.

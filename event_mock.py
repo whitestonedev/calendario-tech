@@ -4,6 +4,36 @@ from datetime import datetime, timedelta
 import random
 import os
 
+background_colors = [
+    'EFFAF1',  # verde claro pastel
+    'FAF3DD',  # amarelo claro pastel
+    'FDE6E2',  # salmão claro
+    'EBF4FA',  # azul bebê suave
+    'F7F0F5',  # rosa muito claro
+    'F5F5F5',  # cinza claro
+    'FFF9E6',  # creme suave
+    'E8F0F2',  # ciano bem claro
+]
+
+# Tons de font com contraste moderado
+font_colors = [
+    '2A2A2A',  # quase preto suave
+    '3D3D3D',  # grafite escuro
+    '4F4F4F',  # cinza chumbo
+    '5F5F5F',  # cinza médio-escuro
+    '6F6F6F',  # cinza médio
+    '7F7F7F',  # cinza mais claro
+    '8F8F8F',  # cinza claro
+    '9F9F9F',  # cinza bem claro
+]
+
+event_tags = [
+    'tecnologia', 'inovação', 'programação', 'desenvolvimento', 'startup',
+    'negócios', 'marketing', 'design', 'criatividade', 'networking',
+    'empreendedorismo', 'inteligência artificial', 'big data', 'machine learning',
+    'ciência de dados', 'cloud computing', 'segurança cibernética'
+]
+
 def gerar_dados_fake_evento(data_inicio_range, data_fim_range):
     """
     Gera dados fake para um evento no formato YAML.
@@ -35,8 +65,18 @@ def gerar_dados_fake_evento(data_inicio_range, data_fim_range):
     nome_evento = fake.catch_phrase().title() # Frase chamativa para nome do evento
     endereco_fake = fake.street_address() + ', ' + fake.city() + ', ' + fake.country()
 
-    cost = random.choice(['Grátis', f'R${random.randint(0, 500)},00']), # Custo do evento
+    cost = str(random.choice(['Grátis', f'R${random.randint(0, 500)},00'])) # Custo do evento
     edition = random.randint(1, 10) # Edição do evento
+
+    tags = [
+        str(random.choice(event_tags)) for _ in range(random.randint(1, 5)) # Seleciona entre 1 e 5 tags aleatórias
+    ]
+
+    bg = random.choice(background_colors)
+    fg = random.choice(font_colors)
+    banner_link = (
+        f"https://placehold.co/600x400/{bg}/{fg}?text={nome_evento.replace(' ', '+')}"
+    )
     dados_evento = {
         'organization_name': nome_organizacao,
         'event_name': nome_evento,
@@ -46,17 +86,18 @@ def gerar_dados_fake_evento(data_inicio_range, data_fim_range):
         'maps_link': f'https://maps.google.com/?q={endereco_fake.replace(" ", "+")}', # Link genérico do Google Maps
         'online': random.choice([True, False]),
         'event_link': fake.url(),
+        'tags': tags + ["AAAAAAA MOCK"], # Adiciona uma tag fixa para identificação
         'intl': {
             'pt-br': {
                 'event_edition': f'Edição {edition}', # Edição do evento
                 'cost': cost,
-                'banner_link': 'https://via.placeholder.com/600x200.png?text=Banner+do+Evento', # Banner genérico
+                'banner_link': banner_link,
                 'short_description': fake.sentence(nb_words=10) # Descrição curta
             },
             'en-us': {
                 'event_edition': f'Edition {edition}',
                 'cost': cost,
-                'banner_link': 'https://via.placeholder.com/600x200.png?text=Event+Banner',
+                'banner_link': banner_link,
                 'short_description': fake.sentence(nb_words=10)
             }
         }
@@ -87,9 +128,9 @@ def gerar_arquivos_yml_eventos(quantidade_arquivos, data_inicio_range, data_fim_
         print(f"Arquivo YAML '{nome_arquivo}' gerado com sucesso em '{diretorio_output}'.")
 
 if __name__ == "__main__":
-    quantidade = 20
+    quantidade = 40
     data_inicio_range = "2025-02-01"
-    data_fim_range = "2025-03-30"
+    data_fim_range = "2026-03-30"
 
     gerar_arquivos_yml_eventos(quantidade, data_inicio_range, data_fim_range)
     print("Processo de geração de arquivos YAML concluído.")

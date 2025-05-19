@@ -1,0 +1,26 @@
+organization_name: Montenegro Cavalcanti e Filhos
+event_name: O Prazer De Evoluir Em Estado Puro
+start_datetime: '2025-10-25T08:50:00'
+end_datetime: '2025-10-25T18:37:00'
+address: Rodovia Beatriz Fernandes, 81, Ribeiro de Pimenta, Coreia do Norte
+maps_link: https://maps.google.com/?q=Rodovia+Beatriz+Fernandes,+81,+Ribeiro+de+Pimenta,+Coreia+do+Norte
+online: false
+event_link: https://www.ribeiro.com/
+tags:
+- desenvolvimento
+- criatividade
+- machine learning
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 5
+    cost: R$96,00
+    banner_link: https://placehold.co/600x400/FFF9E6/4F4F4F?text=O+Prazer+De+Evoluir+Em+Estado+Puro
+    short_description: Eius occaecati ea sint accusamus occaecati neque praesentium
+      cumque.
+  en-us:
+    event_edition: Edition 5
+    cost: R$96,00
+    banner_link: https://placehold.co/600x400/FFF9E6/4F4F4F?text=O+Prazer+De+Evoluir+Em+Estado+Puro
+    short_description: Magnam quia quam nobis quam exercitationem excepturi dolorem
+      iusto ut ducimus ut.

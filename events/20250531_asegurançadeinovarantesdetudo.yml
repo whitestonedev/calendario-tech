@@ -1,0 +1,24 @@
+organization_name: da Conceição
+event_name: A Segurança De Inovar Antes De Tudo
+start_datetime: '2025-05-31T10:41:00'
+end_datetime: '2025-05-31T15:18:00'
+address: Lagoa Eduardo Moraes, Pinto de Ribeiro, República Centro-Africana
+maps_link: https://maps.google.com/?q=Lagoa+Eduardo+Moraes,+Pinto+de+Ribeiro,+República+Centro-Africana
+online: true
+event_link: http://www.cavalcante.org/
+tags:
+- startup
+- big data
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 9
+    cost: R$134,00
+    banner_link: https://placehold.co/600x400/EBF4FA/8F8F8F?text=A+Segurança+De+Inovar+Antes+De+Tudo
+    short_description: Nihil nisi ullam quam beatae delectus nobis quibusdam itaque.
+  en-us:
+    event_edition: Edition 9
+    cost: R$134,00
+    banner_link: https://placehold.co/600x400/EBF4FA/8F8F8F?text=A+Segurança+De+Inovar+Antes+De+Tudo
+    short_description: Architecto amet fugiat sapiente itaque commodi minus aperiam
+      reiciendis sint.

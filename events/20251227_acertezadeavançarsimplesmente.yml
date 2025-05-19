@@ -1,0 +1,24 @@
+organization_name: Campos
+event_name: A Certeza De Avançar Simplesmente
+start_datetime: '2025-12-27T11:48:00'
+end_datetime: '2025-12-27T17:38:00'
+address: Condomínio Siqueira, 34, Brito, Sudão
+maps_link: https://maps.google.com/?q=Condomínio+Siqueira,+34,+Brito,+Sudão
+online: false
+event_link: http://silva.com/
+tags:
+- segurança cibernética
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 3
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/E8F0F2/3D3D3D?text=A+Certeza+De+Avançar+Simplesmente
+    short_description: Molestiae delectus ab occaecati magni commodi quisquam delectus
+      sint placeat.
+  en-us:
+    event_edition: Edition 3
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/E8F0F2/3D3D3D?text=A+Certeza+De+Avançar+Simplesmente
+    short_description: Et veritatis illum impedit odio quod similique natus a labore
+      modi tenetur molestias.

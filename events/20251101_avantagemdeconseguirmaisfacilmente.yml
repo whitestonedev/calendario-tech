@@ -1,0 +1,26 @@
+organization_name: Machado - EI
+event_name: A Vantagem De Conseguir Mais Facilmente
+start_datetime: '2025-11-01T09:54:00'
+end_datetime: '2025-11-01T17:49:00'
+address: Rodovia de Lima, 70, Viana, China
+maps_link: https://maps.google.com/?q=Rodovia+de+Lima,+70,+Viana,+China
+online: false
+event_link: http://melo.net/
+tags:
+- inovação
+- tecnologia
+- startup
+- cloud computing
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 10
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/EFFAF1/5F5F5F?text=A+Vantagem+De+Conseguir+Mais+Facilmente
+    short_description: Cumque magni velit enim commodi ipsum magnam labore odio placeat
+      nostrum nesciunt.
+  en-us:
+    event_edition: Edition 10
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/EFFAF1/5F5F5F?text=A+Vantagem+De+Conseguir+Mais+Facilmente
+    short_description: Ut mollitia accusantium iusto itaque repudiandae aut soluta.

@@ -1,0 +1,22 @@
+organization_name: Nascimento Ltda.
+event_name: A Liberdade De Conseguir Antes De Tudo
+start_datetime: '2025-05-24T10:21:00'
+end_datetime: '2025-05-24T15:44:00'
+address: Residencial de Mendes, 41, Costa, Indonésia
+maps_link: https://maps.google.com/?q=Residencial+de+Mendes,+41,+Costa,+Indonésia
+online: false
+event_link: https://www.costa.net/
+tags:
+- ciência de dados
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 7
+    cost: R$451,00
+    banner_link: https://placehold.co/600x400/FAF3DD/7F7F7F?text=A+Liberdade+De+Conseguir+Antes+De+Tudo
+    short_description: Temporibus eveniet porro sed eaque in officia.
+  en-us:
+    event_edition: Edition 7
+    cost: R$451,00
+    banner_link: https://placehold.co/600x400/FAF3DD/7F7F7F?text=A+Liberdade+De+Conseguir+Antes+De+Tudo
+    short_description: Exercitationem adipisci odio in iusto delectus facilis quam.

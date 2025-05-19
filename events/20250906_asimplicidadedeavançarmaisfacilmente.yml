@@ -1,0 +1,25 @@
+organization_name: Nunes S.A.
+event_name: A Simplicidade De Avançar Mais Facilmente
+start_datetime: '2025-09-06T10:47:00'
+end_datetime: '2025-09-06T18:42:00'
+address: Trecho de da Luz, 99, Aragão, Zimbábue
+maps_link: https://maps.google.com/?q=Trecho+de+da+Luz,+99,+Aragão,+Zimbábue
+online: false
+event_link: https://martins.org/
+tags:
+- tecnologia
+- ciência de dados
+- cloud computing
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 10
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/FAF3DD/8F8F8F?text=A+Simplicidade+De+Avançar+Mais+Facilmente
+    short_description: Ex consequuntur corporis recusandae velit vel fugit commodi
+      minus amet eaque enim facilis quia.
+  en-us:
+    event_edition: Edition 10
+    cost: Grátis
+    banner_link: https://placehold.co/600x400/FAF3DD/8F8F8F?text=A+Simplicidade+De+Avançar+Mais+Facilmente
+    short_description: Ipsa perspiciatis a fuga harum itaque et.

@@ -1,0 +1,26 @@
+organization_name: Pastor
+event_name: A Arte De Inovar Com Confiança
+start_datetime: '2026-03-09T12:15:00'
+end_datetime: '2026-03-09T16:32:00'
+address: Quadra da Paz, 33, Cirino, Azerbaijão
+maps_link: https://maps.google.com/?q=Quadra+da+Paz,+33,+Cirino,+Azerbaijão
+online: false
+event_link: https://mendes.org/
+tags:
+- criatividade
+- empreendedorismo
+- programação
+- ciência de dados
+- AAAAAAA MOCK
+intl:
+  pt-br:
+    event_edition: Edição 3
+    cost: R$266,00
+    banner_link: https://placehold.co/600x400/FDE6E2/9F9F9F?text=A+Arte+De+Inovar+Com+Confiança
+    short_description: Autem ex eos reiciendis ratione modi possimus eos.
+  en-us:
+    event_edition: Edition 3
+    cost: R$266,00
+    banner_link: https://placehold.co/600x400/FDE6E2/9F9F9F?text=A+Arte+De+Inovar+Com+Confiança
+    short_description: Harum recusandae harum esse corrupti dolorum culpa mollitia
+      ducimus accusantium quaerat iusto hic.
