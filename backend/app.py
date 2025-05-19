@@ -13,6 +13,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from pydantic import BaseModel, Field
 from flask_openapi3 import OpenAPI, Info, Tag
 
+from constants import LOGGER_FORMAT
 from services.version_db import run_db_versioning_job
 from services.db import create_table, insert_event, list_all_events, query_events
 
@@ -24,8 +25,9 @@ CORS(app)
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
+    format=LOGGER_FORMAT,
 )
+logger = logging.getLogger(__name__)
 
 # API Tags
 event_tag = Tag(name="events", description="Operations related to events")
@@ -43,11 +45,11 @@ scheduler.start()
 
 def initial_data_load():
     create_table()
-    print("[DB] Tabela de eventos criada (se não existir)")
+    logger.info("[DB] Tabela de eventos criada (se não existir)")
 
     existing = list_all_events()
     if existing:
-        print(
+        logger.info(
             f"[DB] Já existem {len(existing)} eventos no banco — pulando carga inicial"
         )
         return
@@ -57,7 +59,9 @@ def initial_data_load():
     events_dir = os.path.join(parent_dir, EVENTS_FOLDER_NAME)
 
     if not os.path.isdir(events_dir):
-        print(f"[DB] Pasta '{EVENTS_FOLDER_NAME}' não encontrada em: {events_dir}")
+        logger.error(
+            f"[DB] Pasta '{EVENTS_FOLDER_NAME}' não encontrada em: {events_dir}"
+        )
         return
 
     for filename in os.listdir(events_dir):
@@ -67,11 +71,13 @@ def initial_data_load():
                 try:
                     event_data = yaml.safe_load(f)
                     insert_event(event_data)
-                    print(f"[DB] Evento inserido: {event_data.get('id', 'sem ID')}")
+                    logger.info(
+                        f"[DB] Evento inserido: {event_data.get('id', 'sem ID')}"
+                    )
                 except yaml.YAMLError as e:
-                    print(f"[DB] Erro lendo {filename}: {e}")
+                    logger.error(f"[DB] Erro lendo {filename}: {e}")
 
-    print(f"[DB] Carga inicial concluída: {datetime.now()}")
+    logger.info(f"[DB] Carga inicial concluída: {datetime.now()}")
 
 
 class EventQuery(BaseModel):

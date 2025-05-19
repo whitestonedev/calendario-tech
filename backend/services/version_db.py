@@ -1,3 +1,4 @@
+import logging
 import os
 import hashlib
 import base64
@@ -6,6 +7,8 @@ from github import Github
 from dotenv import load_dotenv
 from datetime import datetime
 
+from constants import LOGGER_FORMAT
+
 load_dotenv()
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 REPO = "whitestonedev/calendario-tech"
@@ -13,6 +16,12 @@ BRANCH_BASE = "main"
 REPO_DB_PATH = "backend/events.sqlite3"
 PR_TITLE_TAG = "[db-sync]"
 
+
+logging.basicConfig(
+    level=logging.INFO,
+    format=LOGGER_FORMAT,
+)
+logger = logging.getLogger(__name__)
 # Add support for Render, local and docker
 CANDIDATE_LOCAL_PATHS = [
     os.path.join(os.getcwd(), "backend", "events.sqlite3"),
@@ -37,7 +46,7 @@ def get_remote_db_sha_and_hash() -> tuple[str, str] | None:
     headers = {"Authorization": f"token {GITHUB_TOKEN}"}
     r = requests.get(url, headers=headers)
     if r.status_code != 200:
-        print("[version_db] Falha ao buscar o arquivo remoto:", r.text)
+        logger.error("[version_db] Falha ao buscar o arquivo remoto:", r.text)
         return None
     data = r.json()
     content = base64.b64decode(data["content"])
@@ -50,7 +59,7 @@ def check_if_pr_already_exists(repo, tag_prefix: str, branch_base: str) -> bool:
     pulls = repo.get_pulls(state="open", base=branch_base)
     for pr in pulls:
         if pr.title.startswith(tag_prefix):
-            print(f"[version_db] PR já existente detectado: {pr.title}")
+            logger.info(f"[version_db] PR já existente detectado: {pr.title}")
             return True
     return False
 
@@ -65,7 +74,9 @@ def open_db_update_pr():
     repo = gh.get_repo(REPO)
 
     if check_if_pr_already_exists(repo, PR_TITLE_TAG, BRANCH_BASE):
-        print("[version_db] PR automático já existe. Abortando criação de novo PR.")
+        logger.warning(
+            "[version_db] PR automático já existe. Abortando criação de novo PR."
+        )
         return
 
     main_ref = repo.get_branch(BRANCH_BASE)
@@ -99,27 +110,27 @@ Este PR foi gerado por um processo em background para versionar alterações det
         head=new_branch,
         base=BRANCH_BASE,
     )
-    print(f"[version_db] PR criada: {pr.html_url}")
+    logger.info(f"[version_db] PR criada: {pr.html_url}")
 
 
 def run_db_versioning_job():
-    print("[version_db] Verificando alterações no banco...")
+    logger.info("[version_db] Verificando alterações no banco...")
     if not GITHUB_TOKEN:
         raise RuntimeError("GITHUB_TOKEN não encontrado nas variáveis de ambiente")
 
     remote = get_remote_db_sha_and_hash()
     if remote is None:
-        print("[version_db] Não foi possível comparar com o arquivo remoto.")
+        logger.error("[version_db] Não foi possível comparar com o arquivo remoto.")
         return
 
     _, remote_hash = remote
     local_hash = hash_file(LOCAL_DB_PATH)
 
     if remote_hash != local_hash:
-        print("[version_db] Banco de dados foi modificado. Criando PR...")
+        logger.info("[version_db] Banco de dados foi modificado. Criando PR...")
         open_db_update_pr()
     else:
-        print("[version_db] Nenhuma modificação detectada.")
+        logger.info("[version_db] Nenhuma modificação detectada.")
 
 
 if __name__ == "__main__":
