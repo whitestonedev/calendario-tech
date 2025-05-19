@@ -29,7 +29,7 @@ CANDIDATE_LOCAL_PATHS = [
 ]
 LOCAL_DB_PATH = next((p for p in CANDIDATE_LOCAL_PATHS if os.path.isfile(p)), None)
 if LOCAL_DB_PATH is None:
-    raise FileNotFoundError(
+    logger.error(
         "Arquivo events.sqlite3 não encontrado em nenhum dos caminhos conhecidos."
     )
 
@@ -114,6 +114,10 @@ Este PR foi gerado por um processo em background para versionar alterações det
 
 
 def run_db_versioning_job():
+    if os.getenv("DEBUG", "False") == "True":
+        logger.info("[version_db] DEBUG=True, não executando o job de versionamento do banco.")
+        return
+
     logger.info("[version_db] Verificando alterações no banco...")
     if not GITHUB_TOKEN:
         raise RuntimeError("GITHUB_TOKEN não encontrado nas variáveis de ambiente")

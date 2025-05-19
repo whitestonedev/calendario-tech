@@ -3,7 +3,7 @@ import sqlite3
 from pathlib import Path
 
 # Salva em backend/events.sqlite3
-DB_PATH = Path(__file__).parent / "events.sqlite3"
+DB_PATH = Path(__file__).parent.parent / "events.sqlite3"
 DB_PATH.parent.mkdir(exist_ok=True)
 
 
