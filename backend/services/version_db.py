@@ -115,7 +115,9 @@ Este PR foi gerado por um processo em background para versionar alterações det
 
 def run_db_versioning_job():
     if os.getenv("DEBUG", "False") == "True":
-        logger.info("[version_db] DEBUG=True, não executando o job de versionamento do banco.")
+        logger.info(
+            "[version_db] DEBUG=True, não executando o job de versionamento do banco."
+        )
         return
 
     logger.info("[version_db] Verificando alterações no banco...")
