@@ -7,13 +7,13 @@ import mistune
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask_migrate import Migrate
 
-from models import db
+from src.models import db
 
 from flask_openapi3 import OpenAPI, Info
 
-from constants import LOGGER_FORMAT, README_FILE
-from routes.events import event_bp
-from services.version_db import run_db_versioning_job
+from src.constants import LOGGER_FORMAT, README_FILE
+from src.routes.events import event_bp
+from src.services.version_db import run_db_versioning_job
 
 
 DB_PATH = Path(__file__).parent / "events.sqlite3"

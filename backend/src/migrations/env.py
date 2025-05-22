@@ -7,7 +7,7 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
-from models import db
+from src.models import db
 
 config = context.config
 fileConfig(config.config_file_name)

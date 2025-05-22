@@ -7,7 +7,7 @@ from github import Github
 from dotenv import load_dotenv
 from datetime import datetime
 
-from constants import LOGGER_FORMAT
+from src.constants import LOGGER_FORMAT
 
 load_dotenv()
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
