@@ -148,7 +148,7 @@ def filter_events(filters: EventQuery):
 def get_events(query: EventQuery):
     events = filter_events(query)
     print(events)
-    return events
+    return jsonify(events), 200
 
 
 @event_bp.post(
