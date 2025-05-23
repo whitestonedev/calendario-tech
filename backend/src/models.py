@@ -1,6 +1,15 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Enum
+
+import enum
 
 db = SQLAlchemy()
+
+
+class EventStatus(enum.Enum):
+    requested = "requested"
+    approved = "approved"
+    declined = "declined"
 
 
 class Event(db.Model):
@@ -16,8 +25,39 @@ class Event(db.Model):
     online = db.Column(db.Boolean, default=False)
     event_link = db.Column(db.String)
 
+    status = db.Column(
+        Enum(EventStatus, name="event_status"),
+        nullable=False,
+        default=EventStatus.requested,
+    )
+
     intl = db.relationship("EventIntl", backref="event", cascade="all, delete")
     tags = db.relationship("Tag", secondary="event_tags", back_populates="events")
+
+    @property
+    def serialized(self):
+        return {
+            "id": self.id,
+            "organization_name": self.organization_name,
+            "event_name": self.event_name,
+            "start_datetime": self.start_datetime.isoformat(),
+            "end_datetime": self.end_datetime.isoformat(),
+            "address": self.address,
+            "maps_link": self.maps_link,
+            "online": self.online,
+            "event_link": self.event_link,
+            "status": self.status.value,
+            "tags": [t.name for t in self.tags],
+            "intl": {
+                intl.lang: {
+                    "event_edition": intl.event_edition,
+                    "cost": intl.cost,
+                    "banner_link": intl.banner_link,
+                    "short_description": intl.short_description,
+                }
+                for intl in self.intl
+            },
+        }
 
 
 class EventIntl(db.Model):
