@@ -114,47 +114,52 @@ def update_event(event_id: int, event_data: EventUpdate) -> Event:
     return event
 
 
-def get_events(filters: EventQuery, only_approved: bool = True) -> list[dict]:
+def get_events(filters: EventQuery = None, status: EventStatus = None) -> list[dict]:
     """
     Retrieve a list of events based on the provided filters.
 
     Args:
-        filters (EventQuery): An object containing filtering criteria such as tags,
-                                event name, organization, online status, address,
-                                and date ranges.
-        only_approved (bool): If True, only approved events will be returned.
+        filters (EventQuery | None): Optional filtering criteria such as tags,
+                                        event name, organization, online status,
+                                        address, and date ranges.
+        status (EventStatus | None): Optional status to filter events by.
 
     Returns:
         list[dict]: A list of serialized event objects that match the filters.
     """
     query = Event.query
 
-    if only_approved:
+    if status:
+        query = query.filter(Event.status == status)
+    else:
         query = query.filter(Event.status == EventStatus.approved)
 
-    if filters.parsed_tags:
-        query = query.join(Event.tags).filter(TagModel.name.in_(filters.parsed_tags))
+    if filters:
+        if filters.parsed_tags:
+            query = query.join(Event.tags).filter(
+                TagModel.name.in_(filters.parsed_tags)
+            )
 
-    if filters.name:
-        query = query.filter(Event.event_name.ilike(f"%{filters.name}%"))
+        if filters.name:
+            query = query.filter(Event.event_name.ilike(f"%{filters.name}%"))
 
-    if filters.org:
-        query = query.filter(Event.organization_name.ilike(f"%{filters.org}%"))
+        if filters.org:
+            query = query.filter(Event.organization_name.ilike(f"%{filters.org}%"))
 
-    if filters.online is not None:
-        query = query.filter(Event.online == filters.online)
+        if filters.online is not None:
+            query = query.filter(Event.online == filters.online)
 
-    if filters.address:
-        query = query.filter(Event.address.ilike(f"%{filters.address}%"))
+        if filters.address:
+            query = query.filter(Event.address.ilike(f"%{filters.address}%"))
 
-    if filters.date_from:
-        query = query.filter(Event.start_datetime >= filters.date_from)
+        if filters.date_from:
+            query = query.filter(Event.start_datetime >= filters.date_from)
 
-    if filters.date_start_range and filters.date_end_range:
-        query = query.filter(
-            Event.start_datetime >= filters.date_start_range,
-            Event.end_datetime <= filters.date_end_range,
-        )
+        if filters.date_start_range and filters.date_end_range:
+            query = query.filter(
+                Event.start_datetime >= filters.date_start_range,
+                Event.end_datetime <= filters.date_end_range,
+            )
 
     return [e.serialized for e in query.all()]
 
