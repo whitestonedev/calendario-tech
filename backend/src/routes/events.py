@@ -68,7 +68,7 @@ def get_event(path: EventPath):
 def create_event(body: EventIn):
     is_valid_credentials = check_credentials()
     if is_valid_credentials:
-        return is_valid_credentials, 401
+        return is_valid_credentials
 
     event_data = body.model_dump()
 
@@ -88,7 +88,7 @@ def create_event(body: EventIn):
 def delete_event(path: EventPath):
     is_valid_credentials = check_credentials()
     if is_valid_credentials:
-        return is_valid_credentials, 401
+        return is_valid_credentials
 
     try:
         delete_event_service(path.event_id)
@@ -105,7 +105,7 @@ def delete_event(path: EventPath):
 def update_event(event_id: int, event_data: EventUpdate):
     is_valid_credentials = check_credentials()
     if is_valid_credentials:
-        return is_valid_credentials, 401
+        return is_valid_credentials
 
     event = update_event_service(event_id, event_data)
 
@@ -122,7 +122,7 @@ def update_event(event_id: int, event_data: EventUpdate):
 def get_pending_events():
     is_valid_credentials = check_credentials()
     if is_valid_credentials:
-        return is_valid_credentials, 401
+        return is_valid_credentials
 
     try:
         events = get_events_service(status=EventStatus.requested)
@@ -142,7 +142,7 @@ def get_pending_events():
 def manage_submitted_update_event(path: EventPath, body: ManageSubmittedEventBody):
     is_valid_credentials = check_credentials()
     if is_valid_credentials:
-        return is_valid_credentials, 401
+        return is_valid_credentials
     try:
         event = get_event_service(path.event_id)
 
