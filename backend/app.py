@@ -1,7 +1,7 @@
 import logging
 from pathlib import Path
 
-from flask import render_template_string
+from flask import render_template_string, send_from_directory
 from flask_cors import CORS
 import mistune
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -147,6 +147,14 @@ def index():
             return render_template_string(html_with_style)
     except FileNotFoundError:
         return "README.md not found.", 404
+
+
+@app.route("/favicon.ico", methods=["GET"])
+def favicon():
+    """Serve the favicon.ico file."""
+    return send_from_directory(
+        "src", "favicon.ico", mimetype="image/vnd.microsoft.icon"
+    )
 
 
 @app.route("/health_check", methods=["GET"])
