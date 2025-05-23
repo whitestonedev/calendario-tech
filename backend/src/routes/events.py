@@ -60,20 +60,13 @@ def get_event(path: EventPath):
 
 
 @event_bp.post(
-    "/submit/",
+    "/submit",
     tags=[submission_tag],
     summary="Submit event for review",
-    security=[{"BearerAuth": []}],
 )
 def create_event(body: EventIn):
-    is_valid_credentials = check_credentials()
-    if is_valid_credentials:
-        return is_valid_credentials
-
-    event_data = body.model_dump()
-
     try:
-        event = submit_event(event_data)
+        event = submit_event(body)
     except DuplicateEventException as e:
         return jsonify({"error": str(e)}), 400
     return jsonify(event.serialized), 201
@@ -102,12 +95,12 @@ def delete_event(path: EventPath):
     tags=[review_tag],
     summary="Update event",
 )
-def update_event(event_id: int, event_data: EventUpdate):
+def update_event(path: EventPath, body: EventUpdate):
     is_valid_credentials = check_credentials()
     if is_valid_credentials:
         return is_valid_credentials
 
-    event = update_event_service(event_id, event_data)
+    event = update_event_service(path.event_id, body)
 
     return jsonify(event.serialized)
 

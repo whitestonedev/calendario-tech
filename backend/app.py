@@ -34,7 +34,7 @@ app = OpenAPI(
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH.resolve()}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 db.init_app(app)
 migrate = Migrate(app, db)
 

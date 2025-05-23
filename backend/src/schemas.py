@@ -70,6 +70,7 @@ class EventUpdate(BaseModel):
     event_link: Optional[str] = None
     tags: Optional[list[str]] = None
     intl: Optional[dict[str, IntlData]] = None
+    status: Optional[str] = None
 
 
 class SubmittedActions(enum.Enum):

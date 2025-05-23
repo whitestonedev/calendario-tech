@@ -42,26 +42,32 @@ def submit_event(data: EventIn) -> Event:
         event_link=data.event_link,
     )
 
-    with db.session.begin():
-        for tag_name in data.tags:
-            tag = TagModel.query.filter_by(name=tag_name).first()
-            if not tag:
-                tag = TagModel(name=tag_name)
-            event.tags.append(tag)
+    db.session.add(event)
 
-        for lang, intl in data.intl.items():
-            intl_obj = EventIntl(
-                lang=lang,
-                event_edition=intl.event_edition,
-                cost=intl.cost,
-                banner_link=intl.banner_link,
-                short_description=intl.short_description,
-            )
-            event.intl.append(intl_obj)
+    for tag_name in data.tags:
+        tag = TagModel.query.filter_by(name=tag_name).first()
+        if not tag:
+            tag = TagModel(name=tag_name)
+            db.session.add(tag)
+        event.tags.append(tag)
 
-        db.session.add(event)
+    for lang, intl in data.intl.items():
+        intl_obj = EventIntl(
+            lang=lang,
+            event_edition=intl.event_edition,
+            cost=intl.cost,
+            banner_link=intl.banner_link,
+            short_description=intl.short_description,
+        )
+        event.intl.append(intl_obj)
 
-    return event
+    db.session.commit()
+
+    return Event.query.filter_by(
+        organization_name=data.organization_name,
+        event_name=data.event_name,
+        start_datetime=data.start_datetime,
+    ).first()
 
 
 def update_event(event_id: int, event_data: EventUpdate) -> Event:
@@ -83,33 +89,41 @@ def update_event(event_id: int, event_data: EventUpdate) -> Event:
     if not event:
         raise EventNotFoundException(f"Event with ID {event_id} not found.")
 
-    with db.session.begin():
-        event.organization_name = event_data.organization_name
-        event.event_name = event_data.event_name
-        event.start_datetime = event_data.start_datetime
-        event.end_datetime = event_data.end_datetime
-        event.address = event_data.address
-        event.maps_link = event_data.maps_link
-        event.online = event_data.online
-        event.event_link = event_data.event_link
+    event.organization_name = event_data.organization_name
+    event.event_name = event_data.event_name
+    event.start_datetime = event_data.start_datetime
+    event.end_datetime = event_data.end_datetime
+    event.address = event_data.address
+    event.maps_link = event_data.maps_link
+    event.online = event_data.online
+    event.event_link = event_data.event_link
+    event.status = event_data.status
 
-        event.tags.clear()
-        for tag_name in event_data.tags:
-            tag = TagModel.query.filter_by(name=tag_name).first()
-            if not tag:
-                tag = TagModel(name=tag_name)
-            event.tags.append(tag)
+    event.tags.clear()
+    for tag_name in event_data.tags:
+        tag = TagModel.query.filter_by(name=tag_name).first()
+        if not tag:
+            tag = TagModel(name=tag_name)
+        event.tags.append(tag)
 
-        event.intl.clear()
-        for lang, intl in event_data.intl.items():
-            intl_obj = EventIntl(
-                lang=lang,
-                event_edition=intl.event_edition,
-                cost=intl.cost,
-                banner_link=intl.banner_link,
-                short_description=intl.short_description,
-            )
-            event.intl.append(intl_obj)
+    # Clear current intl safely
+    for intl in event.intl:
+        db.session.delete(intl)
+    event.intl = []
+
+    # Add new intl
+    for lang, intl in event_data.intl.items():
+        intl_obj = EventIntl(
+            lang=lang,
+            event_edition=intl.event_edition,
+            cost=intl.cost,
+            banner_link=intl.banner_link,
+            short_description=intl.short_description,
+        )
+        intl_obj.event = event
+        event.intl.append(intl_obj)
+
+    db.session.commit()
 
     return event
 
