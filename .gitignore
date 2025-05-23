@@ -9,6 +9,9 @@ backend/node_modules
 backend/dist
 *.vercel
 backend/.env
+__pycache__
+*/__pycache__/
+backend/__pycache__/
 
 # Logs
 logs

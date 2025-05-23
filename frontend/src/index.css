@@ -1,69 +1,118 @@
-@import 'react-big-calendar/lib/css/react-big-calendar.css'; /* Mova para cá! ANTES de @tailwind components e utilities */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.rbc-container {
-  @apply rounded-lg shadow-md bg-background-light dark:bg-background-dark border border-neutral-200 dark:border-neutral-700 overflow-hidden; /* Container geral arredondado, sombra, fundo e borda */
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 215 20.2% 65.1%;
+
+    --radius: 0.5rem;
+
+    /* Custom colors */
+    --tech-purple: 255 87 245;
+    --tech-blue: 37 99 235;
+    --tech-green: 22 163 74;
+    --tech-dark: 31 41 55;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+
+    --ring: 217.2 32.6% 17.5%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
 }
 
-/* Estilos para atoolbar (navegação do calendário - mês, ano, botões) */
-.rbc-toolbar {
-  @apply flex justify-between items-center p-4 bg-neutral-100 dark:bg-neutral-800 border-b border-neutral-200 dark:border-neutral-700;
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .calendar-container :has([aria-selected]) {
+    background-color: transparent !important;
+  }
 }
 
-.rbc-toolbar-label {
-  @apply text-xl font-semibold text-text-primary dark:text-text-light; /* Título do mês/ano maior e cor primária */
+/* Calendar styling */
+.calendar-container {
+  @apply bg-white rounded-lg shadow-lg p-4;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
 }
 
-.rbc-btn-group button {
-  @apply bg-transparent hover:bg-neutral-200 dark:hover:bg-neutral-700 text-text-primary dark:text-text-light font-medium py-2 px-4 rounded-md transition-colors duration-200; /* Botões da toolbar transparentes com hover sutil e cor primária */
+.calendar-day {
+  @apply relative flex items-center justify-center h-10 w-10 p-0 font-medium text-sm rounded-full;
 }
 
-.rbc-btn-group button:focus {
-  @apply outline-none ring-2 ring-primary-500 dark:ring-accent-500; /* Foco com anel de cor primária/acento */
+.calendar-day.has-event::after {
+  content: "";
+  @apply absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[rgb(var(--tech-purple))];
 }
 
-/* Estilos para o header da semana (dias da semana - Dom, Seg, Ter...) */
-.rbc-header {
-  @apply text-sm font-medium text-neutral-500 dark:text-neutral-400 py-2 border-b border-neutral-200 dark:border-neutral-700 text-center; /* Header da semana mais sutil */
+.calendar-day.today:not(.selected) {
+  @apply bg-[rgb(var(--tech-purple)/0.1)] text-[rgb(var(--tech-purple))];
 }
 
-/* Estilos para as células dos dias */
-.rbc-date-cell {
-  @apply p-1 text-sm text-text-primary dark:text-text-light border-r border-b border-neutral-200 dark:border-neutral-700; /* Células dos dias com bordas discretas */
-}
-
-.rbc-date-cell.rbc-now {
-  @apply bg-accent-100 dark:bg-accent-700; /* Dia atual com background de cor de acento sutil */
-}
-
-.rbc-date-cell.rbc-off-range {
-  @apply text-neutral-400 dark:text-neutral-500 bg-neutral-100 dark:bg-neutral-900; /* Dias fora do range do mês com cor e background mais sutis */
-}
-
-/* Estilos para eventos */
-.rbc-event {
-  @apply rounded-md shadow-sm bg-primary-500 text-white text-sm font-medium py-1 px-2 overflow-hidden whitespace-nowrap text-ellipsis; /* Eventos com fundo primário, texto branco, arredondados e com sombra */
-  /* Pode adicionar estilos de hover para eventos se desejar */
-}
-
-.rbc-event-label,
-.rbc-row-segment {
-  /* Ajuste para rótulos de eventos e segmentos de linha */
-  @apply overflow-hidden whitespace-nowrap text-ellipsis; /* Garante que os rótulos e segmentos não quebrem o layout */
-}
-
-/* Estilos para o corpo do calendário (onde os dias são exibidos) */
-.rbc-month-view {
-  @apply border-none; /* Remove a borda padrão do corpo do calendário se houver */
-}
-
-.rbc-row-content {
-  @apply h-full; /* Garante que as linhas de conteúdo preencham a altura das células */
-}
-
-.rbc-day-bg {
-  @apply h-full; /* Garante que o background dos dias preencha a altura das células */
+.calendar-day.selected {
+  @apply bg-[rgb(var(--tech-purple))] text-white;
 }
