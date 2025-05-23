@@ -7,20 +7,30 @@ import mistune
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask_migrate import Migrate
 
-from models import db
+from src.models import db
 
 from flask_openapi3 import OpenAPI, Info
 
-from constants import LOGGER_FORMAT, README_FILE
-from routes.events import event_bp
-from services.version_db import run_db_versioning_job
+from src.constants import LOGGER_FORMAT, README_FILE
+from src.routes.events import event_bp
+from src.services.version_db import run_db_versioning_job
 
 
 DB_PATH = Path(__file__).parent / "events.sqlite3"
 
 
 info = Info(title="Events API", version="1.0.0")
-app = OpenAPI(__name__, info=info)
+app = OpenAPI(
+    __name__,
+    info=info,
+    security_schemes={
+        "BearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT",
+        }
+    },
+)
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH.resolve()}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 

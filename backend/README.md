@@ -16,18 +16,15 @@ Este projeto consiste em uma API RESTful construída com Flask que fornece dados
         * [Exemplos de Requisição](#exemplos-de-requisição)
 5.  [Documentação da API (OpenAPI - Scalar)](#documentação-da-api-openapi---scalar)
 6.  [Página Inicial com README Estilizado](#página-inicial-com-readme-estilizado)
-7.  [Estrutura dos Arquivos YAML de Eventos](#estrutura-dos-arquivos-yaml-de-eventos)
-    * [Exemplo de Arquivo YAML](#exemplo-de-arquivo-yaml)
 8.  [Próximos Passos e Contribuições](#próximos-passos-e-contribuições)
 
 ## Visão Geral
 
-Esta API foi desenvolvida para agregar e fornecer informações sobre eventos a partir de arquivos YAML localizados na pasta `events` **(um nível acima da pasta `backend`)**. Ela oferece um endpoint principal que retorna uma lista de eventos em formato JSON, com a capacidade de filtrar esses eventos utilizando vários parâmetros de consulta.  A API também se destaca por apresentar:
+Esta API foi desenvolvida para agregar e fornecer informações sobre eventos. Ela oferece um endpoint principal que retorna uma lista de eventos em formato JSON, com a capacidade de filtrar esses eventos utilizando vários parâmetros de consulta.  A API também se destaca por apresentar:
 
   * **Página Inicial Estilizada:** A URL raiz (`/`) renderiza este `README.md` formatado com um tema escuro elegante, proporcionando uma apresentação visualmente agradável e um ponto de acesso central para a documentação.
   * **Documentação Interativa OpenAPI (Scalar):** Utilizando `flask-openapi3`, a API gera automaticamente documentação interativa e completa no padrão OpenAPI (Scalar), acessível através do endpoint `/openapi/scalar`. Isso facilita a exploração dos endpoints, parâmetros e modelos de dados da API.
   * **Filtragem Robusta:** Permite filtrar eventos por tags, nome, organização, tipo (online/presencial), faixa de preço, endereço e datas, com a possibilidade de combinar múltiplos filtros para buscas precisas.
-  * **Dados em YAML com Recarregamento Automático:** Os dados dos eventos são armazenados em arquivos YAML simples e fáceis de editar, localizados na pasta `events` **(um nível acima do backend)**. A API recarrega automaticamente os dados dos eventos periodicamente, sem necessidade de reiniciar o servidor, garantindo que as informações estejam sempre atualizadas.
 
 ## Demonstração
 
@@ -137,36 +134,6 @@ Se você não tiver o Python instalado, você pode baixá-lo em https://www.pyth
     gunicorn # Adicionado Gunicorn à lista de dependências
     ```
 
-### Configuração
-
-1.  **Pasta `events`:**
-
-    Certifique-se de que a pasta `events` exista **um nível acima** do diretório `backend` do projeto. Esta pasta é onde a API busca os arquivos YAML contendo os dados dos eventos. **(Corrigido o nome da pasta e a localização)**
-
-2.  **Arquivos YAML:**
-
-    Dentro da pasta `events`, adicione arquivos YAML (`.yml` ou `.yaml`) seguindo a estrutura definida. Cada arquivo YAML representará um evento. Você pode criar arquivos de exemplo como `evento1.yml`, `evento2.yml`, etc., com os dados dos eventos. Consulte a seção [Estrutura dos Arquivos YAML de Eventos](https://www.google.com/url?sa=E&source=gmail&q=#estrutura-dos-arquivos-yaml-de-eventos) para mais detalhes sobre a estrutura esperada.
-
-3.  **Arquivo `README.md`:**
-
-    Certifique-se de que o arquivo `README.md` esteja presente no diretório raiz do projeto, **na pasta `backend`**. Este arquivo será renderizado na página inicial da API (`/`). **(Corrigido para refletir a localização do README dentro de `backend`)**
-
-4.  **Arquivo `gunicorn.conf.py` (Opcional - para produção):**
-
-    Para executar a API em um ambiente de produção, você pode configurar o Gunicorn. Crie um arquivo chamado `gunicorn.conf.py` no diretório raiz do projeto (`backend`) com as configurações do Gunicorn (exemplo abaixo). **(Adicionada menção e exemplo de configuração do Gunicorn)**
-
-    ```python
-    # gunicorn.conf.py
-    import os
-
-    def num_cores():
-        return os.cpu_count()
-
-    bind = "0.0.0.0:8000" # Endereço e porta que o Gunicorn vai usar
-    workers = num_cores()  # Número de workers (padrão: número de cores da CPU)
-    timeout = 120          # Timeout em segundos
-    ```
-
 ### Executando a API
 
 Para iniciar o servidor Flask da API, abra o terminal no diretório raiz do projeto **(`backend` folder)** (onde o arquivo `app.py` e `gunicorn.conf.py` estão localizados) e execute o seguinte comando **para usar Gunicorn em produção (ou simular produção)**: **(Comando de execução atualizado para Gunicorn)**
@@ -191,6 +158,34 @@ Você deverá ver uma saída no terminal indicando que o servidor Gunicorn/Flask
 Abra um navegador web e acesse o endereço `http://localhost:8000` ou `http://127.0.0.1:8000` (dependendo da configuração do `bind` no `gunicorn.conf.py`) para visualizar a página inicial com o README estilizado e o link para a documentação.  Se estiver usando `python app.py`, acesse `http://127.0.0.1:5000`.
 
 </details>
+
+### 📦 Banco de Dados Versionado
+
+* O banco de dados SQLite (`events.sqlite3`) está incluso no repositório. Isso permite que qualquer pessoa clone e tenha acesso imediato aos eventos cadastrados.
+* Todo versionamento de schema é feito através do **Alembic**, que está configurado no projeto.
+
+#### ⚙️ Como rodar migrações Alembic
+
+1. Criar uma nova revisão (quando modificar models):
+
+```bash
+alembic revision --autogenerate -m "Mensagem da revisão"
+```
+
+2. Aplicar a migração:
+
+```bash
+alembic upgrade head
+```
+
+3. Verificar status das migrações:
+
+```bash
+alembic current
+```
+
+> 🔥 Isso garante que o arquivo `events.sqlite3` esteja sempre sincronizado com o schema do projeto. Você pode commitar o banco junto no git normalmente.
+
 
 ## Endpoints da API
 
@@ -281,65 +276,12 @@ Esta página inicial estilizada serve como um ponto de entrada amigável para a 
 
 *Página inicial da API (`/`) com README.md estilizado em tema escuro e link de fácil acesso para a documentação Scalar.*
 
-## Estrutura dos Arquivos YAML de Eventos
-
-Os arquivos YAML dentro da pasta `events` **(um nível acima da pasta `backend`)** devem seguir a seguinte estrutura para que a API possa ler e interpretar os dados corretamente. **(Corrigido para o nome da pasta 'events' e localização)**
-
-Cada arquivo YAML deve conter as seguintes chaves no nível raiz:
-
-  * `organization_name`: Nome da organização que promove o evento (String).
-  * `event_name`: Nome do evento (String).
-  * `start_datetime`: Data e hora de início do evento no formato ISO 8601 (ex: `2025-04-10T10:00:00`).
-  * `end_datetime`: Data e hora de término do evento no formato ISO 8601 (ex: `2025-04-10T18:00:00`).
-  * `address`: Endereço do evento (String).
-  * `maps_link`: Link para o Google Maps do local do evento (String, opcional).
-  * `online`: Indica se o evento é online (`true`) ou presencial (`false`) (Booleano).
-  * `event_link`: Link para a página do evento (String, opcional).
-  * `tags`: Lista de tags relacionadas ao evento (Array de Strings).
-  * `intl`: Informações internacionalizadas do evento, contendo:
-      * `pt-br`: Informações em Português do Brasil:
-          * `event_edition`: Edição do evento (String).
-          * `cost`: Custo do evento (String, ex: `Grátis`, `R$20`).
-          * `banner_link`: Link para o banner do evento (String, opcional).
-          * `short_description`: Descrição curta do evento (String).
-      * `en-us`: Informações em Inglês dos Estados Unidos (estrutura similar ao `pt-br`).
-
-#### Exemplo de Arquivo YAML
-
-```yaml
-organization_name: 'TechCorp'
-event_name: 'Python para Iniciantes'
-start_datetime: '2025-04-10T10:00:00'
-end_datetime: '2025-04-10T18:00:00'
-address: 'Avenida Paulista, 123, São Paulo, Brasil'
-maps_link: '[https://maps.google.com/?q=Avenida+Paulista+123+Sao+Paulo](https://maps.google.com/?q=Avenida+Paulista+123+Sao+Paulo)'
-online: false
-event_link: '[https://techcorp.com/python-iniciantes](https://techcorp.com/python-iniciantes)'
-tags:
-    - 'python'
-    - 'iniciantes'
-    - 'presencial'
-intl:
-    pt-br:
-        event_edition: 'Edição 2025'
-        cost: 'Grátis'
-        banner_link: '[https://techcorp.com/banner-python.png](https://techcorp.com/banner-python.png)'
-        short_description: 'Workshop introdutório de Python para quem nunca programou.'
-    en-us:
-        event_edition: '2025 Edition'
-        cost: 'Free'
-        banner_link: '[https://techcorp.com/banner-python-en.png](https://techcorp.com/banner-python-en.png)'
-        short_description: 'Introductory Python workshop for beginners.'
-```
 
 ## Próximos Passos e Contribuições
 
 Este projeto é um ponto de partida para uma API de eventos ainda mais completa e robusta. Considere os seguintes próximos passos e contribuições para aprimorá-la:
 
-  * **Validação de Dados Aprimorada:** Implementar validações mais rigorosas para os dados nos arquivos YAML, garantindo a consistência e integridade dos dados da API. Isso pode incluir validação de tipos de dados, formatos de data/hora, presença de campos obrigatórios, etc.
   * **Paginação:** Adicionar paginação à resposta do endpoint `/events`. Isso é crucial para APIs que podem retornar um grande número de resultados, permitindo que os resultados sejam divididos em páginas para melhorar o desempenho e a usabilidade.
   * **Sistema de Cache:** Integrar um mecanismo de cache (como Redis ou Memcached) para armazenar em cache os resultados de consultas frequentes. Isso pode reduzir drasticamente a carga no servidor e melhorar os tempos de resposta da API, especialmente sob alta demanda.
   * **Testes Unitários e de Integração:** Desenvolver testes unitários para as funções de filtragem e outros componentes lógicos da API, bem como testes de integração para garantir que todos os componentes funcionem corretamente em conjunto. Testes são essenciais para manter a qualidade do código e facilitar futuras modificações e expansões.
-  * **Suporte a Mais Idiomas:** Expandir o suporte para internacionalização para incluir mais idiomas além de `pt-br` e `en-us`. Isso envolveria adicionar mais seções `intl` nos arquivos YAML e possivelmente ajustar a API para selecionar a informação de idioma correta com base em preferências do usuário (e.g., headers de `Accept-Language`).
-
 Contribuições para este projeto são sempre bem-vindas\! Sinta-se à vontade para abrir *issues* para reportar problemas ou sugerir melhorias, e *pull requests* com suas implementações e correções.
