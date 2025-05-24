@@ -116,3 +116,17 @@
 .calendar-day.selected {
   @apply bg-[rgb(var(--tech-purple))] text-white;
 }
+
+.has-event::after {
+  content: "";
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #9e79f5;
+  position: absolute;
+  left: 50%;
+  bottom: 5px;
+  transform: translateX(-50%);
+  z-index: 1;
+}

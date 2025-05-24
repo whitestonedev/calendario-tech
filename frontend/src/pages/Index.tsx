@@ -9,9 +9,11 @@ import SubmitEventDialog from "@/components/SubmitEventDialog";
 import { CalendarDays } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { useEventApi } from "@/hooks/useEventApi";
+import { DateRange } from "react-day-picker";
 
 const Index = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [clearCalendarSelection, setClearCalendarSelection] = useState(false);
   const [filters, setFilters] = useState<FilterState>({
     search: "",
     location: "",
@@ -26,7 +28,6 @@ const Index = () => {
 
   const { t, language } = useLanguage();
 
-  // Use our new API hook
   const {
     events,
     filteredEvents: apiFilteredEvents,
@@ -131,6 +132,14 @@ const Index = () => {
     setSelectedDate(date);
   };
 
+  const handleRangeSelect = (range: DateRange | undefined) => {
+    setFilters((prev) => ({
+      ...prev,
+      startDate: range?.from,
+      endDate: range?.to,
+    }));
+  };
+
   const handleFilterChange = (newFilters: FilterState) => {
     setFilters(newFilters);
     // Sync the search filter with the API search term
@@ -149,6 +158,14 @@ const Index = () => {
 
   const clearDateFilter = () => {
     setSelectedDate(undefined);
+    setFilters((prev) => ({
+      ...prev,
+      startDate: undefined,
+      endDate: undefined,
+    }));
+    setClearCalendarSelection(true);
+    // Reset the clear flag after a short delay
+    setTimeout(() => setClearCalendarSelection(false), 100);
   };
 
   const renderContent = () => {
@@ -239,15 +256,14 @@ const Index = () => {
       </section>
 
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
-        <div className="lg:col-span-4 flex justify-center">
-          <div className="w-full">
+        <div className="lg:col-span-4">
+          <div className="sticky top-4">
             <TechCalendar
-              events={eventsSource}
-              onDateSelect={handleDateSelect}
-              searchTerm={searchTerm}
-              onSearchChange={handleSearchChange}
+              events={events}
+              onRangeSelect={handleRangeSelect}
+              clearSelection={clearCalendarSelection}
             />
-            {selectedDate && (
+            {(selectedDate || filters.startDate || filters.endDate) && (
               <Button
                 variant="ghost"
                 size="sm"

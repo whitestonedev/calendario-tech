@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import animate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
@@ -66,7 +67,11 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         tech: {
-          purple: "#8B5CF6",
+          purple: {
+            DEFAULT: "#8B5CF6",
+            light: "#D6BCFA",
+            dark: "#6D28D9",
+          },
           blue: "#3B82F6",
           green: "#10B981",
           dark: "#1F2937",
@@ -107,5 +112,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [animate],
 } satisfies Config;
