@@ -52,7 +52,7 @@ def get_events(query: EventQuery):
 @event_bp.get(
     "/<int:event_id>",
     tags=[public_tag],
-    summary="Retrieve events",
+    summary="Retrieve event",
 )
 def get_event(path: EventPath):
     event = get_event_service(path.event_id)
