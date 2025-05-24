@@ -1,17 +1,15 @@
-
-import React from "react";  // Add explicit React import
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./context/LanguageContext";
 import Layout from "./components/Layout";
 import Index from "./pages/Index";
 import Contribute from "./pages/Contribute";
 import NotFound from "./pages/NotFound";
 
-// Create a new QueryClient instance outside the component
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -20,7 +18,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        <HashRouter>
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<Index />} />
@@ -28,7 +26,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
       </TooltipProvider>
     </LanguageProvider>
   </QueryClientProvider>
