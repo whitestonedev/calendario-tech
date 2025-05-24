@@ -18,6 +18,10 @@ const Index = () => {
     eventType: "all",
     selectedTags: [],
     showFree: false,
+    startDate: undefined,
+    endDate: undefined,
+    organization: "",
+    cost: "all",
   });
 
   const { t, language } = useLanguage();
@@ -52,6 +56,7 @@ const Index = () => {
     return filtered
       .filter((event) => {
         const eventDate = parseISO(event.start_datetime);
+        const eventEndDate = parseISO(event.end_datetime);
 
         // Get the first available translation as fallback
         const firstAvailableTranslation = Object.values(event.intl)[0];
@@ -63,8 +68,16 @@ const Index = () => {
 
         const isPaid = /\d/.test(translation.cost);
 
+        // Filter by selected date
         if (selectedDate && !isSameDay(eventDate, selectedDate)) return false;
 
+        // Filter by start date
+        if (filters.startDate && eventDate < filters.startDate) return false;
+
+        // Filter by end date
+        if (filters.endDate && eventEndDate > filters.endDate) return false;
+
+        // Filter by location
         if (
           filters.location &&
           !event.address.toLowerCase().includes(filters.location.toLowerCase())
@@ -72,9 +85,21 @@ const Index = () => {
           return false;
         }
 
+        // Filter by organization
+        if (
+          filters.organization &&
+          !event.organization_name
+            .toLowerCase()
+            .includes(filters.organization.toLowerCase())
+        ) {
+          return false;
+        }
+
+        // Filter by event type
         if (filters.eventType === "online" && !event.online) return false;
         if (filters.eventType === "in-person" && event.online) return false;
 
+        // Filter by tags
         if (
           filters.selectedTags.length > 0 &&
           !filters.selectedTags.some((tag) => event.tags.includes(tag))
@@ -82,10 +107,9 @@ const Index = () => {
           return false;
         }
 
-        // Filter by free event
-        if (filters.showFree && isPaid) {
-          return false;
-        }
+        // Filter by cost
+        if (filters.cost === "free" && isPaid) return false;
+        if (filters.cost === "paid" && !isPaid) return false;
 
         return true;
       })
@@ -163,6 +187,10 @@ const Index = () => {
                 eventType: "all",
                 selectedTags: [],
                 showFree: false,
+                startDate: undefined,
+                endDate: undefined,
+                organization: "",
+                cost: "all",
               });
               setSelectedDate(undefined);
               setSearchTerm("");

@@ -12,6 +12,15 @@ import { Button } from "@/components/ui/button";
 import { Filter, X } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useLanguage } from "@/context/LanguageContext";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { CalendarIcon } from "lucide-react";
 
 interface EventFiltersProps {
   onFilterChange: (filters: FilterState) => void;
@@ -25,7 +34,11 @@ export interface FilterState {
   location: string;
   eventType: "all" | "online" | "in-person";
   selectedTags: string[];
-  showFree?: boolean;
+  showFree: boolean;
+  organization: string;
+  startDate: Date | undefined;
+  endDate: Date | undefined;
+  cost: "all" | "free" | "paid";
 }
 
 const EventFilters: React.FC<EventFiltersProps> = ({
@@ -40,6 +53,10 @@ const EventFilters: React.FC<EventFiltersProps> = ({
     eventType: "all",
     selectedTags: [],
     showFree: false,
+    organization: "",
+    startDate: undefined,
+    endDate: undefined,
+    cost: "all",
   });
 
   const [isExpanded, setIsExpanded] = React.useState(false);
@@ -69,12 +86,16 @@ const EventFilters: React.FC<EventFiltersProps> = ({
   };
 
   const handleClearFilters = () => {
-    const newFilters = {
+    const newFilters: FilterState = {
       search: "",
       location: "",
-      eventType: "all" as const,
+      eventType: "all",
       selectedTags: [],
       showFree: false,
+      organization: "",
+      startDate: undefined,
+      endDate: undefined,
+      cost: "all" as const,
     };
     setFilters(newFilters);
     onFilterChange(newFilters);
@@ -100,8 +121,11 @@ const EventFilters: React.FC<EventFiltersProps> = ({
 
       <div className="flex flex-col md:flex-row flex-wrap gap-3 md:items-center">
         <div className="flex-1 w-full">
+          <label className="text-sm font-medium mb-1 block">
+            {t("index.searchEvents")}
+          </label>
           <Input
-            placeholder={t("index.searchEvents")}
+            placeholder={t("index.searchEventsPlaceholder")}
             value={filters.search}
             onChange={(e) => handleFilterChange("search", e.target.value)}
             className="w-full"
@@ -109,6 +133,9 @@ const EventFilters: React.FC<EventFiltersProps> = ({
         </div>
 
         <div className="w-full md:w-48">
+          <label className="text-sm font-medium mb-1 block">
+            {t("index.eventType")}
+          </label>
           <Select
             value={filters.eventType}
             onValueChange={(value) => handleFilterChange("eventType", value)}
@@ -124,39 +151,122 @@ const EventFilters: React.FC<EventFiltersProps> = ({
           </Select>
         </div>
 
-        <div className="flex items-center min-h-[40px] space-x-2">
-          <Checkbox
-            id="showFree"
-            checked={filters.showFree ?? true}
-            onCheckedChange={(value) =>
-              handleFilterChange("showFree", Boolean(value))
-            }
-          />
-          <label
-            htmlFor="showFree"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            {t("index.onlyFree")}
+        <div className="w-full md:w-48">
+          <label className="text-sm font-medium mb-1 block">
+            {t("index.cost")}
           </label>
+          <Select
+            value={filters.cost}
+            onValueChange={(value) => handleFilterChange("cost", value)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder={t("index.cost")} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">{t("index.all")}</SelectItem>
+              <SelectItem value="free">{t("event.free")}</SelectItem>
+              <SelectItem value="paid">{t("index.paid")}</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
       {isExpanded && (
         <div className="mt-4 space-y-4">
-          <div>
-            <label
-              htmlFor="location"
-              className="text-sm font-medium mb-1 block"
-            >
-              {t("index.location")}
-            </label>
-            <Input
-              id="location"
-              placeholder={t("index.locationPlaceholder")}
-              value={filters.location}
-              onChange={(e) => handleFilterChange("location", e.target.value)}
-              className="w-full"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label
+                htmlFor="organization"
+                className="text-sm font-medium mb-1 block"
+              >
+                {t("index.organization")}
+              </label>
+              <Input
+                id="organization"
+                placeholder={t("index.organizationPlaceholder")}
+                value={filters.organization}
+                onChange={(e) =>
+                  handleFilterChange("organization", e.target.value)
+                }
+                className="w-full"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="location"
+                className="text-sm font-medium mb-1 block"
+              >
+                {t("index.location")}
+              </label>
+              <Input
+                id="location"
+                placeholder={t("index.locationPlaceholder")}
+                value={filters.location}
+                onChange={(e) => handleFilterChange("location", e.target.value)}
+                className="w-full"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-medium mb-1 block">
+                {t("index.startDate")}
+              </label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start text-left font-normal"
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {filters.startDate ? (
+                      format(filters.startDate, "PPP", { locale: ptBR })
+                    ) : (
+                      <span>{t("index.selectDate")}</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={filters.startDate}
+                    onSelect={(date) => handleFilterChange("startDate", date)}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-1 block">
+                {t("index.endDate")}
+              </label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start text-left font-normal"
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {filters.endDate ? (
+                      format(filters.endDate, "PPP", { locale: ptBR })
+                    ) : (
+                      <span>{t("index.selectDate")}</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={filters.endDate}
+                    onSelect={(date) => handleFilterChange("endDate", date)}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
 
           <div>
