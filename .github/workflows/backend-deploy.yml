@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - "backend/**"
-      - "events/**"
       - ".github/workflows/backend-deploy.yml"
 
 jobs:
