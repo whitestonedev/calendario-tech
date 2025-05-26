@@ -35,6 +35,7 @@ const TranslationStep: React.FC<TranslationStepProps> = ({ form, translationLang
   const primaryCostType = form.watch('cost_type');
   const primaryCostValue = form.watch('cost_value');
   const primaryCostCurrency = form.watch('cost_currency');
+  const primaryBannerLink = form.watch('banner_link');
 
   useEffect(() => {
     form.setValue(`translations.${translationLanguage}.cost_type`, primaryCostType);
@@ -43,7 +44,19 @@ const TranslationStep: React.FC<TranslationStepProps> = ({ form, translationLang
       form.setValue(`translations.${translationLanguage}.cost_value`, primaryCostValue);
       form.setValue(`translations.${translationLanguage}.cost_currency`, primaryCostCurrency);
     }
-  }, [primaryCostType, primaryCostValue, primaryCostCurrency, translationLanguage, form]);
+
+    const translationBanner = form.getValues(`translations.${translationLanguage}.banner_link`);
+    if (!translationBanner && primaryBannerLink) {
+      form.setValue(`translations.${translationLanguage}.banner_link`, primaryBannerLink);
+    }
+  }, [
+    primaryCostType,
+    primaryCostValue,
+    primaryCostCurrency,
+    translationLanguage,
+    form,
+    primaryBannerLink,
+  ]);
 
   // Get language display info
   const getLanguageDisplay = (lang: string) => {
@@ -218,6 +231,34 @@ const TranslationStep: React.FC<TranslationStepProps> = ({ form, translationLang
               />
             </FormControl>
             <FormDescription>{t('form.descriptionDesc')}</FormDescription>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name={`translations.${translationLanguage}.banner_link`}
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('form.bannerLink')}</FormLabel>
+            <FormControl>
+              <Input placeholder="https://..." {...field} />
+            </FormControl>
+            <FormDescription>{t('form.bannerLinkDesc')}</FormDescription>
+            {field.value && (
+              <div className="mt-2 w-full max-w-[200px] aspect-[2/1] rounded-lg overflow-hidden border border-gray-200">
+                <img
+                  src={field.value}
+                  alt="Banner preview"
+                  className="object-cover w-full h-full"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = 'https://placehold.co/800x400/e2e8f0/94a3b8?text=Banner+Preview';
+                  }}
+                />
+              </div>
+            )}
             <FormMessage />
           </FormItem>
         )}

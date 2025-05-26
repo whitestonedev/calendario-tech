@@ -42,6 +42,16 @@ export interface FormEventValues {
   recaptcha: string;
 }
 
+export interface Translation {
+  event_name?: string;
+  event_edition?: string;
+  cost_type?: 'free' | 'paid';
+  cost_value?: number;
+  cost_currency?: Currency;
+  short_description?: string;
+  banner_link?: string;
+}
+
 const TranslationSchema = z
   .object({
     event_name: z.string().optional(),
@@ -54,6 +64,12 @@ const TranslationSchema = z
       return isNaN(num) ? null : num;
     }, z.number().nullable().optional()),
     cost_currency: z.nativeEnum(Currency).nullable().optional(),
+    banner_link: z
+      .string()
+      .url({
+        message: 'validation.bannerLink.invalid',
+      })
+      .optional(),
   })
   .superRefine((data, ctx) => {
     if (data.cost_type === 'free') {

@@ -4,17 +4,7 @@ import { EventFormValues } from '@/lib/form-schemas';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import {
-  Building2,
-  Calendar,
-  MapPin,
-  Link2,
-  Tag,
-  Languages,
-  Info,
-  DollarSign,
-  Image,
-} from 'lucide-react';
+import { Building2, Calendar, MapPin, Link2, Tag, Languages, Info, Image } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { UseFormReturn } from 'react-hook-form';
 import { formatCurrency } from '@/types/currency';
@@ -39,7 +29,9 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ form }) => {
     if (!isValidLanguageCode(lang)) {
       return {
         name: t('languages.other'),
-        icon: <img src={getFlagUrl(LanguageCodes.PORTUGUESE)} alt="Other" className="h-4 w-4" />,
+        icon: (
+          <img src={getFlagUrl(LanguageCodes.PORTUGUESE)} alt="Other" className="w-5 h-auto mr-2" />
+        ),
       };
     }
 
@@ -47,22 +39,28 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ form }) => {
       case LanguageCodes.PORTUGUESE:
         return {
           name: t('languages.pt-br'),
-          icon: <img src={getFlagUrl(lang)} alt="BR" className="h-4 w-4" />,
+          icon: <img src={getFlagUrl(lang)} alt="BR" className="w-5 h-auto mr-2" />,
         };
       case LanguageCodes.ENGLISH:
         return {
           name: t('languages.en-us'),
-          icon: <img src={getFlagUrl(lang)} alt="US" className="h-4 w-4" />,
+          icon: <img src={getFlagUrl(lang)} alt="US" className="w-5 h-auto mr-2" />,
         };
       case LanguageCodes.SPANISH:
         return {
           name: t('languages.es-es'),
-          icon: <img src={getFlagUrl(lang)} alt="ES" className="h-4 w-4" />,
+          icon: <img src={getFlagUrl(lang)} alt="ES" className="w-5 h-auto mr-2" />,
         };
       default:
         return {
           name: t('languages.other'),
-          icon: <img src={getFlagUrl(LanguageCodes.PORTUGUESE)} alt="Other" className="h-4 w-4" />,
+          icon: (
+            <img
+              src={getFlagUrl(LanguageCodes.PORTUGUESE)}
+              alt="Other"
+              className="w-5 h-auto mr-2"
+            />
+          ),
         };
     }
   };
@@ -178,7 +176,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ form }) => {
                   label={t('event.cost')}
                   value={
                     <div className="flex items-center gap-2">
-                      <DollarSign className="h-4 w-4" />
+                      {' '}
                       {data.cost_type === 'free'
                         ? t('event.free')
                         : formatCurrency(data.cost_value || 0, data.cost_currency)}
@@ -253,62 +251,121 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ form }) => {
             </div>
           </ReviewSection>
 
-          {data.translations && Object.keys(data.translations).length > 0 && (
-            <ReviewSection
-              title={t('form.language.translation')}
-              icon={<Languages className="h-5 w-5" />}
-            >
-              <div className="space-y-6">
-                {Object.entries(data.translations).map(([lang, translation]) => {
-                  if (!translation) return null;
-
-                  const langDisplay = getLanguageDisplay(lang as string);
-
-                  return (
-                    <div key={lang} className="space-y-4">
-                      <div className="flex items-center gap-2 text-tech-purple">
-                        {langDisplay.icon}
-                        <h5 className="font-medium">{langDisplay.name}</h5>
-                      </div>
-                      <dl className="grid grid-cols-1 gap-4">
-                        {translation.event_name && (
-                          <ReviewField label={t('event.event')} value={translation.event_name} />
-                        )}
-                        {translation.event_edition && (
-                          <ReviewField
-                            label={t('event.edition')}
-                            value={translation.event_edition}
-                          />
-                        )}
-                        {translation.cost_type && (
-                          <ReviewField
-                            label={t('event.cost')}
-                            value={
-                              <div className="flex items-center gap-2">
-                                <DollarSign className="h-4 w-4" />
-                                {translation.cost_type === 'free'
-                                  ? t('event.free')
-                                  : formatCurrency(
-                                      translation.cost_value || 0,
-                                      translation.cost_currency
-                                    )}
-                              </div>
-                            }
-                          />
-                        )}
-                        {translation.short_description && (
-                          <ReviewField
-                            label={t('event.description')}
-                            value={translation.short_description}
-                          />
-                        )}
-                      </dl>
-                    </div>
-                  );
-                })}
-              </div>
-            </ReviewSection>
-          )}
+          {data.translations &&
+            data.supported_languages &&
+            data.supported_languages.length > 0 &&
+            (() => {
+              const validTranslations = data.supported_languages.filter(
+                (lang) => !!data.translations[lang]
+              );
+              if (validTranslations.length === 0) return null;
+              return (
+                <ReviewSection
+                  title={t('form.language.translation')}
+                  icon={<Languages className="h-5 w-5" />}
+                >
+                  <div className="space-y-6">
+                    {validTranslations.map((lang) => {
+                      const translation = data.translations[lang];
+                      const langDisplay = getLanguageDisplay(lang as string);
+                      const main = data;
+                      return (
+                        <div key={lang} className="space-y-4 p-4 border rounded-md bg-gray-50">
+                          <div className="flex items-center gap-2 text-tech-purple mb-2">
+                            {langDisplay.icon}
+                            <h5 className="font-medium">{langDisplay.name}</h5>
+                          </div>
+                          <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <ReviewField
+                              label={t('event.event')}
+                              value={
+                                translation.event_name || main.event_name || t('event.notProvided')
+                              }
+                            />
+                            <ReviewField
+                              label={t('event.edition')}
+                              value={
+                                translation.event_edition ||
+                                main.event_edition ||
+                                t('event.notProvided')
+                              }
+                            />
+                            <ReviewField
+                              label={t('event.cost')}
+                              value={
+                                <div className="flex items-center gap-2">
+                                  {translation.cost_type === 'free' ||
+                                  (!translation.cost_type && main.cost_type === 'free')
+                                    ? t('event.free')
+                                    : translation.cost_value && translation.cost_currency
+                                      ? formatCurrency(
+                                          translation.cost_value,
+                                          translation.cost_currency
+                                        )
+                                      : main.cost_value && main.cost_currency
+                                        ? formatCurrency(main.cost_value, main.cost_currency)
+                                        : t('event.notProvided')}
+                                </div>
+                              }
+                            />
+                            <ReviewField
+                              label={t('form.currency')}
+                              value={
+                                translation.cost_currency ||
+                                main.cost_currency ||
+                                t('event.notProvided')
+                              }
+                            />
+                            <ReviewField
+                              label={t('event.description')}
+                              value={
+                                translation.short_description ||
+                                main.short_description ||
+                                t('event.notProvided')
+                              }
+                              className="md:col-span-2"
+                            />
+                            <ReviewField
+                              label={t('event.banner')}
+                              value={
+                                translation.banner_link || main.banner_link ? (
+                                  <div className="space-y-2">
+                                    <a
+                                      href={translation.banner_link || main.banner_link}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-tech-purple hover:underline flex items-center gap-1"
+                                    >
+                                      <Image className="h-4 w-4" />
+                                      {t('event.viewBanner')}
+                                    </a>
+                                    <div className="relative w-full max-w-[200px] aspect-[2/1] rounded-lg overflow-hidden border border-gray-200">
+                                      <img
+                                        src={translation.banner_link || main.banner_link}
+                                        alt="Banner preview"
+                                        className="object-cover w-full h-full"
+                                        onError={(e) => {
+                                          const target = e.target as HTMLImageElement;
+                                          target.src =
+                                            'https://placehold.co/800x400/e2e8f0/94a3b8?text=Banner+Preview';
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                ) : (
+                                  t('event.notProvided')
+                                )
+                              }
+                              className="md:col-span-2"
+                            />
+                          </dl>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </ReviewSection>
+              );
+            })()}
         </CardContent>
       </Card>
     </div>

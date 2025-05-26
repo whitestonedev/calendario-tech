@@ -30,9 +30,9 @@ const LanguageStep: React.FC<LanguageStepProps> = ({ form }) => {
 
   const getAvailableLanguages = (primaryLanguage: string) => {
     const allLanguages = [
-      { code: LanguageCodes.PORTUGUESE, label: 'Português (Brasil)' },
-      { code: LanguageCodes.ENGLISH, label: 'English (US)' },
-      { code: LanguageCodes.SPANISH, label: 'Español' },
+      { code: LanguageCodes.PORTUGUESE, label: t('languages.pt-br') },
+      { code: LanguageCodes.ENGLISH, label: t('languages.en-us') },
+      { code: LanguageCodes.SPANISH, label: t('languages.es-es') },
     ];
 
     return allLanguages.filter((lang) => lang.code !== primaryLanguage);
@@ -69,19 +69,19 @@ const LanguageStep: React.FC<LanguageStepProps> = ({ form }) => {
                       alt="BR"
                       className="w-5 h-auto"
                     />
-                    <span>Português (Brasil)</span>
+                    <span>{t('languages.pt-br')}</span>
                   </div>
                 </SelectItem>
                 <SelectItem value={LanguageCodes.ENGLISH} className="flex items-center gap-2">
                   <div className="flex items-center gap-2">
                     <img src={getFlagUrl(LanguageCodes.ENGLISH)} alt="US" className="w-5 h-auto" />
-                    <span>English (US)</span>
+                    <span>{t('languages.en-us')}</span>
                   </div>
                 </SelectItem>
                 <SelectItem value={LanguageCodes.SPANISH} className="flex items-center gap-2">
                   <div className="flex items-center gap-2">
                     <img src={getFlagUrl(LanguageCodes.SPANISH)} alt="ES" className="w-5 h-auto" />
-                    <span>Español</span>
+                    <span>{t('languages.es-es')}</span>
                   </div>
                 </SelectItem>
               </SelectContent>
@@ -105,32 +105,31 @@ const LanguageStep: React.FC<LanguageStepProps> = ({ form }) => {
             const value = (field.value as string[]) || [];
 
             return (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {availableLanguages.map((lang) => (
-                  <FormItem
-                    key={lang.code}
-                    className="flex flex-row items-start space-x-3 space-y-0"
-                  >
-                    <FormControl>
-                      <Checkbox
-                        checked={value.includes(lang.code)}
-                        onCheckedChange={(checked) => {
-                          const newValue = checked
-                            ? [...value, lang.code]
-                            : value.filter((v) => v !== lang.code);
-                          field.onChange(newValue);
-                        }}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none flex items-center gap-2">
-                      <img
-                        src={getFlagUrl(lang.code)}
-                        alt={lang.code.toUpperCase()}
-                        className="w-5 h-auto"
-                      />
-                      <FormLabel>{lang.label}</FormLabel>
-                    </div>
-                  </FormItem>
+                  <div key={lang.code} className="space-y-4">
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={value.includes(lang.code)}
+                          onCheckedChange={(checked) => {
+                            const newValue = checked
+                              ? [...value, lang.code]
+                              : value.filter((v) => v !== lang.code);
+                            field.onChange(newValue);
+                          }}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none flex items-center gap-2">
+                        <img
+                          src={getFlagUrl(lang.code)}
+                          alt={lang.code.toUpperCase()}
+                          className="w-5 h-auto"
+                        />
+                        <FormLabel>{lang.label}</FormLabel>
+                      </div>
+                    </FormItem>
+                  </div>
                 ))}
               </div>
             );

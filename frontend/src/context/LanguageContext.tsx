@@ -255,6 +255,12 @@ const translations = {
 
     'index.basicInfo': 'Informações Básicas',
     'index.address': 'Endereço',
+
+    // Language names
+    'languages.pt-br': 'Português (BR)',
+    'languages.en-us': 'English (US)',
+    'languages.es-es': 'Español',
+    'languages.other': 'Outro',
   },
   'en-us': {
     // Navbar
@@ -507,6 +513,12 @@ const translations = {
 
     'index.basicInfo': 'Basic Information',
     'index.address': 'Address',
+
+    // Language names
+    'languages.pt-br': 'Portuguese (BR)',
+    'languages.en-us': 'English (US)',
+    'languages.es-es': 'Spanish',
+    'languages.other': 'Other',
   },
   'es-es': {
     // Navbar
@@ -761,6 +773,12 @@ const translations = {
 
     'index.basicInfo': 'Información Básica',
     'index.address': 'Dirección',
+
+    // Language names
+    'languages.pt-br': 'Portugués (BR)',
+    'languages.en-us': 'Inglés (US)',
+    'languages.es-es': 'Español',
+    'languages.other': 'Otro',
   },
 };
 
