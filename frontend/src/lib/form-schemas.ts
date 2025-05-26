@@ -47,13 +47,18 @@ const TranslationSchema = z
     event_edition: z.string().optional(),
     short_description: z.string().optional(),
     cost_type: z.enum(['free', 'paid']).optional(),
-    cost_value: z.preprocess(
-      (val) => (val === '' ? null : parseFloat(val as string)),
-      z.number().nullable().optional()
-    ),
+    cost_value: z.preprocess((val) => {
+      if (val === '' || val === null || val === undefined) return null;
+      const num = parseFloat(val as string);
+      return isNaN(num) ? null : num;
+    }, z.number().nullable().optional()),
     cost_currency: z.nativeEnum(Currency).nullable().optional(),
   })
   .superRefine((data, ctx) => {
+    if (data.cost_type === 'free') {
+      return;
+    }
+
     if (data.cost_type === 'paid') {
       if (data.cost_value === undefined || data.cost_value === null) {
         ctx.addIssue({
@@ -99,6 +104,7 @@ export const eventFormSchema = z
     online: z.boolean().default(false),
     address: z.string().optional(),
     maps_link: z.string().optional(),
+    state: z.string().optional(),
     event_link: z.string().url({
       message: 'validation.eventLink.invalid',
     }),
@@ -138,12 +144,12 @@ export const eventFormSchema = z
       .max(300, {
         message: 'validation.description.max',
       }),
-    recaptcha: z.string().min(1, { message: 'validation.recaptcha.required' }),
-    translations: z.record(TranslationSchema).optional(),
-    state: z.string().optional(),
+    recaptcha: z.string().min(1, {
+      message: 'validation.recaptcha.required',
+    }),
+    translations: z.record(z.string(), TranslationSchema).optional(),
   })
   .superRefine((data, ctx) => {
-    // Validação cruzada para campos de custo principais
     if (data.cost_type === 'paid') {
       if (data.cost_value === null || data.cost_value === undefined) {
         ctx.addIssue({
@@ -219,6 +225,62 @@ export const eventFormSchema = z
           message: 'validation.state.required',
         });
       }
+    }
+
+    if (data.translations) {
+      Object.entries(data.translations).forEach(([lang, trans]) => {
+        if (lang === data.event_language) return;
+
+        if (trans.cost_type !== data.cost_type) {
+          ctx.addIssue({
+            code: ZodIssueCode.custom,
+            path: ['translations', lang, 'cost_type'],
+            message: 'validation.translation.costType.mustMatch',
+          });
+        }
+
+        if (!trans.event_name || trans.event_name.trim().length < 3) {
+          ctx.addIssue({
+            code: ZodIssueCode.custom,
+            path: ['translations', lang, 'event_name'],
+            message: 'validation.eventName.min',
+          });
+        }
+
+        if (!trans.event_edition || trans.event_edition.trim().length === 0) {
+          ctx.addIssue({
+            code: ZodIssueCode.custom,
+            path: ['translations', lang, 'event_edition'],
+            message: 'validation.eventEdition.required',
+          });
+        }
+
+        if (!trans.short_description || trans.short_description.trim().length < 10) {
+          ctx.addIssue({
+            code: ZodIssueCode.custom,
+            path: ['translations', lang, 'short_description'],
+            message: 'validation.description.min',
+          });
+        }
+
+        if (data.cost_type === 'paid') {
+          if (trans.cost_value === null || trans.cost_value === undefined) {
+            ctx.addIssue({
+              code: ZodIssueCode.custom,
+              path: ['translations', lang, 'cost_value'],
+              message: 'validation.costValue.required',
+            });
+          }
+
+          if (!trans.cost_currency) {
+            ctx.addIssue({
+              code: ZodIssueCode.custom,
+              path: ['translations', lang, 'cost_currency'],
+              message: 'validation.costCurrency.required',
+            });
+          }
+        }
+      });
     }
   });
 

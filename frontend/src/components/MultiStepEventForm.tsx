@@ -90,13 +90,13 @@ const MultiStepEventForm: React.FC = () => {
     value: number | null | undefined,
     currency: Currency | null | undefined,
     _lang: string
-  ): number | undefined => {
+  ): { value: number | undefined; currency: Currency | undefined } => {
     if (type === 'free') {
-      return 0;
+      return { value: undefined, currency: undefined };
     } else if (type === 'paid' && value !== undefined && value !== null && currency) {
-      return value;
+      return { value, currency };
     }
-    return undefined;
+    return { value: undefined, currency: undefined };
   };
 
   // Handle form submission
@@ -122,12 +122,18 @@ const MultiStepEventForm: React.FC = () => {
               values.cost_value,
               values.cost_currency,
               values.event_language
-            ),
+            ).value,
+            currency: formatCost(
+              values.cost_type,
+              values.cost_value,
+              values.cost_currency,
+              values.event_language
+            ).currency,
             banner_link: values.banner_link || '',
             short_description: values.short_description,
           },
           ...Object.entries(values.translations || {}).reduce((acc, [lang, trans]) => {
-            const translatedCost = formatCost(
+            const costInfo = formatCost(
               trans.cost_type,
               trans.cost_value,
               trans.cost_currency,
@@ -138,7 +144,8 @@ const MultiStepEventForm: React.FC = () => {
               ...acc,
               [lang]: {
                 event_edition: trans.event_edition || '',
-                cost: translatedCost,
+                cost: costInfo.value,
+                currency: costInfo.currency,
                 banner_link: values.banner_link || '',
                 short_description: trans.short_description || '',
               },
@@ -158,6 +165,10 @@ const MultiStepEventForm: React.FC = () => {
       form.reset();
     } catch (error) {
       console.error('Erro detalhado na submissão:', error);
+      console.error(
+        'Stack trace:',
+        error instanceof Error ? error.stack : 'No stack trace available'
+      );
 
       const errorMessage =
         error instanceof Error

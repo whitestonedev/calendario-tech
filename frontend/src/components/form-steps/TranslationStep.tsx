@@ -18,9 +18,9 @@ import {
 } from '@/components/ui/select';
 import { UseFormReturn } from 'react-hook-form';
 import { EventFormValues } from '@/lib/form-schemas';
-import { Flag, GlobeIcon } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { Currency, CurrencySymbol } from '@/types/currency';
+import { formatCurrency } from '@/types/currency';
 
 interface TranslationStepProps {
   form: UseFormReturn<EventFormValues>;
@@ -30,14 +30,31 @@ interface TranslationStepProps {
 const TranslationStep: React.FC<TranslationStepProps> = ({ form, translationLanguage }) => {
   const { t } = useLanguage();
   const eventLanguage = form.watch('event_language');
-  const translatedCostType = form.watch(`translations.${translationLanguage}.cost_type`);
+  const primaryCostType = form.watch('cost_type');
+  const primaryCostValue = form.watch('cost_value');
+  const primaryCostCurrency = form.watch('cost_currency');
 
   useEffect(() => {
-    if (translatedCostType === 'free') {
-      form.setValue(`translations.${translationLanguage}.cost_value`, null);
-      form.setValue(`translations.${translationLanguage}.cost_currency`, null);
+    form.setValue(`translations.${translationLanguage}.cost_type`, primaryCostType);
+
+    if (primaryCostType === 'paid') {
+      form.setValue(`translations.${translationLanguage}.cost_value`, primaryCostValue);
+      form.setValue(`translations.${translationLanguage}.cost_currency`, primaryCostCurrency);
     }
-  }, [translatedCostType, translationLanguage, form]);
+  }, [primaryCostType, primaryCostValue, primaryCostCurrency, translationLanguage, form]);
+
+  const getFlagUrl = (lang: string) => {
+    switch (lang) {
+      case 'pt-br':
+        return 'https://flagcdn.com/24x18/br.png';
+      case 'en-us':
+        return 'https://flagcdn.com/24x18/us.png';
+      case 'es-es':
+        return 'https://flagcdn.com/24x18/es.png';
+      default:
+        return 'https://flagcdn.com/24x18/un.png';
+    }
+  };
 
   // Get language display info
   const getLanguageDisplay = (code: string) => {
@@ -45,17 +62,23 @@ const TranslationStep: React.FC<TranslationStepProps> = ({ form, translationLang
       case 'pt-br':
         return {
           name: 'Português (Brasil)',
-          icon: <Flag className="h-4 w-4" />,
+          icon: <img src={getFlagUrl('pt-br')} alt="BR" className="w-5 h-auto" />,
         };
       case 'en-us':
         return {
           name: 'English (US)',
-          icon: <GlobeIcon className="h-4 w-4" />,
+          icon: <img src={getFlagUrl('en-us')} alt="US" className="w-5 h-auto" />,
         };
       case 'es-es':
-        return { name: 'Español', icon: <Flag className="h-4 w-4" /> };
+        return {
+          name: 'Español',
+          icon: <img src={getFlagUrl('es-es')} alt="ES" className="w-5 h-auto" />,
+        };
       default:
-        return { name: code, icon: <GlobeIcon className="h-4 w-4" /> };
+        return {
+          name: code,
+          icon: <img src={getFlagUrl('un')} alt="UN" className="w-5 h-auto" />,
+        };
     }
   };
 
@@ -109,7 +132,7 @@ const TranslationStep: React.FC<TranslationStepProps> = ({ form, translationLang
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t('form.cost')}</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
+              <Select onValueChange={field.onChange} value={primaryCostType} disabled>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder={t('form.selectCostType')} />
@@ -125,7 +148,7 @@ const TranslationStep: React.FC<TranslationStepProps> = ({ form, translationLang
           )}
         />
 
-        {translatedCostType === 'paid' && (
+        {primaryCostType === 'paid' && (
           <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -146,6 +169,12 @@ const TranslationStep: React.FC<TranslationStepProps> = ({ form, translationLang
                       value={field.value === null || field.value === undefined ? '' : field.value}
                     />
                   </FormControl>
+                  {primaryCostType === 'paid' && primaryCostValue && primaryCostCurrency && (
+                    <FormDescription>
+                      {t('form.originalCost')}:{' '}
+                      {formatCurrency(primaryCostValue, primaryCostCurrency)}
+                    </FormDescription>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
