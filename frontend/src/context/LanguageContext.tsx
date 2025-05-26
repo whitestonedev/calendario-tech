@@ -255,7 +255,11 @@ const translations = {
     "validation.description.min": "Descrição deve ter pelo menos 10 caracteres",
     "validation.description.max":
       "Descrição não pode ter mais de 300 caracteres",
-    "validation.recaptcha.required": "Por favor, complete o reCAPTCHA",
+    "validation.recaptcha.required": "Por favor, complete a verificação",
+    "validation.recaptcha.error":
+      "Erro na verificação. Por favor, tente novamente.",
+    "validation.recaptcha.expired":
+      "A verificação expirou. Por favor, tente novamente.",
     "validation.state.required":
       "O estado é obrigatório para eventos presenciais",
     "validation.mapsLink.required":
@@ -509,7 +513,9 @@ const translations = {
       "Description must have at least 10 characters",
     "validation.description.max":
       "Description cannot have more than 300 characters",
-    "validation.recaptcha.required": "Please complete the reCAPTCHA",
+    "validation.recaptcha.required": "Please complete the verification",
+    "validation.recaptcha.error": "Verification error. Please try again.",
+    "validation.recaptcha.expired": "Verification expired. Please try again.",
     "validation.state.required": "State is required for in-person events",
     "validation.mapsLink.required": "Map link is required for in-person events",
     "validation.translation.costValue.required":
@@ -765,7 +771,11 @@ const translations = {
       "La descripción debe tener al menos 10 caracteres",
     "validation.description.max":
       "La descripción no puede tener más de 300 caracteres",
-    "validation.recaptcha.required": "Por favor complete el reCAPTCHA",
+    "validation.recaptcha.required": "Por favor complete la verificación",
+    "validation.recaptcha.error":
+      "Error de verificación. Por favor, intente de nuevo.",
+    "validation.recaptcha.expired":
+      "La verificación ha expirado. Por favor, intente de nuevo.",
     "validation.state.required":
       "El estado es obligatorio para eventos presenciales",
     "validation.mapsLink.required":

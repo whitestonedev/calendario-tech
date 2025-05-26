@@ -60,7 +60,6 @@ const MultiStepEventForm: React.FC = () => {
   const {
     currentStep,
     allSteps,
-    recaptchaRef,
     translationLanguages,
     goToNextStep,
     goToPrevStep,
@@ -111,8 +110,6 @@ const MultiStepEventForm: React.FC = () => {
   // Handle form submission
   const onSubmit = async (values: EventFormValues) => {
     try {
-      console.info("Sending envent");
-
       const eventData = {
         organization_name: values.organization_name,
         event_name: values.event_name,
@@ -173,11 +170,6 @@ const MultiStepEventForm: React.FC = () => {
       setIsSubmitted(true);
 
       form.reset();
-
-      // Reset reCAPTCHA
-      if (recaptchaRef.current) {
-        recaptchaRef.current.reset();
-      }
     } catch (error) {
       console.error("Erro detalhado na submissão:", error);
 
@@ -206,7 +198,6 @@ const MultiStepEventForm: React.FC = () => {
               <StepRenderer
                 currentStep={currentStep}
                 form={form}
-                recaptchaRef={recaptchaRef}
                 handleRecaptchaChange={handleRecaptchaChange}
                 translationLanguages={translationLanguages}
                 allSteps={allSteps}

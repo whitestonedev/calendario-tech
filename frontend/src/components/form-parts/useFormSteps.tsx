@@ -1,12 +1,10 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { EventFormValues } from "@/lib/form-schemas";
 import { useLanguage } from "@/context/LanguageContext";
-import ReCAPTCHA from "react-google-recaptcha";
 
 export const useFormSteps = (form: UseFormReturn<EventFormValues>) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const { t } = useLanguage();
 
   // Get steps based on the language
@@ -64,6 +62,7 @@ export const useFormSteps = (form: UseFormReturn<EventFormValues>) => {
   const goToNextStep = async () => {
     // Validate fields in current step
     let fieldsToValidate: (keyof EventFormValues)[] = [];
+    let recaptchaValue: string | undefined;
 
     switch (currentStep) {
       case 0:
@@ -93,9 +92,19 @@ export const useFormSteps = (form: UseFormReturn<EventFormValues>) => {
       // Translation steps are optional
       case allSteps.length - 2:
         fieldsToValidate = ["recaptcha"];
+        recaptchaValue = form.getValues("recaptcha");
         break;
       default:
         break;
+    }
+
+    // Verificação extra para garantir que o Turnstile foi completado
+    if (currentStep === allSteps.length - 2 && !recaptchaValue) {
+      form.setError("recaptcha", {
+        type: "manual",
+        message: t("validation.recaptcha.required"),
+      });
+      return;
     }
 
     // Check if the current step fields are valid
@@ -121,7 +130,6 @@ export const useFormSteps = (form: UseFormReturn<EventFormValues>) => {
   return {
     currentStep,
     allSteps,
-    recaptchaRef,
     translationLanguages,
     goToNextStep,
     goToPrevStep,

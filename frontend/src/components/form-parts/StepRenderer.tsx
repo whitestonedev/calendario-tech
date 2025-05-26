@@ -1,7 +1,6 @@
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
 import { EventFormValues } from "@/lib/form-schemas";
-import ReCAPTCHA from "react-google-recaptcha";
 
 // Import all step components
 import LanguageStep from "../form-steps/LanguageStep";
@@ -16,7 +15,6 @@ import ReviewStep from "../form-steps/ReviewStep";
 interface StepRendererProps {
   currentStep: number;
   form: UseFormReturn<EventFormValues>;
-  recaptchaRef: React.RefObject<ReCAPTCHA>;
   handleRecaptchaChange: (token: string | null) => void;
   translationLanguages: string[];
   allSteps: { title: string; description: string }[];
@@ -25,7 +23,6 @@ interface StepRendererProps {
 const StepRenderer: React.FC<StepRendererProps> = ({
   currentStep,
   form,
-  recaptchaRef,
   handleRecaptchaChange,
   translationLanguages,
   allSteps,
@@ -80,7 +77,6 @@ const StepRenderer: React.FC<StepRendererProps> = ({
     return (
       <VerificationStep
         form={form}
-        recaptchaRef={recaptchaRef}
         handleRecaptchaChange={handleRecaptchaChange}
       />
     );
