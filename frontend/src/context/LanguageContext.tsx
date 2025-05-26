@@ -119,6 +119,7 @@ const translations = {
     "form.value": "Valor",
     "form.state": "Estado",
     "form.selectState": "Selecione um estado",
+    "form.selectCurrency": "Selecione uma moeda",
     "event.notProvided": "Não informado",
 
     // Event details
@@ -372,6 +373,7 @@ const translations = {
     "form.value": "Value",
     "form.state": "State",
     "form.selectState": "Select a state",
+    "form.selectCurrency": "Select a currency",
     "event.notProvided": "Not provided",
 
     // Event details
@@ -621,6 +623,7 @@ const translations = {
     "form.value": "Valor",
     "form.state": "Estado",
     "form.selectState": "Seleccione un estado",
+    "form.selectCurrency": "Seleccione una moneda",
     "event.notProvided": "No proporcionado",
 
     // Event details
