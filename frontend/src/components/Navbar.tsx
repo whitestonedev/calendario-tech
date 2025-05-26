@@ -126,21 +126,25 @@ const Navbar: React.FC = () => {
                 onClick={() => setLanguage(LanguageCodes.PORTUGUESE)}
                 className={language === LanguageCodes.PORTUGUESE ? 'bg-gray-100' : ''}
               >
-                <img src="https://flagcdn.com/br.svg" alt="BR" className="w-5 h-auto mr-2" />
+                <img
+                  src={getFlagUrl(LanguageCodes.PORTUGUESE)}
+                  alt="BR"
+                  className="w-5 h-auto mr-2"
+                />
                 Português (BR)
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => setLanguage(LanguageCodes.ENGLISH)}
                 className={language === LanguageCodes.ENGLISH ? 'bg-gray-100' : ''}
               >
-                <img src="https://flagcdn.com/us.svg" alt="US" className="w-5 h-auto mr-2" />
+                <img src={getFlagUrl(LanguageCodes.ENGLISH)} alt="US" className="w-5 h-auto mr-2" />
                 English (US)
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => setLanguage(LanguageCodes.SPANISH)}
                 className={language === LanguageCodes.SPANISH ? 'bg-gray-100' : ''}
               >
-                <img src="https://flagcdn.com/es.svg" alt="ES" className="w-5 h-auto mr-2" />
+                <img src={getFlagUrl(LanguageCodes.SPANISH)} alt="ES" className="w-5 h-auto mr-2" />
                 Español
               </DropdownMenuItem>
             </DropdownMenuContent>
