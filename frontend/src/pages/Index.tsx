@@ -67,8 +67,6 @@ const Index = () => {
 
         if (!translation) return false;
 
-        const isPaid = /\d/.test(translation.cost);
-
         // Filter by selected date
         if (selectedDate && !isSameDay(eventDate, selectedDate)) return false;
 
@@ -109,8 +107,8 @@ const Index = () => {
         }
 
         // Filter by cost
-        if (filters.cost === "free" && isPaid) return false;
-        if (filters.cost === "paid" && !isPaid) return false;
+        if (filters.cost === "free" && !event.is_free) return false;
+        if (filters.cost === "paid" && event.is_free) return false;
 
         return true;
       })

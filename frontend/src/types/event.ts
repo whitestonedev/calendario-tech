@@ -1,6 +1,7 @@
 export interface EventTranslation {
   event_edition: string;
-  cost: string;
+  cost: number;
+  currency: string | null;
   banner_link: string;
   short_description: string;
 }
@@ -13,12 +14,11 @@ export interface EventInterface {
   address: string;
   maps_link: string;
   online: boolean;
+  is_free: boolean;
   event_link: string;
   tags: string[];
-  cost_value: number;
+  state: string;
   intl: {
-    "pt-br": EventTranslation;
-    "en-us": EventTranslation;
-    "es-es": EventTranslation;
+    [key: string]: EventTranslation;
   };
 }

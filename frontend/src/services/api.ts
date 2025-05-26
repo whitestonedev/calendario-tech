@@ -14,12 +14,15 @@ export interface EventSubmission {
   address: string;
   maps_link: string;
   online: boolean;
+  is_free: boolean;
   event_link: string;
   tags: string[];
+  state: string;
   intl: {
     [key: string]: {
       event_edition: string;
-      cost: string;
+      cost: number;
+      currency: string | null;
       banner_link: string;
       short_description: string;
     };
