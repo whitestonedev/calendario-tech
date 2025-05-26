@@ -1,20 +1,19 @@
-import React, { useEffect } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Form } from "@/components/ui/form";
-import { eventFormSchema, EventFormValues } from "@/lib/form-schemas";
-import { useToast } from "@/hooks/use-toast";
-import { submitEvent } from "@/services/api";
-import { useLanguage } from "@/context/LanguageContext";
-import { format } from "date-fns";
-import { CurrencySymbol, Currency } from "@/types/currency";
+import React, { useEffect } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Form } from '@/components/ui/form';
+import { eventFormSchema, EventFormValues } from '@/lib/form-schemas';
+import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/context/LanguageContext';
+import { format } from 'date-fns';
+import { CurrencySymbol, Currency } from '@/types/currency';
 
 // Import refactored components
-import FormProgress from "./form-parts/FormProgress";
-import StepNavigation from "./form-parts/StepNavigation";
-import StepRenderer from "./form-parts/StepRenderer";
-import { useFormSteps } from "./form-parts/useFormSteps";
-import SuccessStep from "./form-steps/SuccessStep";
+import FormProgress from './form-parts/FormProgress';
+import StepNavigation from './form-parts/StepNavigation';
+import StepRenderer from './form-parts/StepRenderer';
+import { useFormSteps } from './form-parts/useFormSteps';
+import SuccessStep from './form-steps/SuccessStep';
 
 const MultiStepEventForm: React.FC = () => {
   const { toast } = useToast();
@@ -25,30 +24,30 @@ const MultiStepEventForm: React.FC = () => {
   const form = useForm<EventFormValues>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
-      organization_name: "",
-      event_name: "",
-      event_edition: "",
+      organization_name: '',
+      event_name: '',
+      event_edition: '',
       online: false,
       tags: [],
-      cost_type: "free",
+      cost_type: 'free',
       cost_value: null,
       cost_currency: null,
-      event_language: "pt-br",
-      supported_languages: ["pt-br"],
+      event_language: 'pt-br',
+      supported_languages: ['pt-br'],
       translations: {},
       start_date: new Date(),
-      start_time: "09:00",
+      start_time: '09:00',
       end_date: new Date(),
-      end_time: "18:00",
-      address: "",
-      maps_link: "",
-      event_link: "",
-      banner_link: "",
-      short_description: "",
-      recaptcha: "",
+      end_time: '18:00',
+      address: '',
+      maps_link: '',
+      event_link: '',
+      banner_link: '',
+      short_description: '',
+      recaptcha: '',
     },
-    mode: "all",
-    reValidateMode: "onChange",
+    mode: 'all',
+    reValidateMode: 'onChange',
   });
   const handleFinalSubmit = () => {
     form.handleSubmit((values) => {
@@ -73,12 +72,12 @@ const MultiStepEventForm: React.FC = () => {
 
       if (!value) {
         form.setValue(path, {
-          event_name: "",
-          event_edition: "",
-          cost_type: "free",
+          event_name: '',
+          event_edition: '',
+          cost_type: 'free',
           cost_value: null,
           cost_currency: null,
-          short_description: "",
+          short_description: '',
         });
       }
     });
@@ -86,22 +85,17 @@ const MultiStepEventForm: React.FC = () => {
 
   // Helper para formatar o custo
   const formatCost = (
-    type: "free" | "paid" | undefined,
+    type: 'free' | 'paid' | undefined,
     value: number | null | undefined,
     currency: Currency | null | undefined,
     lang: string
   ): string | undefined => {
-    if (type === "free") {
+    if (type === 'free') {
       // Usar a tradução correta para Gratuito
-      if (lang === "pt-br") return "Gratuito";
-      if (lang === "es-es") return "Gratis";
-      return "Free";
-    } else if (
-      type === "paid" &&
-      value !== undefined &&
-      value !== null &&
-      currency
-    ) {
+      if (lang === 'pt-br') return 'Gratuito';
+      if (lang === 'es-es') return 'Gratis';
+      return 'Free';
+    } else if (type === 'paid' && value !== undefined && value !== null && currency) {
       return `${CurrencySymbol[currency]}${value.toFixed(2)}`;
     }
     return undefined; // Retorna undefined se pago mas incompleto
@@ -110,19 +104,15 @@ const MultiStepEventForm: React.FC = () => {
   // Handle form submission
   const onSubmit = async (values: EventFormValues) => {
     try {
-      const eventData = {
+      const _eventData = {
         organization_name: values.organization_name,
         event_name: values.event_name,
-        start_datetime: `${format(values.start_date, "yyyy-MM-dd")}T${
-          values.start_time
-        }`,
-        end_datetime: `${format(values.end_date, "yyyy-MM-dd")}T${
-          values.end_time
-        }`,
-        address: values.address || "",
-        maps_link: values.maps_link || "",
+        start_datetime: `${format(values.start_date, 'yyyy-MM-dd')}T${values.start_time}`,
+        end_datetime: `${format(values.end_date, 'yyyy-MM-dd')}T${values.end_time}`,
+        address: values.address || '',
+        maps_link: values.maps_link || '',
         online: values.online,
-        is_free: values.cost_type === "free",
+        is_free: values.cost_type === 'free',
         event_link: values.event_link,
         tags: values.tags,
         state: values.state,
@@ -135,55 +125,52 @@ const MultiStepEventForm: React.FC = () => {
               values.cost_currency,
               values.event_language
             ),
-            banner_link: values.banner_link || "",
+            banner_link: values.banner_link || '',
             short_description: values.short_description,
           },
-          ...Object.entries(values.translations || {}).reduce(
-            (acc, [lang, trans]) => {
-              const translatedCost = formatCost(
-                trans.cost_type,
-                trans.cost_value,
-                trans.cost_currency,
-                lang
-              );
+          ...Object.entries(values.translations || {}).reduce((acc, [lang, trans]) => {
+            const translatedCost = formatCost(
+              trans.cost_type,
+              trans.cost_value,
+              trans.cost_currency,
+              lang
+            );
 
-              return {
-                ...acc,
-                [lang]: {
-                  event_edition: trans.event_edition || "",
-                  cost: translatedCost,
-                  banner_link: values.banner_link || "",
-                  short_description: trans.short_description || "",
-                },
-              };
-            },
-            {}
-          ),
+            return {
+              ...acc,
+              [lang]: {
+                event_edition: trans.event_edition || '',
+                cost: translatedCost,
+                banner_link: values.banner_link || '',
+                short_description: trans.short_description || '',
+              },
+            };
+          }, {}),
         },
       };
 
       toast({
-        title: t("toast.eventSubmitted"),
-        description: t("toast.eventSubmittedDesc"),
+        title: t('toast.eventSubmitted'),
+        description: t('toast.eventSubmittedDesc'),
       });
 
       setIsSubmitted(true);
 
       form.reset();
     } catch (error) {
-      console.error("Erro detalhado na submissão:", error);
+      console.error('Erro detalhado na submissão:', error);
 
       const errorMessage =
         error instanceof Error
           ? error.message
-          : typeof error === "string"
-          ? error
-          : t("error.submissionDesc");
+          : typeof error === 'string'
+            ? error
+            : t('error.submissionDesc');
 
       toast({
-        title: t("error.submission"),
+        title: t('error.submission'),
         description: errorMessage,
-        variant: "destructive",
+        variant: 'destructive',
       });
     }
   };
@@ -205,7 +192,6 @@ const MultiStepEventForm: React.FC = () => {
 
               <StepNavigation
                 currentStep={currentStep}
-                totalSteps={allSteps.length}
                 onPrevious={goToPrevStep}
                 onNext={goToNextStep}
                 isSubmitStep={currentStep === allSteps.length - 1}

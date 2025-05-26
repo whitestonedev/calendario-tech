@@ -105,7 +105,7 @@
 }
 
 .calendar-day.has-event::after {
-  content: "";
+  content: '';
   @apply absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[rgb(var(--tech-purple))];
 }
 
@@ -118,7 +118,7 @@
 }
 
 .has-event::after {
-  content: "";
+  content: '';
   display: block;
   width: 6px;
   height: 6px;

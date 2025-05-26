@@ -1,6 +1,6 @@
-import { EventInterface } from "@/types/event";
+import { EventInterface } from '@/types/event';
 
-const API_BASE_URL = "https://api.calendario.tech";
+const API_BASE_URL = 'http://localhost:8000';
 
 export interface ApiResponse {
   events: EventInterface[];
@@ -51,7 +51,7 @@ export const fetchEvents = async (
     const data: EventInterface[] = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching events:", error);
+    console.error('Error fetching events:', error);
     return [];
   }
 };
@@ -66,45 +66,33 @@ export const fetchCalendarDays = async (): Promise<string[]> => {
     // Placeholder until /calendar-days endpoint is available
     return [];
   } catch (error) {
-    console.error("Error fetching calendar days:", error);
+    console.error('Error fetching calendar days:', error);
     return [];
   }
 };
 
-export const submitEvent = async (
-  eventData: EventSubmission
-): Promise<EventInterface> => {
+export const submitEvent = async (eventData: EventSubmission): Promise<EventInterface> => {
   try {
-    console.log("Enviando dados para API:", eventData);
-
     const response = await fetch(`${API_BASE_URL}/events/submit`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(eventData),
     });
 
-    console.log("Status da resposta:", response.status);
-    console.log(
-      "Headers da resposta:",
-      Object.fromEntries(response.headers.entries())
-    );
-
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
-      console.error("Erro da API:", errorData);
+      console.error('Erro da API:', errorData);
       throw new Error(
-        errorData?.detail ||
-          `API error: ${response.status} - ${response.statusText}`
+        errorData?.detail || `API error: ${response.status} - ${response.statusText}`
       );
     }
 
     const data = await response.json();
-    console.log("Resposta da API:", data);
     return data;
   } catch (error) {
-    console.error("Erro detalhado na submissão:", error);
+    console.error('Erro detalhado na submissão:', error);
     throw error;
   }
 };

@@ -1,30 +1,30 @@
-import React, { useState, useMemo } from "react";
-import { isSameDay, parseISO } from "date-fns";
-import { FilterState } from "@/components/EventFilters";
-import TechCalendar from "@/components/TechCalendar";
-import EventFilters from "@/components/EventFilters";
-import EventCard from "@/components/EventCard";
-import { Button } from "@/components/ui/button";
-import SubmitEventDialog from "@/components/SubmitEventDialog";
-import { CalendarDays } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
-import { useEventApi } from "@/hooks/useEventApi";
-import { DateRange } from "react-day-picker";
+import React, { useState, useMemo } from 'react';
+import { isSameDay, parseISO } from 'date-fns';
+import { FilterState } from '@/components/EventFilters';
+import TechCalendar from '@/components/TechCalendar';
+import EventFilters from '@/components/EventFilters';
+import EventCard from '@/components/EventCard';
+import { Button } from '@/components/ui/button';
+import SubmitEventDialog from '@/components/SubmitEventDialog';
+import { CalendarDays } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
+import { useEventApi } from '@/hooks/useEventApi';
+import { DateRange } from 'react-day-picker';
 
 const Index = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [clearCalendarSelection, setClearCalendarSelection] = useState(false);
   const [filters, setFilters] = useState<FilterState>({
-    search: "",
-    location: "",
-    eventType: "all",
+    search: '',
+    location: '',
+    eventType: 'all',
     selectedTags: [],
     showFree: false,
     startDate: undefined,
     endDate: undefined,
-    organization: "",
-    cost: "all",
-    state: "",
+    organization: '',
+    cost: 'all',
+    state: '',
   });
 
   const { t, language } = useLanguage();
@@ -34,9 +34,7 @@ const Index = () => {
     filteredEvents: apiFilteredEvents,
     isLoading,
     error,
-    searchTerm,
     setSearchTerm,
-    eventDates,
   } = useEventApi();
 
   const eventsSource = events;
@@ -88,9 +86,7 @@ const Index = () => {
         // Filter by organization
         if (
           filters.organization &&
-          !event.organization_name
-            .toLowerCase()
-            .includes(filters.organization.toLowerCase())
+          !event.organization_name.toLowerCase().includes(filters.organization.toLowerCase())
         ) {
           return false;
         }
@@ -103,8 +99,8 @@ const Index = () => {
         }
 
         // Filter by event type
-        if (filters.eventType === "online" && !event.online) return false;
-        if (filters.eventType === "in-person" && event.online) return false;
+        if (filters.eventType === 'online' && !event.online) return false;
+        if (filters.eventType === 'in-person' && event.online) return false;
 
         // Filter by tags
         if (
@@ -115,8 +111,8 @@ const Index = () => {
         }
 
         // Filter by cost
-        if (filters.cost === "free" && !event.is_free) return false;
-        if (filters.cost === "paid" && event.is_free) return false;
+        if (filters.cost === 'free' && !event.is_free) return false;
+        if (filters.cost === 'paid' && event.is_free) return false;
 
         return true;
       })
@@ -125,18 +121,7 @@ const Index = () => {
         const dateB = parseISO(b.start_datetime);
         return dateA.getTime() - dateB.getTime();
       });
-  }, [
-    selectedDate,
-    filters,
-    eventsSource,
-    apiFilteredEvents,
-    events.length,
-    language,
-  ]);
-
-  const handleDateSelect = (date: Date | undefined) => {
-    setSelectedDate(date);
-  };
+  }, [selectedDate, filters, eventsSource, apiFilteredEvents, events.length, language]);
 
   const handleRangeSelect = (range: DateRange | undefined) => {
     setFilters((prev) => ({
@@ -152,14 +137,6 @@ const Index = () => {
     if (newFilters.search !== filters.search) {
       setSearchTerm(newFilters.search);
     }
-  };
-
-  const handleSearchChange = (term: string) => {
-    setSearchTerm(term);
-    setFilters({
-      ...filters,
-      search: term,
-    });
   };
 
   const clearDateFilter = () => {
@@ -178,7 +155,7 @@ const Index = () => {
     if (isLoading) {
       return (
         <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <h3 className="text-lg font-medium mb-2">{t("loading.events")}</h3>
+          <h3 className="text-lg font-medium mb-2">{t('loading.events')}</h3>
         </div>
       );
     }
@@ -186,9 +163,7 @@ const Index = () => {
     if (error) {
       return (
         <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <h3 className="text-lg font-medium mb-2 text-red-500">
-            {t("error.loading")}
-          </h3>
+          <h3 className="text-lg font-medium mb-2 text-red-500">{t('error.loading')}</h3>
           <p className="text-gray-600 mb-4">{error}</p>
         </div>
       );
@@ -197,30 +172,28 @@ const Index = () => {
     if (filteredEvents.length === 0) {
       return (
         <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <h3 className="text-lg font-medium mb-2">
-            {t("index.noEventsFound")}
-          </h3>
-          <p className="text-gray-600 mb-4">{t("index.noEventsMessage")}</p>
+          <h3 className="text-lg font-medium mb-2">{t('index.noEventsFound')}</h3>
+          <p className="text-gray-600 mb-4">{t('index.noEventsMessage')}</p>
           <Button
             variant="outline"
             onClick={() => {
               setFilters({
-                search: "",
-                location: "",
-                eventType: "all",
+                search: '',
+                location: '',
+                eventType: 'all',
                 selectedTags: [],
                 showFree: false,
                 startDate: undefined,
                 endDate: undefined,
-                organization: "",
-                cost: "all",
-                state: "",
+                organization: '',
+                cost: 'all',
+                state: '',
               });
               setSelectedDate(undefined);
-              setSearchTerm("");
+              setSearchTerm('');
             }}
           >
-            {t("index.clearAllFilters")}
+            {t('index.clearAllFilters')}
           </Button>
         </div>
       );
@@ -240,15 +213,9 @@ const Index = () => {
       <section className="mb-8">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-4 mb-3">
-            <img
-              src="img/logotipo.png"
-              alt="WhiteStone Dev Logo"
-              className="max-h-24"
-            />
+            <img src="img/logotipo.png" alt="WhiteStone Dev Logo" className="max-h-24" />
           </div>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-2">
-            {t("index.subtitle")}
-          </p>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-2">{t('index.subtitle')}</p>
           <p className="text-sm text-tech-purple">
             <a
               href="https://whitestonedev.com.br/"
@@ -256,7 +223,7 @@ const Index = () => {
               rel="noopener noreferrer"
               className="underline hover:text-tech-purple/80 font-medium"
             >
-              {t("index.initiative")}
+              {t('index.initiative')}
             </a>
           </p>
         </div>
@@ -277,7 +244,7 @@ const Index = () => {
                 onClick={clearDateFilter}
                 className="mt-2 text-tech-purple hover:text-tech-purple/90 w-full"
               >
-                {t("index.clearDateFilter")}
+                {t('index.clearDateFilter')}
               </Button>
             )}
           </div>
@@ -294,11 +261,9 @@ const Index = () => {
             <div className="flex items-center gap-2">
               <CalendarDays className="h-5 w-5 text-tech-purple" />
               <h2 className="text-xl font-medium">
-                {filteredEvents.length}{" "}
-                {filteredEvents.length === 1
-                  ? t("index.event")
-                  : t("index.events")}{" "}
-                {t("index.eventsFound")}
+                {filteredEvents.length}{' '}
+                {filteredEvents.length === 1 ? t('index.event') : t('index.events')}{' '}
+                {t('index.eventsFound')}
               </h2>
             </div>
             <SubmitEventDialog />

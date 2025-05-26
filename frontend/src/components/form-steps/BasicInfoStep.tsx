@@ -1,10 +1,9 @@
-
-import React from "react";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { UseFormReturn } from "react-hook-form";
-import { EventFormValues } from "@/lib/form-schemas";
-import { useLanguage } from "@/context/LanguageContext";
+import React from 'react';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { UseFormReturn } from 'react-hook-form';
+import { EventFormValues } from '@/lib/form-schemas';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface BasicInfoStepProps {
   form: UseFormReturn<EventFormValues>;
@@ -12,7 +11,7 @@ interface BasicInfoStepProps {
 
 const BasicInfoStep: React.FC<BasicInfoStepProps> = ({ form }) => {
   const { t } = useLanguage();
-  
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

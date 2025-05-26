@@ -1,31 +1,15 @@
-import React from "react";
-import { EventInterface } from "@/types/event";
-import { format, parseISO } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogClose,
-} from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Calendar,
-  Clock,
-  MapPin,
-  Globe,
-  Share2,
-  Tag,
-  User,
-  Info,
-  X,
-} from "lucide-react";
-import { Separator } from "@/components/ui/separator";
-import { useLanguage } from "@/context/LanguageContext";
-import { useToast } from "@/hooks/use-toast";
-import { formatCurrency } from "@/types/currency";
+import React from 'react';
+import { EventInterface } from '@/types/event';
+import { format, parseISO } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Calendar, Clock, MapPin, Globe, Share2, Tag, User, Info } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
+import { useLanguage } from '@/context/LanguageContext';
+import { useToast } from '@/hooks/use-toast';
+import { formatCurrency } from '@/types/currency';
 
 interface EventModalProps {
   event: EventInterface;
@@ -44,14 +28,14 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
   const endDate = parseISO(event.end_datetime);
 
   const formatDate = (date: Date) => {
-    return format(date, "PPP", {
-      locale: language === "pt-br" ? ptBR : undefined,
+    return format(date, 'PPP', {
+      locale: language === 'pt-br' ? ptBR : undefined,
     });
   };
 
   const formatTime = (date: Date) => {
-    return format(date, "p", {
-      locale: language === "pt-br" ? ptBR : undefined,
+    return format(date, 'p', {
+      locale: language === 'pt-br' ? ptBR : undefined,
     });
   };
 
@@ -65,8 +49,8 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
     } else {
       navigator.clipboard.writeText(event.event_link);
       toast({
-        title: t("event.linkCopied"),
-        description: t("event.linkCopiedDesc"),
+        title: t('event.linkCopied'),
+        description: t('event.linkCopiedDesc'),
       });
     }
   };
@@ -82,13 +66,13 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
           />
           <div className="absolute bottom-4 left-4 flex gap-2 z-10">
             {event.online ? (
-              <Badge className="bg-tech-blue">{t("event.online")}</Badge>
+              <Badge className="bg-tech-blue">{t('event.online')}</Badge>
             ) : (
-              <Badge className="bg-tech-green">{t("event.inPerson")}</Badge>
+              <Badge className="bg-tech-green">{t('event.inPerson')}</Badge>
             )}
             {event.is_free && (
               <Badge className="bg-green-100 text-green-700 border border-green-300 shadow-md animate-pulse font-semibold ring-2 ring-green-300">
-                {t("event.free")}
+                {t('event.free')}
               </Badge>
             )}
           </div>
@@ -100,9 +84,7 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
             <User className="h-4 w-4 mr-1 text-tech-purple" />
             <span>{event.organization_name}</span>
           </div>
-          <div className="text-sm font-medium mt-1">
-            {translation.event_edition}
-          </div>
+          <div className="text-sm font-medium mt-1">{translation.event_edition}</div>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -128,7 +110,7 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
                     rel="noopener noreferrer"
                     className="text-tech-purple hover:underline text-sm"
                   >
-                    {t("event.viewMap")}
+                    {t('event.viewMap')}
                   </a>
                 </div>
               </div>
@@ -136,7 +118,7 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
             {event.online && (
               <div className="flex items-center text-sm">
                 <Globe className="h-4 w-4 mr-2 text-tech-purple" />
-                <span>{t("event.onlineEvent")}</span>
+                <span>{t('event.onlineEvent')}</span>
               </div>
             )}
           </div>
@@ -146,7 +128,7 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
           <div>
             <div className="flex items-center mb-2">
               <Info className="h-4 w-4 mr-2 text-tech-purple" />
-              <h3 className="font-medium">{t("event.description")}</h3>
+              <h3 className="font-medium">{t('event.description')}</h3>
             </div>
             <p className="text-sm">{translation.short_description}</p>
           </div>
@@ -154,7 +136,7 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
           <div>
             <div className="flex items-center mb-2">
               <Tag className="h-4 w-4 mr-2 text-tech-purple" />
-              <h3 className="font-medium">{t("form.tagsLabel")}</h3>
+              <h3 className="font-medium">{t('form.tagsLabel')}</h3>
             </div>
             <div className="flex flex-wrap gap-1">
               {event.tags.map((tag) => (
@@ -173,7 +155,7 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
             <div>
               {event.is_free ? (
                 <span className="inline-block rounded-xl bg-green-100 text-green-700 border border-green-300 px-4 py-2 text-lg font-bold shadow-md animate-pulse ring-2 ring-green-200">
-                  {t("event.free")}
+                  {t('event.free')}
                 </span>
               ) : (
                 <span className="inline-block rounded-xl bg-tech-purple/10 text-tech-purple border border-tech-purple px-4 py-2 text-xl font-extrabold shadow-md">
@@ -188,19 +170,11 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
                 onClick={shareEvent}
                 className="text-tech-dark border-tech-purple hover:bg-tech-purple/10"
               >
-                <Share2 className="h-4 w-4 mr-1" /> {t("event.share")}
+                <Share2 className="h-4 w-4 mr-1" /> {t('event.share')}
               </Button>
-              <Button
-                size="sm"
-                className="bg-tech-purple hover:bg-tech-purple/90"
-                asChild
-              >
-                <a
-                  href={event.event_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {t("event.register")}
+              <Button size="sm" className="bg-tech-purple hover:bg-tech-purple/90" asChild>
+                <a href={event.event_link} target="_blank" rel="noopener noreferrer">
+                  {t('event.register')}
                 </a>
               </Button>
             </div>
