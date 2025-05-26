@@ -24,6 +24,7 @@ const Index = () => {
     endDate: undefined,
     organization: "",
     cost: "all",
+    state: "",
   });
 
   const { t, language } = useLanguage();
@@ -92,6 +93,13 @@ const Index = () => {
             .includes(filters.organization.toLowerCase())
         ) {
           return false;
+        }
+
+        // Filter by state
+        if (filters.state) {
+          if (event.state !== filters.state) {
+            return false;
+          }
         }
 
         // Filter by event type
@@ -206,6 +214,7 @@ const Index = () => {
                 endDate: undefined,
                 organization: "",
                 cost: "all",
+                state: "",
               });
               setSelectedDate(undefined);
               setSearchTerm("");

@@ -21,6 +21,7 @@ import {
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
+import { statesOfBrazil } from "@/lib/states";
 
 interface EventFiltersProps {
   onFilterChange: (filters: FilterState) => void;
@@ -39,6 +40,7 @@ export interface FilterState {
   startDate: Date | undefined;
   endDate: Date | undefined;
   cost: "all" | "free" | "paid";
+  state: string;
 }
 
 const EventFilters: React.FC<EventFiltersProps> = ({
@@ -57,6 +59,7 @@ const EventFilters: React.FC<EventFiltersProps> = ({
     startDate: undefined,
     endDate: undefined,
     cost: "all",
+    state: "",
   });
 
   const [isExpanded, setIsExpanded] = React.useState(false);
@@ -95,7 +98,8 @@ const EventFilters: React.FC<EventFiltersProps> = ({
       organization: "",
       startDate: undefined,
       endDate: undefined,
-      cost: "all" as const,
+      cost: "all",
+      state: "",
     };
     setFilters(newFilters);
     onFilterChange(newFilters);
@@ -212,6 +216,27 @@ const EventFilters: React.FC<EventFiltersProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="text-sm font-medium mb-1 block">
+                {t("form.state")}
+              </label>
+              <Select
+                value={filters.state}
+                onValueChange={(value) => handleFilterChange("state", value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={t("form.selectState")} />
+                </SelectTrigger>
+                <SelectContent>
+                  {statesOfBrazil.map((state) => (
+                    <SelectItem key={state.value} value={state.label}>
+                      {state.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-1 block">
                 {t("index.startDate")}
               </label>
               <Popover>
@@ -238,7 +263,9 @@ const EventFilters: React.FC<EventFiltersProps> = ({
                 </PopoverContent>
               </Popover>
             </div>
+          </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="text-sm font-medium mb-1 block">
                 {t("index.endDate")}
