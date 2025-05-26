@@ -1,4 +1,3 @@
-import React from "react";
 import { format } from "date-fns";
 import { CalendarIcon, Clock } from "lucide-react";
 import {
@@ -26,10 +25,48 @@ import { useLanguage } from "@/context/LanguageContext";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { StaticTimePicker } from "@mui/x-date-pickers/StaticTimePicker";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useState } from "react";
 
 interface DateLocationStepProps {
   form: UseFormReturn<EventFormValues>;
 }
+
+const statesOfBrazil = [
+  { value: "AC", label: "Acre" },
+  { value: "AL", label: "Alagoas" },
+  { value: "AP", label: "Amapá" },
+  { value: "AM", label: "Amazonas" },
+  { value: "BA", label: "Bahia" },
+  { value: "CE", label: "Ceará" },
+  { value: "DF", label: "Distrito Federal" },
+  { value: "ES", label: "Espírito Santo" },
+  { value: "GO", label: "Goiás" },
+  { value: "MA", label: "Maranhão" },
+  { value: "MT", label: "Mato Grosso" },
+  { value: "MS", label: "Mato Grosso do Sul" },
+  { value: "MG", label: "Minas Gerais" },
+  { value: "PA", label: "Pará" },
+  { value: "PB", label: "Paraíba" },
+  { value: "PR", label: "Paraná" },
+  { value: "PE", label: "Pernambuco" },
+  { value: "PI", label: "Piauí" },
+  { value: "RJ", label: "Rio de Janeiro" },
+  { value: "RN", label: "Rio Grande do Norte" },
+  { value: "RS", label: "Rio Grande do Sul" },
+  { value: "RO", label: "Rondônia" },
+  { value: "RR", label: "Roraima" },
+  { value: "SC", label: "Santa Catarina" },
+  { value: "SP", label: "São Paulo" },
+  { value: "SE", label: "Sergipe" },
+  { value: "TO", label: "Tocantins" },
+];
 
 const DateLocationStep: React.FC<DateLocationStepProps> = ({ form }) => {
   const isOnline = form.watch("online");
@@ -43,12 +80,12 @@ const DateLocationStep: React.FC<DateLocationStepProps> = ({ form }) => {
     return date;
   };
 
-  const [startTimeDialogOpen, setStartTimeDialogOpen] = React.useState(false);
-  const [endTimeDialogOpen, setEndTimeDialogOpen] = React.useState(false);
-  const [tempStartTime, setTempStartTime] = React.useState<Date | null>(
+  const [startTimeDialogOpen, setStartTimeDialogOpen] = useState(false);
+  const [endTimeDialogOpen, setEndTimeDialogOpen] = useState(false);
+  const [tempStartTime, setTempStartTime] = useState<Date | null>(
     parseTimeToDate(form.getValues("start_time"))
   );
-  const [tempEndTime, setTempEndTime] = React.useState<Date | null>(
+  const [tempEndTime, setTempEndTime] = useState<Date | null>(
     parseTimeToDate(form.getValues("end_time"))
   );
 
@@ -313,6 +350,30 @@ const DateLocationStep: React.FC<DateLocationStepProps> = ({ form }) => {
                 <FormControl>
                   <Input placeholder={t("form.address")} {...field} />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="state"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("form.state")}</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder={t("form.selectState")} />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {statesOfBrazil.map((state) => (
+                      <SelectItem key={state.value} value={state.value}>
+                        {state.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}

@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { submitEvent } from "@/services/api";
 import { useLanguage } from "@/context/LanguageContext";
 import { format } from "date-fns";
+import { CurrencySymbol, Currency } from "@/types/currency";
 
 // Import refactored components
 import FormProgress from "./form-parts/FormProgress";
@@ -29,7 +30,9 @@ const MultiStepEventForm: React.FC = () => {
       event_edition: "",
       online: false,
       tags: [],
-      cost: "Grátis",
+      cost_type: "free",
+      cost_value: null,
+      cost_currency: null,
       event_language: "pt-br",
       supported_languages: ["pt-br"],
       translations: {},
@@ -73,12 +76,37 @@ const MultiStepEventForm: React.FC = () => {
         form.setValue(path, {
           event_name: "",
           event_edition: "",
-          cost: "",
+          cost_type: "free",
+          cost_value: null,
+          cost_currency: null,
           short_description: "",
         });
       }
     });
   }, [translationLanguages, form]);
+
+  // Helper para formatar o custo
+  const formatCost = (
+    type: "free" | "paid" | undefined,
+    value: number | null | undefined,
+    currency: Currency | null | undefined,
+    lang: string
+  ): string | undefined => {
+    if (type === "free") {
+      // Usar a tradução correta para Gratuito
+      if (lang === "pt-br") return "Gratuito";
+      if (lang === "es-es") return "Gratis";
+      return "Free";
+    } else if (
+      type === "paid" &&
+      value !== undefined &&
+      value !== null &&
+      currency
+    ) {
+      return `${CurrencySymbol[currency]}${value.toFixed(2)}`;
+    }
+    return undefined; // Retorna undefined se pago mas incompleto
+  };
 
   // Handle form submission
   const onSubmit = async (values: EventFormValues) => {
@@ -97,31 +125,45 @@ const MultiStepEventForm: React.FC = () => {
         address: values.address || "",
         maps_link: values.maps_link || "",
         online: values.online,
+        is_free: values.cost_type === "free",
         event_link: values.event_link,
         tags: values.tags,
+        state: values.state,
         intl: {
           [values.event_language]: {
             event_edition: values.event_edition,
-            cost: values.cost,
+            cost: formatCost(
+              values.cost_type,
+              values.cost_value,
+              values.cost_currency,
+              values.event_language
+            ),
             banner_link: values.banner_link || "",
             short_description: values.short_description,
           },
           ...Object.entries(values.translations || {}).reduce(
-            (acc, [lang, trans]) => ({
-              ...acc,
-              [lang]: {
-                event_edition: trans.event_edition || "",
-                cost: trans.cost || "",
-                banner_link: values.banner_link || "",
-                short_description: trans.short_description || "",
-              },
-            }),
+            (acc, [lang, trans]) => {
+              const translatedCost = formatCost(
+                trans.cost_type,
+                trans.cost_value,
+                trans.cost_currency,
+                lang
+              );
+
+              return {
+                ...acc,
+                [lang]: {
+                  event_edition: trans.event_edition || "",
+                  cost: translatedCost,
+                  banner_link: values.banner_link || "",
+                  short_description: trans.short_description || "",
+                },
+              };
+            },
             {}
           ),
         },
       };
-
-      const response = await submitEvent(eventData);
 
       toast({
         title: t("toast.eventSubmitted"),
@@ -139,7 +181,6 @@ const MultiStepEventForm: React.FC = () => {
     } catch (error) {
       console.error("Erro detalhado na submissão:", error);
 
-      // Mostrar mensagem de erro mais detalhada
       const errorMessage =
         error instanceof Error
           ? error.message

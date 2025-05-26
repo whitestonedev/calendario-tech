@@ -1,7 +1,9 @@
+import { Currency } from "./currency";
+
 export interface EventTranslation {
   event_edition: string;
   cost: number;
-  currency: string | null;
+  currency: Currency | null;
   banner_link: string;
   short_description: string;
 }

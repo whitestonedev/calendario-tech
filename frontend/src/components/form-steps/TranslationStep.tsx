@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   FormControl,
   FormField,
@@ -20,6 +20,7 @@ import { UseFormReturn } from "react-hook-form";
 import { EventFormValues } from "@/lib/form-schemas";
 import { Flag, GlobeIcon } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import { Currency, CurrencySymbol } from "@/types/currency";
 
 interface TranslationStepProps {
   form: UseFormReturn<EventFormValues>;
@@ -32,7 +33,16 @@ const TranslationStep: React.FC<TranslationStepProps> = ({
 }) => {
   const { t } = useLanguage();
   const eventLanguage = form.watch("event_language");
-  const [isPaid, setIsPaid] = React.useState(false);
+  const translatedCostType = form.watch(
+    `translations.${translationLanguage}.cost_type`
+  );
+
+  useEffect(() => {
+    if (translatedCostType === "free") {
+      form.setValue(`translations.${translationLanguage}.cost_value`, null);
+      form.setValue(`translations.${translationLanguage}.cost_currency`, null);
+    }
+  }, [translatedCostType, translationLanguage, form]);
 
   // Get language display info
   const getLanguageDisplay = (code: string) => {
@@ -52,31 +62,6 @@ const TranslationStep: React.FC<TranslationStepProps> = ({
       default:
         return { name: code, icon: <GlobeIcon className="h-4 w-4" /> };
     }
-  };
-
-  const handleCostTypeChange = (value: string) => {
-    if (value === "free") {
-      setIsPaid(false);
-      form.setValue(
-        `translations.${translationLanguage}.cost`,
-        translationLanguage === "pt-br"
-          ? "Grátis"
-          : translationLanguage === "es-es"
-          ? "Gratis"
-          : "Free"
-      );
-    } else {
-      setIsPaid(true);
-      form.setValue(`translations.${translationLanguage}.cost`, "");
-    }
-  };
-
-  const handlePaidCostChange = (value: string, currency: string) => {
-    const formattedValue = parseFloat(value).toFixed(2);
-    form.setValue(
-      `translations.${translationLanguage}.cost`,
-      `${currency}${formattedValue}`
-    );
   };
 
   const currentLang = getLanguageDisplay(translationLanguage);
@@ -126,48 +111,19 @@ const TranslationStep: React.FC<TranslationStepProps> = ({
       <div className="space-y-4">
         <FormField
           control={form.control}
-          name={`translations.${translationLanguage}.cost`}
+          name={`translations.${translationLanguage}.cost_type`}
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t("form.cost")}</FormLabel>
-              <Select
-                onValueChange={handleCostTypeChange}
-                defaultValue={
-                  field.value === "Grátis" ||
-                  field.value === "Gratis" ||
-                  field.value === "Free"
-                    ? "free"
-                    : "paid"
-                }
-              >
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue
-                      placeholder={
-                        translationLanguage === "pt-br"
-                          ? "Selecione o tipo de custo"
-                          : translationLanguage === "es-es"
-                          ? "Seleccione el tipo de costo"
-                          : "Select cost type"
-                      }
-                    />
+                    <SelectValue placeholder={t("form.selectCostType")} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="free">
-                    {translationLanguage === "pt-br"
-                      ? "Grátis"
-                      : translationLanguage === "es-es"
-                      ? "Gratis"
-                      : "Free"}
-                  </SelectItem>
-                  <SelectItem value="paid">
-                    {translationLanguage === "pt-br"
-                      ? "Pago"
-                      : translationLanguage === "es-es"
-                      ? "Pago"
-                      : "Paid"}
-                  </SelectItem>
+                  <SelectItem value="free">{t("event.free")}</SelectItem>
+                  <SelectItem value="paid">{t("index.paid")}</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -175,30 +131,33 @@ const TranslationStep: React.FC<TranslationStepProps> = ({
           )}
         />
 
-        {isPaid && (
+        {translatedCostType === "paid" && (
           <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
-              name={`translations.${translationLanguage}.cost`}
+              name={`translations.${translationLanguage}.cost_value`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    {translationLanguage === "pt-br"
-                      ? "Valor"
-                      : translationLanguage === "es-es"
-                      ? "Valor"
-                      : "Value"}
-                  </FormLabel>
+                  <FormLabel>{t("form.value")}</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
                       step="0.01"
                       min="0"
                       placeholder="0.00"
-                      onChange={(e) => {
-                        const currency = field.value?.charAt(0) || "R$";
-                        handlePaidCostChange(e.target.value, currency);
-                      }}
+                      {...field}
+                      onChange={(e) =>
+                        field.onChange(
+                          e.target.value === ""
+                            ? null
+                            : parseFloat(e.target.value)
+                        )
+                      }
+                      value={
+                        field.value === null || field.value === undefined
+                          ? ""
+                          : field.value
+                      }
                     />
                   </FormControl>
                   <FormMessage />
@@ -208,33 +167,25 @@ const TranslationStep: React.FC<TranslationStepProps> = ({
 
             <FormField
               control={form.control}
-              name={`translations.${translationLanguage}.cost`}
+              name={`translations.${translationLanguage}.cost_currency`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    {translationLanguage === "pt-br"
-                      ? "Moeda"
-                      : translationLanguage === "es-es"
-                      ? "Moneda"
-                      : "Currency"}
-                  </FormLabel>
+                  <FormLabel>{t("form.currency")}</FormLabel>
                   <Select
-                    onValueChange={(value) => {
-                      const currentValue =
-                        field.value?.replace(/[^0-9.]/g, "") || "0";
-                      handlePaidCostChange(currentValue, value);
-                    }}
-                    defaultValue={field.value?.charAt(0) || "R$"}
+                    onValueChange={field.onChange}
+                    value={field.value || undefined}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue />
+                        <SelectValue placeholder={t("form.selectCurrency")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="R$">R$ (Real)</SelectItem>
-                      <SelectItem value="$">$ (Dólar)</SelectItem>
-                      <SelectItem value="₱">₱ (Peso)</SelectItem>
+                      {Object.values(Currency).map((currency) => (
+                        <SelectItem key={currency} value={currency}>
+                          {CurrencySymbol[currency]} ({currency})
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />

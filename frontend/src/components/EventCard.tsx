@@ -1,14 +1,14 @@
-
 import React, { useState } from "react";
 import { EventInterface } from "@/types/event";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, MapPin, Globe } from "lucide-react";
+import { Calendar, Clock, MapPin, Globe, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import EventModal from "./EventModal";
 import { useLanguage } from "@/context/LanguageContext";
+import { formatCurrency } from "@/types/currency";
 
 interface EventCardProps {
   event: EventInterface;
@@ -39,8 +39,6 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
     });
   };
 
-  const isPaid = /\d/.test(translation.cost);
-
   return (
     <>
       <Card
@@ -59,7 +57,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
             ) : (
               <Badge className="bg-tech-green">{t("event.inPerson")}</Badge>
             )}
-            {!isPaid && (
+            {event.is_free && (
               <Badge className="bg-green-100 text-green-700 border border-green-300 shadow-md animate-pulse font-semibold ring-2 ring-green-300">
                 {t("event.free")}
               </Badge>
@@ -137,12 +135,14 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
           <div className="w-1/2">
             <span
               className={`block w-full text-sm font-bold tracking-wide uppercase px-3 py-1 rounded-full text-center ${
-                isPaid
-                  ? "bg-purple-100 text-tech-purple border border-tech-purple/30"
-                  : "bg-green-100 text-green-700"
+                event.is_free
+                  ? "bg-green-100 text-green-700"
+                  : "bg-purple-100 text-tech-purple border border-tech-purple/30"
               }`}
             >
-              {translation.cost}
+              {event.is_free
+                ? t("event.free")
+                : formatCurrency(translation.cost, translation.currency)}
             </span>
           </div>
         </CardFooter>

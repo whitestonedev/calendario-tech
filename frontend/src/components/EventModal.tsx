@@ -25,6 +25,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/context/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
+import { formatCurrency } from "@/types/currency";
 
 interface EventModalProps {
   event: EventInterface;
@@ -41,8 +42,6 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
 
   const startDate = parseISO(event.start_datetime);
   const endDate = parseISO(event.end_datetime);
-
-  const isPaid = /\d/.test(translation.cost);
 
   const formatDate = (date: Date) => {
     return format(date, "PPP", {
@@ -87,7 +86,7 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
             ) : (
               <Badge className="bg-tech-green">{t("event.inPerson")}</Badge>
             )}
-            {!isPaid && (
+            {event.is_free && (
               <Badge className="bg-green-100 text-green-700 border border-green-300 shadow-md animate-pulse font-semibold ring-2 ring-green-300">
                 {t("event.free")}
               </Badge>
@@ -170,15 +169,18 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
             </div>
           </div>
 
-          <div className="flex items-center justify-between pt-2">
-            <div className="text-sm font-medium">
-              {translation.cost === "Grátis" || translation.cost === "Free" ? (
-                <span className="text-tech-green">{translation.cost}</span>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 pt-2">
+            <div>
+              {event.is_free ? (
+                <span className="inline-block rounded-xl bg-green-100 text-green-700 border border-green-300 px-4 py-2 text-lg font-bold shadow-md animate-pulse ring-2 ring-green-200">
+                  {t("event.free")}
+                </span>
               ) : (
-                <span>{translation.cost}</span>
+                <span className="inline-block rounded-xl bg-tech-purple/10 text-tech-purple border border-tech-purple px-4 py-2 text-xl font-extrabold shadow-md">
+                  {formatCurrency(translation.cost, translation.currency)}
+                </span>
               )}
             </div>
-
             <div className="flex gap-2">
               <Button
                 variant="outline"
@@ -188,7 +190,6 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
               >
                 <Share2 className="h-4 w-4 mr-1" /> {t("event.share")}
               </Button>
-
               <Button
                 size="sm"
                 className="bg-tech-purple hover:bg-tech-purple/90"

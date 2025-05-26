@@ -51,7 +51,7 @@ const translations = {
     // Event card
     "event.online": "Online",
     "event.inPerson": "Presencial",
-    "event.free": "Grátis",
+    "event.free": "Gratuito",
     "event.register": "Detalhes",
     "event.onlineEvent": "Evento online",
     "event.viewMap": "Ver no mapa",
@@ -115,6 +115,10 @@ const translations = {
     "form.language.translation": "Tradução",
     "form.addLanguage": "Adicionar idioma",
     "form.selectLanguage": "Selecione um idioma",
+    "form.currency": "Moeda",
+    "form.value": "Valor",
+    "form.state": "Estado",
+    "form.selectState": "Selecione um estado",
     "event.notProvided": "Não informado",
 
     // Event details
@@ -329,6 +333,10 @@ const translations = {
     "form.language.translation": "Translation",
     "form.addLanguage": "Add language",
     "form.selectLanguage": "Select a language",
+    "form.currency": "Currency",
+    "form.value": "Value",
+    "form.state": "State",
+    "form.selectState": "Select a state",
     "event.notProvided": "Not provided",
 
     // Event details
@@ -542,6 +550,10 @@ const translations = {
     "form.language.translation": "Traducción",
     "form.addLanguage": "Añadir idioma",
     "form.selectLanguage": "Seleccione un idioma",
+    "form.currency": "Moneda",
+    "form.value": "Valor",
+    "form.state": "Estado",
+    "form.selectState": "Seleccione un estado",
     "event.notProvided": "No proporcionado",
 
     // Event details
