@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   FormControl,
   FormField,
@@ -6,19 +6,19 @@ import {
   FormLabel,
   FormDescription,
   FormMessage,
-} from "@/components/ui/form";
-import { UseFormReturn } from "react-hook-form";
-import { EventFormValues } from "@/lib/form-schemas";
+} from '@/components/ui/form';
+import { UseFormReturn } from 'react-hook-form';
+import { EventFormValues } from '@/lib/form-schemas';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Flag, GlobeIcon } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
+} from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Flag, GlobeIcon } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface LanguageStepProps {
   form: UseFormReturn<EventFormValues>;
@@ -34,26 +34,22 @@ const LanguageStep: React.FC<LanguageStepProps> = ({ form }) => {
         name="event_language"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t("form.language")}</FormLabel>
+            <FormLabel>{t('form.language')}</FormLabel>
             <Select
               onValueChange={(value) => {
                 field.onChange(value);
 
                 // Ensure the primary language is always in the supported languages
-                const currentSupported =
-                  form.getValues("supported_languages") || [];
+                const currentSupported = form.getValues('supported_languages') || [];
                 if (!currentSupported.includes(value)) {
-                  form.setValue("supported_languages", [
-                    ...currentSupported,
-                    value,
-                  ]);
+                  form.setValue('supported_languages', [...currentSupported, value]);
                 }
               }}
               defaultValue={field.value}
             >
               <FormControl>
                 <SelectTrigger>
-                  <SelectValue placeholder={t("form.selectLanguage")} />
+                  <SelectValue placeholder={t('form.selectLanguage')} />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
@@ -77,7 +73,7 @@ const LanguageStep: React.FC<LanguageStepProps> = ({ form }) => {
                 </SelectItem>
               </SelectContent>
             </Select>
-            <FormDescription>{t("form.language.primary")}</FormDescription>
+            <FormDescription>{t('form.language.primary')}</FormDescription>
             <FormMessage />
           </FormItem>
         )}
@@ -89,10 +85,8 @@ const LanguageStep: React.FC<LanguageStepProps> = ({ form }) => {
         render={() => (
           <FormItem>
             <div className="mb-4">
-              <FormLabel>{t("form.addLanguage")}</FormLabel>
-              <FormDescription>
-                {t("form.language.translation")}
-              </FormDescription>
+              <FormLabel>{t('form.addLanguage')}</FormLabel>
+              <FormDescription>{t('form.language.translation')}</FormDescription>
             </div>
             <div className="grid gap-2">
               <FormField
@@ -106,11 +100,11 @@ const LanguageStep: React.FC<LanguageStepProps> = ({ form }) => {
                     <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                       <FormControl>
                         <Checkbox
-                          checked={value.includes("pt-br")}
+                          checked={value.includes('pt-br')}
                           onCheckedChange={(checked) => {
                             const newValue = checked
-                              ? [...value, "pt-br"]
-                              : value.filter((v) => v !== "pt-br");
+                              ? [...value, 'pt-br']
+                              : value.filter((v) => v !== 'pt-br');
                             field.onChange(newValue);
                           }}
                         />
@@ -134,11 +128,11 @@ const LanguageStep: React.FC<LanguageStepProps> = ({ form }) => {
                     <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                       <FormControl>
                         <Checkbox
-                          checked={value.includes("en-us")}
+                          checked={value.includes('en-us')}
                           onCheckedChange={(checked) => {
                             const newValue = checked
-                              ? [...value, "en-us"]
-                              : value.filter((v) => v !== "en-us");
+                              ? [...value, 'en-us']
+                              : value.filter((v) => v !== 'en-us');
                             field.onChange(newValue);
                           }}
                         />
@@ -162,11 +156,11 @@ const LanguageStep: React.FC<LanguageStepProps> = ({ form }) => {
                     <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                       <FormControl>
                         <Checkbox
-                          checked={value.includes("es-es")}
+                          checked={value.includes('es-es')}
                           onCheckedChange={(checked) => {
                             const newValue = checked
-                              ? [...value, "es-es"]
-                              : value.filter((v) => v !== "es-es");
+                              ? [...value, 'es-es']
+                              : value.filter((v) => v !== 'es-es');
                             field.onChange(newValue);
                           }}
                         />

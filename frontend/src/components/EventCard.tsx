@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { EventInterface } from "@/types/event";
-import { format, parseISO } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, MapPin, Globe, Tag } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import EventModal from "./EventModal";
-import { useLanguage } from "@/context/LanguageContext";
-import { formatCurrency } from "@/types/currency";
+import React, { useState } from 'react';
+import { EventInterface } from '@/types/event';
+import { format, parseISO } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { Badge } from '@/components/ui/badge';
+import { Calendar, Clock, MapPin, Globe } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import EventModal from './EventModal';
+import { useLanguage } from '@/context/LanguageContext';
+import { formatCurrency } from '@/types/currency';
 
 interface EventCardProps {
   event: EventInterface;
@@ -28,14 +28,14 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const endDate = parseISO(event.end_datetime);
 
   const formatDate = (date: Date) => {
-    return format(date, "PPP", {
-      locale: language === "pt-br" ? ptBR : undefined,
+    return format(date, 'PPP', {
+      locale: language === 'pt-br' ? ptBR : undefined,
     });
   };
 
   const formatTime = (date: Date) => {
-    return format(date, "p", {
-      locale: language === "pt-br" ? ptBR : undefined,
+    return format(date, 'p', {
+      locale: language === 'pt-br' ? ptBR : undefined,
     });
   };
 
@@ -53,13 +53,13 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
           />
           <div className="absolute top-2 right-2 flex flex-col items-end gap-2">
             {event.online ? (
-              <Badge className="bg-tech-blue">{t("event.online")}</Badge>
+              <Badge className="bg-tech-blue">{t('event.online')}</Badge>
             ) : (
-              <Badge className="bg-tech-green">{t("event.inPerson")}</Badge>
+              <Badge className="bg-tech-green">{t('event.inPerson')}</Badge>
             )}
             {event.is_free && (
               <Badge className="bg-green-100 text-green-700 border border-green-300 shadow-md animate-pulse font-semibold ring-2 ring-green-300">
-                {t("event.free")}
+                {t('event.free')}
               </Badge>
             )}
           </div>
@@ -69,9 +69,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
           <div className="mb-3">
             <h3 className="text-lg font-semibold mb-1">{event.event_name}</h3>
             <p className="text-sm text-gray-500">{event.organization_name}</p>
-            <p className="text-sm font-medium mt-1">
-              {translation.event_edition}
-            </p>
+            <p className="text-sm font-medium mt-1">{translation.event_edition}</p>
           </div>
 
           <div className="space-y-2 mb-3">
@@ -94,14 +92,12 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
             {event.online && (
               <div className="flex items-center text-sm">
                 <Globe className="h-4 w-4 mr-2 text-tech-purple" />
-                <span>{t("event.onlineEvent")}</span>
+                <span>{t('event.onlineEvent')}</span>
               </div>
             )}
           </div>
 
-          <p className="text-sm mb-3 line-clamp-2">
-            {translation.short_description}
-          </p>
+          <p className="text-sm mb-3 line-clamp-2">{translation.short_description}</p>
 
           <div className="flex flex-wrap gap-1 mt-2">
             {event.tags.slice(0, 3).map((tag) => (
@@ -129,19 +125,19 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
               setModalOpen(true);
             }}
           >
-            {t("event.register")}
+            {t('event.register')}
           </Button>
 
           <div className="w-1/2">
             <span
               className={`block w-full text-sm font-bold tracking-wide uppercase px-3 py-1 rounded-full text-center ${
                 event.is_free
-                  ? "bg-green-100 text-green-700"
-                  : "bg-purple-100 text-tech-purple border border-tech-purple/30"
+                  ? 'bg-green-100 text-green-700'
+                  : 'bg-purple-100 text-tech-purple border border-tech-purple/30'
               }`}
             >
               {event.is_free
-                ? t("event.free")
+                ? t('event.free')
                 : formatCurrency(translation.cost, translation.currency)}
             </span>
           </div>

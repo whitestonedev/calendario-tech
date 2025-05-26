@@ -1,16 +1,16 @@
-import React from "react";
-import { UseFormReturn } from "react-hook-form";
-import { EventFormValues } from "@/lib/form-schemas";
+import React from 'react';
+import { UseFormReturn } from 'react-hook-form';
+import { EventFormValues } from '@/lib/form-schemas';
 
 // Import all step components
-import LanguageStep from "../form-steps/LanguageStep";
-import BasicInfoStep from "../form-steps/BasicInfoStep";
-import DateLocationStep from "../form-steps/DateLocationStep";
-import EventDetailsStep from "../form-steps/EventDetailsStep";
-import TagsStep from "../form-steps/TagsStep";
-import TranslationStep from "../form-steps/TranslationStep";
-import VerificationStep from "../form-steps/VerificationStep";
-import ReviewStep from "../form-steps/ReviewStep";
+import LanguageStep from '../form-steps/LanguageStep';
+import BasicInfoStep from '../form-steps/BasicInfoStep';
+import DateLocationStep from '../form-steps/DateLocationStep';
+import EventDetailsStep from '../form-steps/EventDetailsStep';
+import TagsStep from '../form-steps/TagsStep';
+import TranslationStep from '../form-steps/TranslationStep';
+import VerificationStep from '../form-steps/VerificationStep';
+import ReviewStep from '../form-steps/ReviewStep';
 
 interface StepRendererProps {
   currentStep: number;
@@ -65,21 +65,11 @@ const StepRenderer: React.FC<StepRendererProps> = ({
 
   if (isTranslationStep(currentStep)) {
     const translationLang = getCurrentTranslationLanguage();
-    return (
-      <TranslationStep
-        form={form}
-        translationLanguage={translationLang || "en-us"}
-      />
-    );
+    return <TranslationStep form={form} translationLanguage={translationLang || 'en-us'} />;
   }
 
   if (currentStep === verificationStepIndex) {
-    return (
-      <VerificationStep
-        form={form}
-        handleRecaptchaChange={handleRecaptchaChange}
-      />
-    );
+    return <VerificationStep form={form} handleRecaptchaChange={handleRecaptchaChange} />;
   }
 
   if (currentStep === reviewStepIndex) {
