@@ -47,6 +47,7 @@ const translations = {
     'event.onlineEvent': 'Evento online',
     'event.viewMap': 'Ver no mapa',
     'event.share': 'Compartilhar',
+    'event.viewBanner': 'Visualizar banner',
 
     // Form steps titles
     'form.step.basicInfo': 'Informações Básicas',
@@ -297,6 +298,7 @@ const translations = {
     'event.onlineEvent': 'Online event',
     'event.viewMap': 'View map',
     'event.share': 'Share',
+    'event.viewBanner': 'View banner',
 
     // Form steps titles
     'form.step.basicInfo': 'Basic Information',
@@ -545,6 +547,7 @@ const translations = {
     'event.onlineEvent': 'Evento en línea',
     'event.viewMap': 'Ver en el mapa',
     'event.share': 'Compartir',
+    'event.viewBanner': 'Ver banner',
 
     // Form steps titles
     'form.step.basicInfo': 'Información Básica',
