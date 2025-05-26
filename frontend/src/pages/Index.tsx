@@ -262,8 +262,9 @@ const Index = () => {
               <CalendarDays className="h-5 w-5 text-tech-purple" />
               <h2 className="text-xl font-medium">
                 {filteredEvents.length}{' '}
-                {filteredEvents.length === 1 ? t('index.event') : t('index.events')}{' '}
-                {t('index.eventsFound')}
+                {filteredEvents.length === 1
+                  ? `${t('index.event')} ${t('index.eventFound')}`
+                  : `${t('index.events')} ${t('index.eventsFound')}`}
               </h2>
             </div>
             <SubmitEventDialog />
