@@ -75,11 +75,17 @@ export const useFormSteps = (form: UseFormReturn<EventFormValues>) => {
       case 2:
         fieldsToValidate = ["start_date", "start_time", "end_date", "end_time"];
         if (!form.getValues("online")) {
-          fieldsToValidate.push("address");
+          fieldsToValidate.push("address", "state", "maps_link");
         }
         break;
       case 3:
-        fieldsToValidate = ["event_link", "cost", "short_description"];
+        fieldsToValidate = [
+          "event_link",
+          "cost_type",
+          "cost_value",
+          "cost_currency",
+          "short_description",
+        ];
         break;
       case 4:
         fieldsToValidate = ["tags"];

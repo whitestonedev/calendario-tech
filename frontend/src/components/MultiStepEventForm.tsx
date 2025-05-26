@@ -47,9 +47,9 @@ const MultiStepEventForm: React.FC = () => {
       short_description: "",
       recaptcha: "",
     },
-    mode: "onChange",
+    mode: "all",
+    reValidateMode: "onChange",
   });
-
   const handleFinalSubmit = () => {
     form.handleSubmit((values) => {
       onSubmit(values);

@@ -102,24 +102,52 @@ export const eventFormSchema = z
       message: "Formato inválido, use HH:MM (ex: 13:30)",
     }),
     online: z.boolean().default(false),
-    address: z.string().optional(),
-    maps_link: z
-      .string()
-      .optional()
-      .refine(
-        (val) => {
-          // Se o evento for online, aceita qualquer valor (incluindo vazio)
-          if (val === undefined || val === "") return true;
-          // Se não for online e tiver um valor, deve ser uma URL válida
-          try {
-            new URL(val);
-            return true;
-          } catch {
+    address: z.string().refine(
+      (val) => {
+        const normalizedAddress = val?.trim();
+
+        if (!normalizedAddress) {
+          return false;
+        }
+
+        if (normalizedAddress.length < 10) {
+          return false;
+        }
+
+        return true;
+      },
+      {
+        message: "O endereço deve ter pelo menos 10 caracteres",
+      }
+    ),
+    maps_link: z.string().refine(
+      (val) => {
+        const normalizedLink = val?.trim();
+
+        if (!normalizedLink) {
+          return false;
+        }
+
+        try {
+          const url = new URL(normalizedLink);
+          const isValidGoogleMaps =
+            url.hostname.includes("google.com") ||
+            url.hostname.includes("goo.gl") ||
+            url.hostname.includes("maps.app.goo.gl");
+
+          if (!isValidGoogleMaps) {
             return false;
           }
-        },
-        { message: "URL inválida" }
-      ),
+
+          return true;
+        } catch {
+          return false;
+        }
+      },
+      {
+        message: "O link deve ser um endereço válido do Google Maps",
+      }
+    ),
     event_link: z.string().url({
       message: "URL do evento inválida",
     }),
@@ -155,7 +183,7 @@ export const eventFormSchema = z
       .string()
       .min(1, { message: "Por favor, complete o reCAPTCHA" }),
     translations: z.record(TranslationSchema).optional(),
-    state: z.string().optional(),
+    state: z.string(),
   })
   .superRefine((data, ctx) => {
     // Validação cruzada para campos de custo principais
@@ -180,12 +208,32 @@ export const eventFormSchema = z
         });
       }
     }
-    if (!data.online && (!data.state || data.state.trim() === "")) {
-      ctx.addIssue({
-        code: ZodIssueCode.custom,
-        path: ["state"],
-        message: "O estado é obrigatório para eventos presenciais",
-      });
+    if (!data.online) {
+      if (
+        !data.state ||
+        data.state.trim() === "" ||
+        data.state === "undefined" ||
+        data.state === "null"
+      ) {
+        ctx.addIssue({
+          code: ZodIssueCode.custom,
+          path: ["state"],
+          message: "O estado é obrigatório para eventos presenciais",
+        });
+      }
+
+      if (
+        !data.maps_link ||
+        data.maps_link.trim() === "" ||
+        data.maps_link === "undefined" ||
+        data.maps_link === "null"
+      ) {
+        ctx.addIssue({
+          code: ZodIssueCode.custom,
+          path: ["maps_link"],
+          message: "O link do mapa é obrigatório para eventos presenciais",
+        });
+      }
     }
   });
 
