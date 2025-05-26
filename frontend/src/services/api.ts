@@ -1,6 +1,6 @@
 import { EventInterface } from '@/types/event';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'https://api.calendario.tech';
 
 export interface ApiResponse {
   events: EventInterface[];
