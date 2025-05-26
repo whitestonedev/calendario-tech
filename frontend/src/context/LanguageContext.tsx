@@ -264,6 +264,9 @@ const translations = {
       "Valor do custo é obrigatório e não pode ser negativo para eventos pagos nesta tradução",
     "validation.translation.costCurrency.required":
       "Moeda é obrigatória para eventos pagos nesta tradução",
+
+    "index.basicInfo": "Informações Básicas",
+    "index.address": "Endereço",
   },
   "en-us": {
     // Navbar
@@ -513,6 +516,9 @@ const translations = {
       "Cost value is required and cannot be negative for paid events in this translation",
     "validation.translation.costCurrency.required":
       "Currency is required for paid events in this translation",
+
+    "index.basicInfo": "Basic Information",
+    "index.address": "Address",
   },
   "es-es": {
     // Navbar
@@ -768,6 +774,9 @@ const translations = {
       "El valor del costo es obligatorio y no puede ser negativo para eventos pagos en esta traducción",
     "validation.translation.costCurrency.required":
       "La moneda es obligatoria para eventos pagos en esta traducción",
+
+    "index.basicInfo": "Información Básica",
+    "index.address": "Dirección",
   },
 };
 
