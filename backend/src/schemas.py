@@ -72,7 +72,7 @@ class EventIn(BaseModel):
     online: bool
     event_link: Optional[str] = None
     tags: List[str] = []
-    state: States
+    state: Optional[States] = None
     is_free: bool = True
     intl: Dict[str, IntlData] = {}
 
