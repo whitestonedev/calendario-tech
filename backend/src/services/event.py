@@ -1,6 +1,7 @@
 from src.exceptions import DuplicateEventException, EventNotFoundException
-from src.models import db, Event, EventIntl, Tag as TagModel, EventStatus
+from src.models import db, Event, EventIntl, Tag as TagModel, EventStatus, Tag
 from src.schemas import Event as EventDOT
+import sqlalchemy as sa
 
 from src.schemas import EventIn, EventUpdate, EventQuery
 
@@ -150,9 +151,7 @@ def get_events(filters: EventQuery = None, status: EventStatus = None) -> list[d
 
     if filters:
         if filters.parsed_tags:
-            query = query.join(Event.tags).filter(
-                TagModel.name.in_(filters.parsed_tags)
-            )
+            query = query.join(Event.tags).filter(Tag.name.in_(filters.parsed_tags))
 
         if filters.name:
             query = query.filter(Event.event_name.ilike(f"%{filters.name}%"))
@@ -162,6 +161,9 @@ def get_events(filters: EventQuery = None, status: EventStatus = None) -> list[d
 
         if filters.online is not None:
             query = query.filter(Event.online == filters.online)
+
+        if filters.state:
+            query = query.filter(Event.state == filters.state)
 
         if filters.address:
             query = query.filter(Event.address.ilike(f"%{filters.address}%"))
@@ -174,6 +176,22 @@ def get_events(filters: EventQuery = None, status: EventStatus = None) -> list[d
                 Event.start_datetime >= filters.date_start_range,
                 Event.end_datetime <= filters.date_end_range,
             )
+
+        if filters.is_free is not None:
+            query = query.filter(Event.is_free == filters.is_free)
+
+        if (
+            filters.currency
+            or filters.price_min is not None
+            or filters.price_max is not None
+        ):
+            query = query.join(EventIntl)
+            if filters.currency:
+                query = query.filter(EventIntl.currency == filters.currency)
+            if filters.price_min is not None:
+                query = query.filter(EventIntl.cost.cast(sa.Float) >= filters.price_min)
+            if filters.price_max is not None:
+                query = query.filter(EventIntl.cost.cast(sa.Float) <= filters.price_max)
 
     return [e.serialized for e in query.all()]
 

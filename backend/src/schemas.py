@@ -1,7 +1,9 @@
 import enum
 from datetime import datetime
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, List, Dict
+
+from src.models import States, Currency
 
 
 class EventQuery(BaseModel):
@@ -9,13 +11,24 @@ class EventQuery(BaseModel):
     name: str | None = Field(None, description="Filter by event name")
     org: str | None = Field(None, description="Filter by organization")
     online: bool | None = Field(None, description="Online (true) or in-person (false)")
-    price_type: str | None = Field(None, enum=["free", "paid"])
-    price_min: float | None = Field(None)
-    price_max: float | None = Field(None)
+
+    state: Optional[States] = Field(
+        None, description="UF state code (e.g., SP, SC, RJ)"
+    )
     address: str | None = Field(None, description="Filter by address")
+
     date_start_range: str | None = Field(None)
     date_end_range: str | None = Field(None)
     date_from: str | None = Field(None)
+
+    currency: Optional[Currency] = Field(
+        None, description="Currency code (BRL, USD, EUR, etc)"
+    )
+    is_free: Optional[bool] = Field(
+        None, description="Filter for free (true) or paid (false) events"
+    )
+    price_min: float | None = Field(None)
+    price_max: float | None = Field(None)
 
     @property
     def parsed_tags(self) -> list[str] | None:
@@ -25,10 +38,11 @@ class EventQuery(BaseModel):
 
 
 class IntlData(BaseModel):
-    event_edition: str
-    cost: str
-    banner_link: str
-    short_description: str
+    event_edition: Optional[str] = None
+    cost: Optional[float] = None
+    currency: Optional[Currency] = None
+    banner_link: Optional[str] = None
+    short_description: Optional[str] = None
 
 
 class Event(BaseModel):
@@ -37,13 +51,15 @@ class Event(BaseModel):
     event_name: str
     start_datetime: datetime
     end_datetime: datetime
-    address: str | None = None
-    maps_link: str | None = None
+    address: Optional[str] = None
+    maps_link: Optional[str] = None
     online: bool
-    event_link: str | None = None
+    event_link: Optional[str] = None
     status: str
-    tags: list[str] = []
-    intl: dict[str, IntlData] = {}
+    tags: List[str] = []
+    state: States
+    is_free: bool
+    intl: Dict[str, IntlData] = {}
 
 
 class EventIn(BaseModel):
@@ -51,12 +67,14 @@ class EventIn(BaseModel):
     event_name: str
     start_datetime: datetime
     end_datetime: datetime
-    address: str | None = None
-    maps_link: str | None = None
+    address: Optional[str] = None
+    maps_link: Optional[str] = None
     online: bool
-    event_link: str | None = None
-    tags: list[str] = []
-    intl: dict[str, IntlData] = {}
+    event_link: Optional[str] = None
+    tags: List[str] = []
+    state: States
+    is_free: bool = True
+    intl: Dict[str, IntlData] = {}
 
 
 class EventUpdate(BaseModel):
@@ -68,9 +86,11 @@ class EventUpdate(BaseModel):
     maps_link: Optional[str] = None
     online: Optional[bool] = None
     event_link: Optional[str] = None
-    tags: Optional[list[str]] = None
-    intl: Optional[dict[str, IntlData]] = None
+    tags: Optional[List[str]] = None
+    intl: Optional[Dict[str, IntlData]] = None
     status: Optional[str] = None
+    state: Optional[States] = None
+    is_free: Optional[bool] = None
 
 
 class SubmittedActions(enum.Enum):

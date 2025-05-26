@@ -12,6 +12,44 @@ class EventStatus(enum.Enum):
     declined = "declined"
 
 
+class States(enum.Enum):
+    AC = "Acre"
+    AL = "Alagoas"
+    AP = "Amapá"
+    AM = "Amazonas"
+    BA = "Bahia"
+    CE = "Ceará"
+    DF = "Distrito Federal"
+    ES = "Espírito Santo"
+    GO = "Goiás"
+    MA = "Maranhão"
+    MT = "Mato Grosso"
+    MS = "Mato Grosso do Sul"
+    MG = "Minas Gerais"
+    PA = "Pará"
+    PB = "Paraíba"
+    PR = "Paraná"
+    PE = "Pernambuco"
+    PI = "Piauí"
+    RJ = "Rio de Janeiro"
+    RN = "Rio Grande do Norte"
+    RS = "Rio Grande do Sul"
+    RO = "Rondônia"
+    RR = "Roraima"
+    SC = "Santa Catarina"
+    SP = "São Paulo"
+    SE = "Sergipe"
+    TO = "Tocantins"
+
+
+class Currency(enum.Enum):
+    BRL = "BRL"  # Brazilian Real
+    USD = "USD"  # US Dollar
+    EUR = "EUR"  # Euro
+    AUD = "AUD"  # Australian Dollar
+    CAD = "CAD"  # Canadian Dollar
+
+
 class Event(db.Model):
     __tablename__ = "events"
 
@@ -20,10 +58,19 @@ class Event(db.Model):
     event_name = db.Column(db.String, nullable=False)
     start_datetime = db.Column(db.DateTime, nullable=False)
     end_datetime = db.Column(db.DateTime, nullable=False)
-    address = db.Column(db.String)
     maps_link = db.Column(db.String)
     online = db.Column(db.Boolean, default=False)
     event_link = db.Column(db.String)
+
+    address = db.Column(db.String)
+    state = db.Column(db.Enum(States, name="states"), nullable=False, default=States.SC)
+
+    is_free = db.Column(
+        db.Boolean,
+        default=True,
+        nullable=False,
+        comment="Indicates if the event is free or not",
+    )
 
     status = db.Column(
         Enum(EventStatus, name="event_status"),
@@ -43,8 +90,10 @@ class Event(db.Model):
             "start_datetime": self.start_datetime.isoformat(),
             "end_datetime": self.end_datetime.isoformat(),
             "address": self.address,
+            "state": self.state.value,
             "maps_link": self.maps_link,
             "online": self.online,
+            "is_free": self.is_free,
             "event_link": self.event_link,
             "status": self.status.value,
             "tags": [t.name for t in self.tags],
@@ -52,6 +101,7 @@ class Event(db.Model):
                 intl.lang: {
                     "event_edition": intl.event_edition,
                     "cost": intl.cost,
+                    "currency": intl.currency.value if intl.currency else None,
                     "banner_link": intl.banner_link,
                     "short_description": intl.short_description,
                 }
@@ -64,10 +114,13 @@ class EventIntl(db.Model):
     __tablename__ = "event_intl"
 
     id = db.Column(db.Integer, primary_key=True)
-    event_id = db.Column(db.Integer, db.ForeignKey("events.id", ondelete="CASCADE"))
+    event_id = db.Column(
+        db.Integer, db.ForeignKey("events.id", ondelete="CASCADE"), nullable=False
+    )
     lang = db.Column(db.String, nullable=False)
     event_edition = db.Column(db.String)
-    cost = db.Column(db.String)
+    cost = db.Column(db.Float)
+    currency = db.Column(db.Enum(Currency, name="currencies"), default=Currency.BRL)
     banner_link = db.Column(db.String)
     short_description = db.Column(db.String)
 
@@ -85,7 +138,11 @@ class EventTag(db.Model):
     __tablename__ = "event_tags"
 
     id = db.Column(db.Integer, primary_key=True)
-    event_id = db.Column(db.Integer, db.ForeignKey("events.id", ondelete="CASCADE"))
-    tag_id = db.Column(db.Integer, db.ForeignKey("tags.id", ondelete="CASCADE"))
+    event_id = db.Column(
+        db.Integer, db.ForeignKey("events.id", ondelete="CASCADE"), nullable=False
+    )
+    tag_id = db.Column(
+        db.Integer, db.ForeignKey("tags.id", ondelete="CASCADE"), nullable=False
+    )
 
     __table_args__ = (db.UniqueConstraint("event_id", "tag_id"),)

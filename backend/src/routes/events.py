@@ -40,7 +40,7 @@ logger = logging.getLogger(__name__)
 
 
 @event_bp.get(
-    "/",
+    "",
     tags=[public_tag],
     summary="Retrieve events",
 )
@@ -106,7 +106,7 @@ def update_event(path: EventPath, body: EventUpdate):
 
 
 @event_bp.get(
-    "/submit/review/",
+    "/submit/review",
     tags=[review_tag],
     summary="Retrieve events pending review",
     description="Fetches a list of events that are pending approval by the staff.",
