@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { EventFormValues } from '@/lib/form-schemas';
 import { useLanguage } from '@/context/LanguageContext';
+import { LanguageCodes } from '@/types/language';
 
 export const useFormSteps = (form: UseFormReturn<EventFormValues>) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -31,7 +32,7 @@ export const useFormSteps = (form: UseFormReturn<EventFormValues>) => {
   ];
 
   // Get supported languages
-  const supportedLangs = form.watch('supported_languages') || ['pt-br'];
+  const supportedLangs = form.watch('supported_languages') || [LanguageCodes.PORTUGUESE];
   const primaryLanguage = form.watch('event_language');
 
   // Add translation steps if there are additional languages
@@ -45,7 +46,11 @@ export const useFormSteps = (form: UseFormReturn<EventFormValues>) => {
     translationLanguages.forEach((lang, index) => {
       allSteps.splice(5 + index, 0, {
         title: `${t('form.step.language')} (${
-          lang === 'pt-br' ? 'Português' : lang === 'en-us' ? 'English' : 'Español'
+          lang === LanguageCodes.PORTUGUESE
+            ? 'Português'
+            : lang === LanguageCodes.ENGLISH
+              ? 'English'
+              : 'Español'
         })`,
         description: t('form.step.language.desc'),
       });

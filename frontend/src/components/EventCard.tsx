@@ -9,6 +9,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import EventModal from './EventModal';
 import { useLanguage } from '@/context/LanguageContext';
 import { formatCurrency } from '@/types/currency';
+import { LanguageCodes, LanguageCode } from '@/types/language';
 
 interface EventCardProps {
   event: EventInterface;
@@ -22,20 +23,20 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const firstAvailableTranslation = Object.values(event.intl)[0];
 
   // Tenta obter a tradução para o idioma atual, se não existir, usa a primeira disponível
-  const translation = event.intl[language] || firstAvailableTranslation;
+  const translation = event.intl[language as LanguageCode] || firstAvailableTranslation;
 
   const startDate = parseISO(event.start_datetime);
   const endDate = parseISO(event.end_datetime);
 
   const formatDate = (date: Date) => {
     return format(date, 'PPP', {
-      locale: language === 'pt-br' ? ptBR : undefined,
+      locale: language === LanguageCodes.PORTUGUESE ? ptBR : undefined,
     });
   };
 
   const formatTime = (date: Date) => {
     return format(date, 'p', {
-      locale: language === 'pt-br' ? ptBR : undefined,
+      locale: language === LanguageCodes.PORTUGUESE ? ptBR : undefined,
     });
   };
 

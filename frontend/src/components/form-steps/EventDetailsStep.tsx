@@ -26,7 +26,7 @@ interface EventDetailsStepProps {
 }
 
 const EventDetailsStep: React.FC<EventDetailsStepProps> = ({ form }) => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const costType = form.watch('cost_type');
 
   useEffect(() => {
@@ -155,11 +155,7 @@ const EventDetailsStep: React.FC<EventDetailsStepProps> = ({ form }) => {
             <FormLabel>{t('form.description')}</FormLabel>
             <FormControl>
               <Textarea
-                placeholder={
-                  language === 'pt-br'
-                    ? 'Descreva brevemente o evento (máximo 300 caracteres)'
-                    : 'Briefly describe the event (maximum 300 characters)'
-                }
+                placeholder={t('form.descriptionPlaceholder')}
                 {...field}
                 className="min-h-[100px]"
               />

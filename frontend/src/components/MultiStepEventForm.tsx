@@ -8,6 +8,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { format } from 'date-fns';
 import { Currency } from '@/types/currency';
 import { submitEvent } from '@/services/api';
+import { LanguageCodes } from '@/types/language';
 
 // Import refactored components
 import FormProgress from './form-parts/FormProgress';
@@ -33,8 +34,8 @@ const MultiStepEventForm: React.FC = () => {
       cost_type: 'free',
       cost_value: null,
       cost_currency: null,
-      event_language: 'pt-br',
-      supported_languages: ['pt-br'],
+      event_language: LanguageCodes.PORTUGUESE,
+      supported_languages: [LanguageCodes.PORTUGUESE],
       translations: {},
       start_date: new Date(),
       start_time: '09:00',

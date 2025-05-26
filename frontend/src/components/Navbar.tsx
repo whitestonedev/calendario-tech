@@ -10,19 +10,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useLanguage } from '@/context/LanguageContext';
-
-const getFlagUrl = (lang: string) => {
-  switch (lang) {
-    case 'pt-br':
-      return 'https://flagcdn.com/24x18/br.png';
-    case 'en-us':
-      return 'https://flagcdn.com/24x18/us.png';
-    case 'es-es':
-      return 'https://flagcdn.com/24x18/es.png';
-    default:
-      return 'https://flagcdn.com/24x18/un.png';
-  }
-};
+import { LanguageCodes } from '@/types/language';
+import { getFlagUrl } from '@/lib/flag-utils';
 
 const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -71,24 +60,36 @@ const Navbar: React.FC = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem
-                  onClick={() => setLanguage('pt-br')}
-                  className={language === 'pt-br' ? 'bg-gray-100' : ''}
+                  onClick={() => setLanguage(LanguageCodes.PORTUGUESE)}
+                  className={language === LanguageCodes.PORTUGUESE ? 'bg-gray-100' : ''}
                 >
-                  <img src={getFlagUrl('pt-br')} alt="BR" className="w-5 h-auto mr-2" />
+                  <img
+                    src={getFlagUrl(LanguageCodes.PORTUGUESE)}
+                    alt="BR"
+                    className="w-5 h-auto mr-2"
+                  />
                   Português (BR)
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => setLanguage('en-us')}
-                  className={language === 'en-us' ? 'bg-gray-100' : ''}
+                  onClick={() => setLanguage(LanguageCodes.ENGLISH)}
+                  className={language === LanguageCodes.ENGLISH ? 'bg-gray-100' : ''}
                 >
-                  <img src={getFlagUrl('en-us')} alt="US" className="w-5 h-auto mr-2" />
+                  <img
+                    src={getFlagUrl(LanguageCodes.ENGLISH)}
+                    alt="US"
+                    className="w-5 h-auto mr-2"
+                  />
                   English (US)
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => setLanguage('es-es')}
-                  className={language === 'es-es' ? 'bg-gray-100' : ''}
+                  onClick={() => setLanguage(LanguageCodes.SPANISH)}
+                  className={language === LanguageCodes.SPANISH ? 'bg-gray-100' : ''}
                 >
-                  <img src={getFlagUrl('es-es')} alt="ES" className="w-5 h-auto mr-2" />
+                  <img
+                    src={getFlagUrl(LanguageCodes.SPANISH)}
+                    alt="ES"
+                    className="w-5 h-auto mr-2"
+                  />
                   Español
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -122,22 +123,22 @@ const Navbar: React.FC = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem
-                onClick={() => setLanguage('pt-br')}
-                className={language === 'pt-br' ? 'bg-gray-100' : ''}
+                onClick={() => setLanguage(LanguageCodes.PORTUGUESE)}
+                className={language === LanguageCodes.PORTUGUESE ? 'bg-gray-100' : ''}
               >
                 <img src="https://flagcdn.com/br.svg" alt="BR" className="w-5 h-auto mr-2" />
                 Português (BR)
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => setLanguage('en-us')}
-                className={language === 'en-us' ? 'bg-gray-100' : ''}
+                onClick={() => setLanguage(LanguageCodes.ENGLISH)}
+                className={language === LanguageCodes.ENGLISH ? 'bg-gray-100' : ''}
               >
                 <img src="https://flagcdn.com/us.svg" alt="US" className="w-5 h-auto mr-2" />
                 English (US)
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => setLanguage('es-es')}
-                className={language === 'es-es' ? 'bg-gray-100' : ''}
+                onClick={() => setLanguage(LanguageCodes.SPANISH)}
+                className={language === LanguageCodes.SPANISH ? 'bg-gray-100' : ''}
               >
                 <img src="https://flagcdn.com/es.svg" alt="ES" className="w-5 h-auto mr-2" />
                 Español

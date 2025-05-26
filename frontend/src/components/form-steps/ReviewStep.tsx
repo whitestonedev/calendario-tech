@@ -19,6 +19,8 @@ import { useLanguage } from '@/context/LanguageContext';
 import { UseFormReturn } from 'react-hook-form';
 import { formatCurrency } from '@/types/currency';
 import { statesOfBrazil } from '@/lib/states';
+import { getFlagUrl } from '@/lib/flag-utils';
+import { LanguageCodes, isValidLanguageCode } from '@/types/language';
 
 interface ReviewStepProps {
   form: UseFormReturn<EventFormValues>;
@@ -33,40 +35,34 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ form }) => {
   };
 
   // Get language display info
-  const getLanguageDisplay = (code: string) => {
-    const getFlagUrl = (lang: string) => {
-      switch (lang) {
-        case 'pt-br':
-          return 'https://flagcdn.com/24x18/br.png';
-        case 'en-us':
-          return 'https://flagcdn.com/24x18/us.png';
-        case 'es-es':
-          return 'https://flagcdn.com/24x18/es.png';
-        default:
-          return 'https://flagcdn.com/24x18/un.png';
-      }
-    };
+  const getLanguageDisplay = (lang: string) => {
+    if (!isValidLanguageCode(lang)) {
+      return {
+        name: t('languages.other'),
+        icon: <img src={getFlagUrl(LanguageCodes.PORTUGUESE)} alt="Other" className="h-4 w-4" />,
+      };
+    }
 
-    switch (code) {
-      case 'pt-br':
+    switch (lang) {
+      case LanguageCodes.PORTUGUESE:
         return {
-          name: 'Português (Brasil)',
-          icon: <img src={getFlagUrl('pt-br')} alt="BR" className="w-5 h-auto" />,
+          name: t('languages.pt-br'),
+          icon: <img src={getFlagUrl(lang)} alt="BR" className="h-4 w-4" />,
         };
-      case 'en-us':
+      case LanguageCodes.ENGLISH:
         return {
-          name: 'English (US)',
-          icon: <img src={getFlagUrl('en-us')} alt="US" className="w-5 h-auto" />,
+          name: t('languages.en-us'),
+          icon: <img src={getFlagUrl(lang)} alt="US" className="h-4 w-4" />,
         };
-      case 'es-es':
+      case LanguageCodes.SPANISH:
         return {
-          name: 'Español',
-          icon: <img src={getFlagUrl('es-es')} alt="ES" className="w-5 h-auto" />,
+          name: t('languages.es-es'),
+          icon: <img src={getFlagUrl(lang)} alt="ES" className="h-4 w-4" />,
         };
       default:
         return {
-          name: code,
-          icon: <img src={getFlagUrl('un')} alt="UN" className="w-5 h-auto" />,
+          name: t('languages.other'),
+          icon: <img src={getFlagUrl(LanguageCodes.PORTUGUESE)} alt="Other" className="h-4 w-4" />,
         };
     }
   };
@@ -266,7 +262,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ form }) => {
                 {Object.entries(data.translations).map(([lang, translation]) => {
                   if (!translation) return null;
 
-                  const langDisplay = getLanguageDisplay(lang);
+                  const langDisplay = getLanguageDisplay(lang as string);
 
                   return (
                     <div key={lang} className="space-y-4">

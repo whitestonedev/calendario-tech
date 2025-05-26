@@ -35,6 +35,7 @@ import {
 } from '@/components/ui/accordion';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { LanguageCodes } from '@/types/language';
 
 const Contribute = () => {
   const { t } = useLanguage();
@@ -86,14 +87,14 @@ const Contribute = () => {
         'Comunidade',
       ],
       intl: {
-        'pt-br': {
+        [LanguageCodes.PORTUGUESE]: {
           banner_link: 'https://images.sympla.com.br/67c9b8f5522dc-lg.png',
           cost: 'Gratuito',
           event_edition: 'Edição 7',
           short_description:
             'O reencontro da whiteStone_dev com foco no universo cripto, blockchain, DeFi e NFTs. Uma noite de muito conteúdo, networking e inovação.',
         },
-        'en-us': {
+        [LanguageCodes.ENGLISH]: {
           banner_link: 'https://images.sympla.com.br/67c9b8f5522dc-lg.png',
           cost: 'Free',
           event_edition: 'Edition 7',

@@ -18,6 +18,8 @@ import {
 } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useLanguage } from '@/context/LanguageContext';
+import { LanguageCodes } from '@/types/language';
+import { getFlagUrl } from '@/lib/flag-utils';
 
 interface LanguageStepProps {
   form: UseFormReturn<EventFormValues>;
@@ -26,24 +28,11 @@ interface LanguageStepProps {
 const LanguageStep: React.FC<LanguageStepProps> = ({ form }) => {
   const { t } = useLanguage();
 
-  const getFlagUrl = (lang: string) => {
-    switch (lang) {
-      case 'pt-br':
-        return 'https://flagcdn.com/24x18/br.png';
-      case 'en-us':
-        return 'https://flagcdn.com/24x18/us.png';
-      case 'es-es':
-        return 'https://flagcdn.com/24x18/es.png';
-      default:
-        return 'https://flagcdn.com/24x18/un.png';
-    }
-  };
-
   const getAvailableLanguages = (primaryLanguage: string) => {
     const allLanguages = [
-      { code: 'pt-br', label: 'Português (Brasil)' },
-      { code: 'en-us', label: 'English (US)' },
-      { code: 'es-es', label: 'Español' },
+      { code: LanguageCodes.PORTUGUESE, label: 'Português (Brasil)' },
+      { code: LanguageCodes.ENGLISH, label: 'English (US)' },
+      { code: LanguageCodes.SPANISH, label: 'Español' },
     ];
 
     return allLanguages.filter((lang) => lang.code !== primaryLanguage);
@@ -61,7 +50,6 @@ const LanguageStep: React.FC<LanguageStepProps> = ({ form }) => {
               onValueChange={(value) => {
                 field.onChange(value);
 
-                // Remove o idioma principal da lista de suportados
                 const currentSupported = form.getValues('supported_languages') || [];
                 const newSupported = currentSupported.filter((lang) => lang !== value);
                 form.setValue('supported_languages', newSupported);
@@ -74,21 +62,25 @@ const LanguageStep: React.FC<LanguageStepProps> = ({ form }) => {
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                <SelectItem value="pt-br" className="flex items-center gap-2">
+                <SelectItem value={LanguageCodes.PORTUGUESE} className="flex items-center gap-2">
                   <div className="flex items-center gap-2">
-                    <img src={getFlagUrl('pt-br')} alt="BR" className="w-5 h-auto" />
+                    <img
+                      src={getFlagUrl(LanguageCodes.PORTUGUESE)}
+                      alt="BR"
+                      className="w-5 h-auto"
+                    />
                     <span>Português (Brasil)</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="en-us" className="flex items-center gap-2">
+                <SelectItem value={LanguageCodes.ENGLISH} className="flex items-center gap-2">
                   <div className="flex items-center gap-2">
-                    <img src={getFlagUrl('en-us')} alt="US" className="w-5 h-auto" />
+                    <img src={getFlagUrl(LanguageCodes.ENGLISH)} alt="US" className="w-5 h-auto" />
                     <span>English (US)</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="es-es" className="flex items-center gap-2">
+                <SelectItem value={LanguageCodes.SPANISH} className="flex items-center gap-2">
                   <div className="flex items-center gap-2">
-                    <img src={getFlagUrl('es-es')} alt="ES" className="w-5 h-auto" />
+                    <img src={getFlagUrl(LanguageCodes.SPANISH)} alt="ES" className="w-5 h-auto" />
                     <span>Español</span>
                   </div>
                 </SelectItem>

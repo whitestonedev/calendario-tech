@@ -1,6 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-
-type Language = 'pt-br' | 'en-us' | 'es-es';
+import { createContext, useContext, useState, ReactNode } from 'react';
+import { LanguageCode, LanguageCodes } from '@/types/language';
 
 const translations = {
   'pt-br': {
@@ -95,6 +94,7 @@ const translations = {
     'form.bannerLinkDesc': 'URL para a imagem do banner do evento (recomendado: 800x400px)',
     'form.description': 'Descrição Curta',
     'form.descriptionDesc': 'Uma breve descrição sobre o evento',
+    'form.descriptionPlaceholder': 'Descreva brevemente o evento (máximo 300 caracteres)',
     'form.tagsLabel': 'Tags',
     'form.tagsDesc': 'Selecione as tags que melhor descrevem o evento',
     'form.selectDate': 'Selecione uma data',
@@ -347,6 +347,7 @@ const translations = {
     'form.bannerLinkDesc': 'URL for the event banner image (recommended: 800x400px)',
     'form.description': 'Short Description',
     'form.descriptionDesc': 'A brief description about the event',
+    'form.descriptionPlaceholder': 'Briefly describe the event (maximum 300 characters)',
     'form.tagsLabel': 'Tags',
     'form.tagsDesc': 'Select tags that best describe the event',
     'form.selectDate': 'Select a date',
@@ -597,6 +598,7 @@ const translations = {
     'form.bannerLinkDesc': 'URL para la imagen del banner del evento (recomendado: 800x400px)',
     'form.description': 'Descripción Corta',
     'form.descriptionDesc': 'Una breve descripción sobre el evento',
+    'form.descriptionPlaceholder': 'Describa brevemente el evento (máximo 300 caracteres)',
     'form.tagsLabel': 'Etiquetas',
     'form.tagsDesc': 'Seleccione las etiquetas que mejor describen el evento',
     'form.selectDate': 'Seleccione una fecha',
@@ -760,15 +762,15 @@ const translations = {
 };
 
 type LanguageContextType = {
-  language: Language;
-  setLanguage: (lang: Language) => void;
+  language: LanguageCode;
+  setLanguage: (lang: LanguageCode) => void;
   t: (key: string) => string;
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>('pt-br');
+  const [language, setLanguage] = useState<LanguageCode>(LanguageCodes.PORTUGUESE);
 
   const t = (key: string): string => {
     return translations[language][key as keyof (typeof translations)[typeof language]] || key;

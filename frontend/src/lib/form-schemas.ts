@@ -1,5 +1,6 @@
 import { z, ZodIssueCode } from 'zod';
 import { Currency } from '@/types/currency';
+import { LanguageCode, LanguageCodes } from '@/types/language';
 
 export interface FormEventValues {
   // Basic info
@@ -8,8 +9,8 @@ export interface FormEventValues {
   event_edition: string;
 
   // Language
-  event_language: 'pt-br' | 'en-us' | 'es-es';
-  supported_languages: string[];
+  event_language: LanguageCode;
+  supported_languages: LanguageCode[];
 
   // Date and location
   start_date: Date;
@@ -85,10 +86,10 @@ export const eventFormSchema = z
     event_name: z.string().min(3, {
       message: 'validation.eventName.min',
     }),
-    event_language: z.string().min(1, {
-      message: 'validation.eventLanguage.required',
+    event_language: z.nativeEnum(LanguageCodes, {
+      required_error: 'validation.eventLanguage.required',
     }),
-    supported_languages: z.array(z.string()).default([]),
+    supported_languages: z.array(z.nativeEnum(LanguageCodes)).default([LanguageCodes.PORTUGUESE]),
     start_date: z.date({
       required_error: 'validation.startDate.required',
     }),
