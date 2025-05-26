@@ -63,15 +63,14 @@ const TranslationSchema = z
         ctx.addIssue({
           code: ZodIssueCode.custom,
           path: ["cost_value"],
-          message:
-            "Valor do custo é obrigatório e não pode ser negativo para eventos pagos nesta tradução",
+          message: "validation.translation.costValue.required",
         });
       }
       if (data.cost_currency === undefined || data.cost_currency === null) {
         ctx.addIssue({
           code: ZodIssueCode.custom,
           path: ["cost_currency"],
-          message: "Moeda é obrigatória para eventos pagos nesta tradução",
+          message: "validation.translation.costCurrency.required",
         });
       }
     }
@@ -80,26 +79,26 @@ const TranslationSchema = z
 export const eventFormSchema = z
   .object({
     organization_name: z.string().min(2, {
-      message: "Nome da organização deve ter pelo menos 2 caracteres",
+      message: "validation.orgName.min",
     }),
     event_name: z.string().min(3, {
-      message: "Nome do evento deve ter pelo menos 3 caracteres",
+      message: "validation.eventName.min",
     }),
     event_language: z.string().min(1, {
-      message: "Selecione um idioma",
+      message: "validation.eventLanguage.required",
     }),
     supported_languages: z.array(z.string()).default([]),
     start_date: z.date({
-      required_error: "Data de início é obrigatória",
+      required_error: "validation.startDate.required",
     }),
     start_time: z.string().regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, {
-      message: "Formato inválido, use HH:MM (ex: 13:30)",
+      message: "validation.startTime.format",
     }),
     end_date: z.date({
-      required_error: "Data de término é obrigatória",
+      required_error: "validation.endDate.required",
     }),
     end_time: z.string().regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, {
-      message: "Formato inválido, use HH:MM (ex: 13:30)",
+      message: "validation.endTime.format",
     }),
     online: z.boolean().default(false),
     address: z.string().refine(
@@ -117,7 +116,7 @@ export const eventFormSchema = z
         return true;
       },
       {
-        message: "O endereço deve ter pelo menos 10 caracteres",
+        message: "validation.address.min",
       }
     ),
     maps_link: z.string().refine(
@@ -145,20 +144,20 @@ export const eventFormSchema = z
         }
       },
       {
-        message: "O link deve ser um endereço válido do Google Maps",
+        message: "validation.mapsLink.invalid",
       }
     ),
     event_link: z.string().url({
-      message: "URL do evento inválida",
+      message: "validation.eventLink.invalid",
     }),
     tags: z.array(z.string()).min(1, {
-      message: "Selecione pelo menos uma tag",
+      message: "validation.tags.min",
     }),
     event_edition: z.string().min(1, {
-      message: "Edição do evento é obrigatória",
+      message: "validation.eventEdition.required",
     }),
     cost_type: z.enum(["free", "paid"], {
-      required_error: "Selecione o tipo de custo",
+      required_error: "validation.costType.required",
     }),
     cost_value: z.preprocess(
       (val) => (val === "" ? null : parseFloat(val as string)),
@@ -168,20 +167,18 @@ export const eventFormSchema = z
     banner_link: z
       .string()
       .url({
-        message: "URL do banner inválida",
+        message: "validation.bannerLink.invalid",
       })
       .optional(),
     short_description: z
       .string()
       .min(10, {
-        message: "Descrição deve ter pelo menos 10 caracteres",
+        message: "validation.description.min",
       })
       .max(300, {
-        message: "Descrição não pode ter mais de 300 caracteres",
+        message: "validation.description.max",
       }),
-    recaptcha: z
-      .string()
-      .min(1, { message: "Por favor, complete o reCAPTCHA" }),
+    recaptcha: z.string().min(1, { message: "validation.recaptcha.required" }),
     translations: z.record(TranslationSchema).optional(),
     state: z.string(),
   })
@@ -196,15 +193,14 @@ export const eventFormSchema = z
         ctx.addIssue({
           code: ZodIssueCode.custom,
           path: ["cost_value"],
-          message:
-            "Valor do custo é obrigatório e não pode ser negativo para eventos pagos",
+          message: "validation.costValue.required",
         });
       }
       if (data.cost_currency === undefined || data.cost_currency === null) {
         ctx.addIssue({
           code: ZodIssueCode.custom,
           path: ["cost_currency"],
-          message: "Moeda é obrigatória para eventos pagos",
+          message: "validation.costCurrency.required",
         });
       }
     }
@@ -218,7 +214,7 @@ export const eventFormSchema = z
         ctx.addIssue({
           code: ZodIssueCode.custom,
           path: ["state"],
-          message: "O estado é obrigatório para eventos presenciais",
+          message: "validation.state.required",
         });
       }
 
@@ -231,7 +227,7 @@ export const eventFormSchema = z
         ctx.addIssue({
           code: ZodIssueCode.custom,
           path: ["maps_link"],
-          message: "O link do mapa é obrigatório para eventos presenciais",
+          message: "validation.mapsLink.required",
         });
       }
     }

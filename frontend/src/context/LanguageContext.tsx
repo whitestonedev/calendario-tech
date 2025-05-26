@@ -228,6 +228,41 @@ const translations = {
     "contribute.filterByDateFrom":
       "Buscar eventos a partir de uma data específica:",
     "contribute.filterByDateRange": "Ou dentro de um intervalo de datas:",
+
+    // Form validation errors
+    "validation.orgName.min":
+      "Nome da organização deve ter pelo menos 2 caracteres",
+    "validation.eventName.min":
+      "Nome do evento deve ter pelo menos 3 caracteres",
+    "validation.eventLanguage.required": "Selecione um idioma",
+    "validation.startDate.required": "Data de início é obrigatória",
+    "validation.startTime.format": "Formato inválido, use HH:MM (ex: 13:30)",
+    "validation.endDate.required": "Data de término é obrigatória",
+    "validation.endTime.format": "Formato inválido, use HH:MM (ex: 13:30)",
+    "validation.address.min": "O endereço deve ter pelo menos 10 caracteres",
+    "validation.mapsLink.invalid":
+      "O link deve ser um endereço válido do Google Maps",
+    "validation.eventLink.invalid": "URL do evento inválida",
+    "validation.tags.min": "Selecione pelo menos uma tag",
+    "validation.eventEdition.required": "Edição do evento é obrigatória",
+    "validation.costType.required": "Selecione o tipo de custo",
+    "validation.costValue.required":
+      "Valor do custo é obrigatório e não pode ser negativo para eventos pagos",
+    "validation.costCurrency.required":
+      "Moeda é obrigatória para eventos pagos",
+    "validation.bannerLink.invalid": "URL do banner inválida",
+    "validation.description.min": "Descrição deve ter pelo menos 10 caracteres",
+    "validation.description.max":
+      "Descrição não pode ter mais de 300 caracteres",
+    "validation.recaptcha.required": "Por favor, complete o reCAPTCHA",
+    "validation.state.required":
+      "O estado é obrigatório para eventos presenciais",
+    "validation.mapsLink.required":
+      "O link do mapa é obrigatório para eventos presenciais",
+    "validation.translation.costValue.required":
+      "Valor do custo é obrigatório e não pode ser negativo para eventos pagos nesta tradução",
+    "validation.translation.costCurrency.required":
+      "Moeda é obrigatória para eventos pagos nesta tradução",
   },
   "en-us": {
     // Navbar
@@ -444,6 +479,38 @@ const translations = {
     "contribute.filterByDate": "Filter by date",
     "contribute.filterByDateFrom": "Search for events from a specific date:",
     "contribute.filterByDateRange": "Or within a date range:",
+
+    // Form validation errors
+    "validation.orgName.min":
+      "Organization name must have at least 2 characters",
+    "validation.eventName.min": "Event name must have at least 3 characters",
+    "validation.eventLanguage.required": "Please select a language",
+    "validation.startDate.required": "Start date is required",
+    "validation.startTime.format": "Invalid format, use HH:MM (ex: 13:30)",
+    "validation.endDate.required": "End date is required",
+    "validation.endTime.format": "Invalid format, use HH:MM (ex: 13:30)",
+    "validation.address.min": "Address must have at least 10 characters",
+    "validation.mapsLink.invalid":
+      "The link must be a valid Google Maps address",
+    "validation.eventLink.invalid": "Invalid event URL",
+    "validation.tags.min": "Select at least one tag",
+    "validation.eventEdition.required": "Event edition is required",
+    "validation.costType.required": "Please select the cost type",
+    "validation.costValue.required":
+      "Cost value is required and cannot be negative for paid events",
+    "validation.costCurrency.required": "Currency is required for paid events",
+    "validation.bannerLink.invalid": "Invalid banner URL",
+    "validation.description.min":
+      "Description must have at least 10 characters",
+    "validation.description.max":
+      "Description cannot have more than 300 characters",
+    "validation.recaptcha.required": "Please complete the reCAPTCHA",
+    "validation.state.required": "State is required for in-person events",
+    "validation.mapsLink.required": "Map link is required for in-person events",
+    "validation.translation.costValue.required":
+      "Cost value is required and cannot be negative for paid events in this translation",
+    "validation.translation.costCurrency.required":
+      "Currency is required for paid events in this translation",
   },
   "es-es": {
     // Navbar
@@ -662,6 +729,42 @@ const translations = {
     "contribute.filterByDateFrom":
       "Buscar eventos a partir de una fecha específica:",
     "contribute.filterByDateRange": "O dentro de un rango de fechas:",
+
+    // Form validation errors
+    "validation.orgName.min":
+      "El nombre de la organización debe tener al menos 2 caracteres",
+    "validation.eventName.min":
+      "El nombre del evento debe tener al menos 3 caracteres",
+    "validation.eventLanguage.required": "Por favor seleccione un idioma",
+    "validation.startDate.required": "La fecha de inicio es obligatoria",
+    "validation.startTime.format": "Formato inválido, use HH:MM (ej: 13:30)",
+    "validation.endDate.required": "La fecha de finalización es obligatoria",
+    "validation.endTime.format": "Formato inválido, use HH:MM (ej: 13:30)",
+    "validation.address.min": "La dirección debe tener al menos 10 caracteres",
+    "validation.mapsLink.invalid":
+      "El enlace debe ser una dirección válida de Google Maps",
+    "validation.eventLink.invalid": "URL del evento inválida",
+    "validation.tags.min": "Seleccione al menos una etiqueta",
+    "validation.eventEdition.required": "La edición del evento es obligatoria",
+    "validation.costType.required": "Por favor seleccione el tipo de costo",
+    "validation.costValue.required":
+      "El valor del costo es obligatorio y no puede ser negativo para eventos pagos",
+    "validation.costCurrency.required":
+      "La moneda es obligatoria para eventos pagos",
+    "validation.bannerLink.invalid": "URL del banner inválida",
+    "validation.description.min":
+      "La descripción debe tener al menos 10 caracteres",
+    "validation.description.max":
+      "La descripción no puede tener más de 300 caracteres",
+    "validation.recaptcha.required": "Por favor complete el reCAPTCHA",
+    "validation.state.required":
+      "El estado es obligatorio para eventos presenciales",
+    "validation.mapsLink.required":
+      "El enlace del mapa es obligatorio para eventos presenciales",
+    "validation.translation.costValue.required":
+      "El valor del costo es obligatorio y no puede ser negativo para eventos pagos en esta traducción",
+    "validation.translation.costCurrency.required":
+      "La moneda es obligatoria para eventos pagos en esta traducción",
   },
 };
 
