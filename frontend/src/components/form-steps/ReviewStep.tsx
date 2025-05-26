@@ -5,8 +5,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import {
-  Flag,
-  GlobeIcon,
   Building2,
   Calendar,
   MapPin,
@@ -36,21 +34,40 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ form }) => {
 
   // Get language display info
   const getLanguageDisplay = (code: string) => {
+    const getFlagUrl = (lang: string) => {
+      switch (lang) {
+        case 'pt-br':
+          return 'https://flagcdn.com/24x18/br.png';
+        case 'en-us':
+          return 'https://flagcdn.com/24x18/us.png';
+        case 'es-es':
+          return 'https://flagcdn.com/24x18/es.png';
+        default:
+          return 'https://flagcdn.com/24x18/un.png';
+      }
+    };
+
     switch (code) {
       case 'pt-br':
         return {
           name: 'Português (Brasil)',
-          icon: <Flag className="h-4 w-4" />,
+          icon: <img src={getFlagUrl('pt-br')} alt="BR" className="w-5 h-auto" />,
         };
       case 'en-us':
         return {
           name: 'English (US)',
-          icon: <GlobeIcon className="h-4 w-4" />,
+          icon: <img src={getFlagUrl('en-us')} alt="US" className="w-5 h-auto" />,
         };
       case 'es-es':
-        return { name: 'Español', icon: <Flag className="h-4 w-4" /> };
+        return {
+          name: 'Español',
+          icon: <img src={getFlagUrl('es-es')} alt="ES" className="w-5 h-auto" />,
+        };
       default:
-        return { name: code, icon: <GlobeIcon className="h-4 w-4" /> };
+        return {
+          name: code,
+          icon: <img src={getFlagUrl('un')} alt="UN" className="w-5 h-auto" />,
+        };
     }
   };
 

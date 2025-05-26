@@ -17,7 +17,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Flag, GlobeIcon } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 interface LanguageStepProps {
@@ -26,6 +25,29 @@ interface LanguageStepProps {
 
 const LanguageStep: React.FC<LanguageStepProps> = ({ form }) => {
   const { t } = useLanguage();
+
+  const getFlagUrl = (lang: string) => {
+    switch (lang) {
+      case 'pt-br':
+        return 'https://flagcdn.com/24x18/br.png';
+      case 'en-us':
+        return 'https://flagcdn.com/24x18/us.png';
+      case 'es-es':
+        return 'https://flagcdn.com/24x18/es.png';
+      default:
+        return 'https://flagcdn.com/24x18/un.png';
+    }
+  };
+
+  const getAvailableLanguages = (primaryLanguage: string) => {
+    const allLanguages = [
+      { code: 'pt-br', label: 'Português (Brasil)' },
+      { code: 'en-us', label: 'English (US)' },
+      { code: 'es-es', label: 'Español' },
+    ];
+
+    return allLanguages.filter((lang) => lang.code !== primaryLanguage);
+  };
 
   return (
     <div className="space-y-6">
@@ -39,11 +61,10 @@ const LanguageStep: React.FC<LanguageStepProps> = ({ form }) => {
               onValueChange={(value) => {
                 field.onChange(value);
 
-                // Ensure the primary language is always in the supported languages
+                // Remove o idioma principal da lista de suportados
                 const currentSupported = form.getValues('supported_languages') || [];
-                if (!currentSupported.includes(value)) {
-                  form.setValue('supported_languages', [...currentSupported, value]);
-                }
+                const newSupported = currentSupported.filter((lang) => lang !== value);
+                form.setValue('supported_languages', newSupported);
               }}
               defaultValue={field.value}
             >
@@ -55,19 +76,19 @@ const LanguageStep: React.FC<LanguageStepProps> = ({ form }) => {
               <SelectContent>
                 <SelectItem value="pt-br" className="flex items-center gap-2">
                   <div className="flex items-center gap-2">
-                    <Flag className="h-4 w-4" />
+                    <img src={getFlagUrl('pt-br')} alt="BR" className="w-5 h-auto" />
                     <span>Português (Brasil)</span>
                   </div>
                 </SelectItem>
                 <SelectItem value="en-us" className="flex items-center gap-2">
                   <div className="flex items-center gap-2">
-                    <GlobeIcon className="h-4 w-4" />
+                    <img src={getFlagUrl('en-us')} alt="US" className="w-5 h-auto" />
                     <span>English (US)</span>
                   </div>
                 </SelectItem>
                 <SelectItem value="es-es" className="flex items-center gap-2">
                   <div className="flex items-center gap-2">
-                    <Flag className="h-4 w-4" />
+                    <img src={getFlagUrl('es-es')} alt="ES" className="w-5 h-auto" />
                     <span>Español</span>
                   </div>
                 </SelectItem>
@@ -79,105 +100,51 @@ const LanguageStep: React.FC<LanguageStepProps> = ({ form }) => {
         )}
       />
 
-      <FormField
-        control={form.control}
-        name="supported_languages"
-        render={() => (
-          <FormItem>
-            <div className="mb-4">
-              <FormLabel>{t('form.addLanguage')}</FormLabel>
-              <FormDescription>{t('form.language.translation')}</FormDescription>
-            </div>
-            <div className="grid gap-2">
-              <FormField
-                control={form.control}
-                name="supported_languages"
-                render={({ field }) => {
-                  // Safely handle the field value as string[]
-                  const value = (field.value as string[]) || [];
+      <div className="space-y-4">
+        <FormLabel>{t('form.addLanguage')}</FormLabel>
+        <FormDescription>{t('form.language.translation')}</FormDescription>
 
-                  return (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={value.includes('pt-br')}
-                          onCheckedChange={(checked) => {
-                            const newValue = checked
-                              ? [...value, 'pt-br']
-                              : value.filter((v) => v !== 'pt-br');
-                            field.onChange(newValue);
-                          }}
-                        />
-                      </FormControl>
-                      <div className="space-y-1 leading-none flex items-center gap-2">
-                        <Flag className="h-4 w-4" />
-                        <FormLabel>Português (Brasil)</FormLabel>
-                      </div>
-                    </FormItem>
-                  );
-                }}
-              />
-              <FormField
-                control={form.control}
-                name="supported_languages"
-                render={({ field }) => {
-                  // Safely handle the field value as string[]
-                  const value = (field.value as string[]) || [];
+        <FormField
+          control={form.control}
+          name="supported_languages"
+          render={({ field }) => {
+            const primaryLanguage = form.getValues('event_language');
+            const availableLanguages = getAvailableLanguages(primaryLanguage);
+            const value = (field.value as string[]) || [];
 
-                  return (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={value.includes('en-us')}
-                          onCheckedChange={(checked) => {
-                            const newValue = checked
-                              ? [...value, 'en-us']
-                              : value.filter((v) => v !== 'en-us');
-                            field.onChange(newValue);
-                          }}
-                        />
-                      </FormControl>
-                      <div className="space-y-1 leading-none flex items-center gap-2">
-                        <GlobeIcon className="h-4 w-4" />
-                        <FormLabel>English (US)</FormLabel>
-                      </div>
-                    </FormItem>
-                  );
-                }}
-              />
-              <FormField
-                control={form.control}
-                name="supported_languages"
-                render={({ field }) => {
-                  // Safely handle the field value as string[]
-                  const value = (field.value as string[]) || [];
-
-                  return (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={value.includes('es-es')}
-                          onCheckedChange={(checked) => {
-                            const newValue = checked
-                              ? [...value, 'es-es']
-                              : value.filter((v) => v !== 'es-es');
-                            field.onChange(newValue);
-                          }}
-                        />
-                      </FormControl>
-                      <div className="space-y-1 leading-none flex items-center gap-2">
-                        <Flag className="h-4 w-4" />
-                        <FormLabel>Español</FormLabel>
-                      </div>
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+            return (
+              <div className="space-y-4">
+                {availableLanguages.map((lang) => (
+                  <FormItem
+                    key={lang.code}
+                    className="flex flex-row items-start space-x-3 space-y-0"
+                  >
+                    <FormControl>
+                      <Checkbox
+                        checked={value.includes(lang.code)}
+                        onCheckedChange={(checked) => {
+                          const newValue = checked
+                            ? [...value, lang.code]
+                            : value.filter((v) => v !== lang.code);
+                          field.onChange(newValue);
+                        }}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none flex items-center gap-2">
+                      <img
+                        src={getFlagUrl(lang.code)}
+                        alt={lang.code.toUpperCase()}
+                        className="w-5 h-auto"
+                      />
+                      <FormLabel>{lang.label}</FormLabel>
+                    </div>
+                  </FormItem>
+                ))}
+              </div>
+            );
+          }}
+        />
+      </div>
     </div>
   );
 };
