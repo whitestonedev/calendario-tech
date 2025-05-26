@@ -6,7 +6,8 @@ import { eventFormSchema, EventFormValues } from '@/lib/form-schemas';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/context/LanguageContext';
 import { format } from 'date-fns';
-import { CurrencySymbol, Currency } from '@/types/currency';
+import { Currency } from '@/types/currency';
+import { submitEvent } from '@/services/api';
 
 // Import refactored components
 import FormProgress from './form-parts/FormProgress';
@@ -88,17 +89,14 @@ const MultiStepEventForm: React.FC = () => {
     type: 'free' | 'paid' | undefined,
     value: number | null | undefined,
     currency: Currency | null | undefined,
-    lang: string
-  ): string | undefined => {
+    _lang: string
+  ): number | undefined => {
     if (type === 'free') {
-      // Usar a tradução correta para Gratuito
-      if (lang === 'pt-br') return 'Gratuito';
-      if (lang === 'es-es') return 'Gratis';
-      return 'Free';
+      return 0;
     } else if (type === 'paid' && value !== undefined && value !== null && currency) {
-      return `${CurrencySymbol[currency]}${value.toFixed(2)}`;
+      return value;
     }
-    return undefined; // Retorna undefined se pago mas incompleto
+    return undefined;
   };
 
   // Handle form submission
@@ -149,20 +147,21 @@ const MultiStepEventForm: React.FC = () => {
         },
       };
 
+      await submitEvent(_eventData);
+
       toast({
         title: t('toast.eventSubmitted'),
         description: t('toast.eventSubmittedDesc'),
       });
 
       setIsSubmitted(true);
-
       form.reset();
     } catch (error) {
       console.error('Erro detalhado na submissão:', error);
 
       const errorMessage =
         error instanceof Error
-          ? error.message
+          ? t(error.message)
           : typeof error === 'string'
             ? error
             : t('error.submissionDesc');

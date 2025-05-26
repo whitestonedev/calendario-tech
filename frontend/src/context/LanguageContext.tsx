@@ -131,6 +131,11 @@ const translations = {
     // Toast messages
     'toast.eventSubmitted': 'Evento submetido!',
     'toast.eventSubmittedDesc': 'Seu evento foi submetido para aprovação.',
+    'error.submission': 'Erro na submissão',
+    'error.submissionDesc': 'Ocorreu um erro ao submeter o evento.',
+    'error.duplicateEvent': 'Não é possível submeter um evento duplicado',
+    'error.duplicateEventDesc':
+      'Já existe um evento com o mesmo nome, organização e data de início.',
 
     // Submit dialog
     'dialog.title': 'Submeter novo evento',
@@ -376,6 +381,11 @@ const translations = {
     // Toast messages
     'toast.eventSubmitted': 'Event submitted!',
     'toast.eventSubmittedDesc': 'Your event has been submitted for approval.',
+    'error.submission': 'Submission error',
+    'error.submissionDesc': 'An error occurred while submitting the event.',
+    'error.duplicateEvent': 'Cannot submit duplicate event',
+    'error.duplicateEventDesc':
+      'An event with the same name, organization and start date already exists.',
 
     // Submit dialog
     'dialog.title': 'Submit new event',
@@ -619,6 +629,11 @@ const translations = {
     // Toast messages
     'toast.eventSubmitted': '¡Evento enviado!',
     'toast.eventSubmittedDesc': 'Su evento ha sido enviado para aprobación.',
+    'error.submission': 'Error de envío',
+    'error.submissionDesc': 'Ocurrió un error al enviar el evento.',
+    'error.duplicateEvent': 'No se puede enviar un evento duplicado',
+    'error.duplicateEventDesc':
+      'Ya existe un evento con el mismo nombre, organización y fecha de inicio.',
 
     // Submit dialog
     'dialog.title': 'Enviar nuevo evento',

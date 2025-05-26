@@ -40,9 +40,9 @@ export const fetchEvents = async (
   endDate: string
 ): Promise<EventInterface[]> => {
   try {
-    const response = await fetch(
-      `${API_BASE_URL}/events?date_start_range=${startDate}&date_end_range=${endDate}`
-    );
+    const url = `${API_BASE_URL}/events?date_start_range=${startDate}&date_end_range=${endDate}`;
+
+    const response = await fetch(url);
 
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
@@ -77,6 +77,7 @@ export const submitEvent = async (eventData: EventSubmission): Promise<EventInte
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify(eventData),
     });
@@ -84,6 +85,11 @@ export const submitEvent = async (eventData: EventSubmission): Promise<EventInte
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
       console.error('Erro da API:', errorData);
+
+      if (errorData?.error?.includes('Event already exists')) {
+        throw new Error('error.duplicateEvent');
+      }
+
       throw new Error(
         errorData?.detail || `API error: ${response.status} - ${response.statusText}`
       );

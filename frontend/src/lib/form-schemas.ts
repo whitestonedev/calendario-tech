@@ -97,52 +97,8 @@ export const eventFormSchema = z
       message: 'validation.endTime.format',
     }),
     online: z.boolean().default(false),
-    address: z.string().refine(
-      (val) => {
-        const normalizedAddress = val?.trim();
-
-        if (!normalizedAddress) {
-          return false;
-        }
-
-        if (normalizedAddress.length < 10) {
-          return false;
-        }
-
-        return true;
-      },
-      {
-        message: 'validation.address.min',
-      }
-    ),
-    maps_link: z.string().refine(
-      (val) => {
-        const normalizedLink = val?.trim();
-
-        if (!normalizedLink) {
-          return false;
-        }
-
-        try {
-          const url = new URL(normalizedLink);
-          const isValidGoogleMaps =
-            url.hostname.includes('google.com') ||
-            url.hostname.includes('goo.gl') ||
-            url.hostname.includes('maps.app.goo.gl');
-
-          if (!isValidGoogleMaps) {
-            return false;
-          }
-
-          return true;
-        } catch {
-          return false;
-        }
-      },
-      {
-        message: 'validation.mapsLink.invalid',
-      }
-    ),
+    address: z.string().optional(),
+    maps_link: z.string().optional(),
     event_link: z.string().url({
       message: 'validation.eventLink.invalid',
     }),
@@ -184,7 +140,7 @@ export const eventFormSchema = z
       }),
     recaptcha: z.string().min(1, { message: 'validation.recaptcha.required' }),
     translations: z.record(TranslationSchema).optional(),
-    state: z.string(),
+    state: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     // Validação cruzada para campos de custo principais
@@ -211,7 +167,46 @@ export const eventFormSchema = z
         });
       }
     }
+
     if (!data.online) {
+      if (!data.address || data.address.trim().length < 10) {
+        ctx.addIssue({
+          code: ZodIssueCode.custom,
+          path: ['address'],
+          message: 'validation.address.min',
+        });
+      }
+
+      if (!data.maps_link) {
+        ctx.addIssue({
+          code: ZodIssueCode.custom,
+          path: ['maps_link'],
+          message: 'validation.mapsLink.required',
+        });
+      } else {
+        try {
+          const url = new URL(data.maps_link);
+          const isValidGoogleMaps =
+            url.hostname.includes('google.com') ||
+            url.hostname.includes('goo.gl') ||
+            url.hostname.includes('maps.app.goo.gl');
+
+          if (!isValidGoogleMaps) {
+            ctx.addIssue({
+              code: ZodIssueCode.custom,
+              path: ['maps_link'],
+              message: 'validation.mapsLink.invalid',
+            });
+          }
+        } catch {
+          ctx.addIssue({
+            code: ZodIssueCode.custom,
+            path: ['maps_link'],
+            message: 'validation.mapsLink.invalid',
+          });
+        }
+      }
+
       if (
         !data.state ||
         data.state.trim() === '' ||
@@ -222,19 +217,6 @@ export const eventFormSchema = z
           code: ZodIssueCode.custom,
           path: ['state'],
           message: 'validation.state.required',
-        });
-      }
-
-      if (
-        !data.maps_link ||
-        data.maps_link.trim() === '' ||
-        data.maps_link === 'undefined' ||
-        data.maps_link === 'null'
-      ) {
-        ctx.addIssue({
-          code: ZodIssueCode.custom,
-          path: ['maps_link'],
-          message: 'validation.mapsLink.required',
         });
       }
     }
