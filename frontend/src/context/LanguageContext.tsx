@@ -247,8 +247,8 @@ const translations = {
     "validation.tags.min": "Selecione pelo menos uma tag",
     "validation.eventEdition.required": "Edição do evento é obrigatória",
     "validation.costType.required": "Selecione o tipo de custo",
-    "validation.costValue.required":
-      "Valor do custo é obrigatório e não pode ser negativo para eventos pagos",
+    "validation.costValue.required": "Digite um valor válido ex: 29.90",
+    "validation.costValue.invalid": "Digite um valor válido ex: 29.90",
     "validation.costCurrency.required":
       "Moeda é obrigatória para eventos pagos",
     "validation.bannerLink.invalid": "URL do banner inválida",
@@ -505,8 +505,8 @@ const translations = {
     "validation.tags.min": "Select at least one tag",
     "validation.eventEdition.required": "Event edition is required",
     "validation.costType.required": "Please select the cost type",
-    "validation.costValue.required":
-      "Cost value is required and cannot be negative for paid events",
+    "validation.costValue.required": "Enter a valid value ex: 29.90",
+    "validation.costValue.invalid": "Enter a valid value ex: 29.90",
     "validation.costCurrency.required": "Currency is required for paid events",
     "validation.bannerLink.invalid": "Invalid banner URL",
     "validation.description.min":
@@ -762,8 +762,8 @@ const translations = {
     "validation.tags.min": "Seleccione al menos una etiqueta",
     "validation.eventEdition.required": "La edición del evento es obligatoria",
     "validation.costType.required": "Por favor seleccione el tipo de costo",
-    "validation.costValue.required":
-      "El valor del costo es obligatorio y no puede ser negativo para eventos pagos",
+    "validation.costValue.required": "Ingrese un valor válido ej: 29.90",
+    "validation.costValue.invalid": "Ingrese un valor válido ej: 29.90",
     "validation.costCurrency.required":
       "La moneda es obligatoria para eventos pagos",
     "validation.bannerLink.invalid": "URL del banner inválida",

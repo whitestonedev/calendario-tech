@@ -55,11 +55,7 @@ const TranslationSchema = z
   })
   .superRefine((data, ctx) => {
     if (data.cost_type === "paid") {
-      if (
-        data.cost_value === undefined ||
-        data.cost_value === null ||
-        data.cost_value < 0
-      ) {
+      if (data.cost_value === undefined || data.cost_value === null) {
         ctx.addIssue({
           code: ZodIssueCode.custom,
           path: ["cost_value"],
@@ -160,10 +156,18 @@ export const eventFormSchema = z
       required_error: "validation.costType.required",
     }),
     cost_value: z.preprocess(
-      (val) => (val === "" ? null : parseFloat(val as string)),
-      z.number().nullable().optional()
+      (val) => {
+        if (val === "" || val === null || val === undefined) return null;
+        const num = parseFloat(val as string);
+        return isNaN(num) ? null : num;
+      },
+      z
+        .number({
+          invalid_type_error: "validation.costValue.invalid",
+        })
+        .nullable()
     ),
-    cost_currency: z.nativeEnum(Currency).nullable().optional(),
+    cost_currency: z.nativeEnum(Currency).nullable(),
     banner_link: z
       .string()
       .url({
@@ -185,18 +189,21 @@ export const eventFormSchema = z
   .superRefine((data, ctx) => {
     // Validação cruzada para campos de custo principais
     if (data.cost_type === "paid") {
-      if (
-        data.cost_value === undefined ||
-        data.cost_value === null ||
-        data.cost_value < 0
-      ) {
+      if (data.cost_value === null || data.cost_value === undefined) {
         ctx.addIssue({
           code: ZodIssueCode.custom,
           path: ["cost_value"],
           message: "validation.costValue.required",
         });
+      } else if (data.cost_value < 0) {
+        ctx.addIssue({
+          code: ZodIssueCode.custom,
+          path: ["cost_value"],
+          message: "validation.costValue.invalid",
+        });
       }
-      if (data.cost_currency === undefined || data.cost_currency === null) {
+
+      if (data.cost_currency === null || data.cost_currency === undefined) {
         ctx.addIssue({
           code: ZodIssueCode.custom,
           path: ["cost_currency"],

@@ -78,18 +78,34 @@ export const useFormSteps = (form: UseFormReturn<EventFormValues>) => {
         }
         break;
       case 3:
-        fieldsToValidate = [
-          "event_link",
-          "cost_type",
-          "cost_value",
-          "cost_currency",
-          "short_description",
-        ];
+        fieldsToValidate = ["event_link", "cost_type", "short_description"];
+
+        if (form.getValues("cost_type") === "paid") {
+          fieldsToValidate.push("cost_value", "cost_currency");
+
+          const costValue = form.getValues("cost_value");
+          const costCurrency = form.getValues("cost_currency");
+
+          if (costValue === null || costValue === undefined) {
+            form.setError("cost_value", {
+              type: "manual",
+              message: t("validation.costValue.required"),
+            });
+            return;
+          }
+
+          if (costCurrency === null || costCurrency === undefined) {
+            form.setError("cost_currency", {
+              type: "manual",
+              message: t("validation.costCurrency.required"),
+            });
+            return;
+          }
+        }
         break;
       case 4:
         fieldsToValidate = ["tags"];
         break;
-      // Translation steps are optional
       case allSteps.length - 2:
         fieldsToValidate = ["recaptcha"];
         recaptchaValue = form.getValues("recaptcha");
@@ -98,19 +114,13 @@ export const useFormSteps = (form: UseFormReturn<EventFormValues>) => {
         break;
     }
 
-    // Verificação extra para garantir que o Turnstile foi completado
-    if (currentStep === allSteps.length - 2 && !recaptchaValue) {
-      form.setError("recaptcha", {
-        type: "manual",
-        message: t("validation.recaptcha.required"),
-      });
-      return;
-    }
-
-    // Check if the current step fields are valid
     const isStepValid = await form.trigger(fieldsToValidate);
 
-    if (isStepValid) {
+    const hasErrors = fieldsToValidate.some(
+      (field) => form.formState.errors[field]
+    );
+
+    if (isStepValid && !hasErrors) {
       if (currentStep < allSteps.length - 1) {
         setCurrentStep((prev) => prev + 1);
       }
