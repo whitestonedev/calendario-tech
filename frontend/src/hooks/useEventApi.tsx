@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { format, addMonths, parseISO, isSameDay } from 'date-fns';
-import { fetchEvents } from '@/services/api';
+import { fetchEvents, searchEvents } from '@/services/api';
 import { EventInterface } from '@/types/event';
+import { FilterState } from '@/components/EventFilters';
 
 export const useEventApi = (initialSearchTerm: string = '') => {
   const [events, setEvents] = useState<EventInterface[]>([]);
@@ -68,6 +69,21 @@ export const useEventApi = (initialSearchTerm: string = '') => {
     return eventDates.some((eventDate) => isSameDay(eventDate, date));
   };
 
+  const searchWithFilters = async (_filters: FilterState) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const data = await searchEvents(_filters);
+      setEvents(data);
+    } catch (err) {
+      setError('Failed to fetch events.');
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     events,
     filteredEvents,
@@ -77,5 +93,6 @@ export const useEventApi = (initialSearchTerm: string = '') => {
     setSearchTerm,
     eventDates,
     hasEventsOnDate,
+    searchWithFilters,
   };
 };

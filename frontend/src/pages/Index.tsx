@@ -35,6 +35,7 @@ const Index = () => {
     isLoading,
     error,
     setSearchTerm,
+    searchWithFilters,
   } = useEventApi();
 
   const eventsSource = events;
@@ -137,6 +138,11 @@ const Index = () => {
     if (newFilters.search !== filters.search) {
       setSearchTerm(newFilters.search);
     }
+  };
+
+  const handleSearch = (searchFilters: FilterState) => {
+    setFilters(searchFilters);
+    searchWithFilters(searchFilters);
   };
 
   const clearDateFilter = () => {
@@ -255,6 +261,7 @@ const Index = () => {
             filters={filters}
             onFilterChange={handleFilterChange}
             availableTags={allTags}
+            onSearch={handleSearch}
           />
 
           <div className="flex items-center justify-between mb-6">

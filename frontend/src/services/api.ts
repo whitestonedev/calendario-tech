@@ -1,6 +1,7 @@
 import { EventInterface } from '@/types/event';
-
-const API_BASE_URL = 'https://api.calendario.tech';
+import { FilterState } from '@/components/EventFilters';
+import { buildSearchUrl } from './urlBuilder';
+import { API_BASE_URL } from '@/config/constants';
 
 export interface ApiResponse {
   events: EventInterface[];
@@ -100,5 +101,22 @@ export const submitEvent = async (eventData: EventSubmission): Promise<EventInte
   } catch (error) {
     console.error('Erro detalhado na submissão:', error);
     throw error;
+  }
+};
+
+export const searchEvents = async (filters: FilterState): Promise<EventInterface[]> => {
+  try {
+    const url = buildSearchUrl(filters);
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+
+    const data: EventInterface[] = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Failed to search events.', error);
+    return [];
   }
 };

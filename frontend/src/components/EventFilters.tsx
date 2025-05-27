@@ -22,8 +22,8 @@ import { statesOfBrazil } from '@/lib/states';
 interface EventFiltersProps {
   onFilterChange: (filters: FilterState) => void;
   availableTags: string[];
-  // Add the filters prop which was referenced in Index.tsx but not defined in the interface
   filters?: FilterState;
+  onSearch: (filters: FilterState) => void;
 }
 
 export interface FilterState {
@@ -43,6 +43,7 @@ const EventFilters: React.FC<EventFiltersProps> = ({
   onFilterChange,
   availableTags,
   filters: externalFilters,
+  onSearch,
 }) => {
   const { t } = useLanguage();
   const [filters, setFilters] = React.useState<FilterState>({
@@ -61,7 +62,7 @@ const EventFilters: React.FC<EventFiltersProps> = ({
   const [isExpanded, setIsExpanded] = React.useState(false);
 
   const handleSearch = () => {
-    console.log('Filtros atuais:', filters);
+    onSearch(filters);
   };
 
   // If external filters are provided, use them
@@ -327,7 +328,7 @@ const EventFilters: React.FC<EventFiltersProps> = ({
                   </SelectTrigger>
                   <SelectContent>
                     {statesOfBrazil.map((state) => (
-                      <SelectItem key={state.value} value={state.label}>
+                      <SelectItem key={state.value} value={state.value}>
                         {state.label}
                       </SelectItem>
                     ))}
