@@ -11,6 +11,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { formatCurrency } from '@/types/currency';
 import { LanguageCodes, LanguageCode } from '@/types/language';
+import { useNavigate } from 'react-router-dom';
 
 interface EventModalProps {
   event: EventInterface;
@@ -21,6 +22,7 @@ interface EventModalProps {
 const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
   const { language, t } = useLanguage();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const firstAvailableTranslation = Object.values(event.intl)[0];
   const translation = event.intl[language as LanguageCode] || firstAvailableTranslation;
@@ -42,19 +44,30 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
   };
 
   const shareEvent = () => {
+    const eventDate = format(startDate, 'yyyy-MM-dd');
+    const eventTitle = event.event_name.toLowerCase().replace(/\s+/g, '-');
+    const eventUrl = `https://calendario.tech/#/${eventDate}/${event.id}/${eventTitle}`;
+
     if (navigator.share) {
       navigator.share({
         title: event.event_name,
         text: translation.short_description,
-        url: event.event_link,
+        url: eventUrl,
       });
     } else {
-      navigator.clipboard.writeText(event.event_link);
+      navigator.clipboard.writeText(eventUrl);
       toast({
         title: t('event.linkCopied'),
         description: t('event.linkCopiedDesc'),
       });
     }
+  };
+
+  const goToEventPage = () => {
+    const eventDate = format(startDate, 'yyyy-MM-dd');
+    const eventTitle = event.event_name.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/${eventDate}/${event.id}/${eventTitle}`);
+    onOpenChange(false);
   };
 
   return (
@@ -89,11 +102,22 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
 
         <DialogHeader className="pt-6">
           <DialogTitle className="text-2xl">{event.event_name}</DialogTitle>
-          <div className="flex items-center text-sm text-gray-500">
-            <User className="h-4 w-4 mr-1 text-tech-purple" />
-            <span>{event.organization_name}</span>
+          <div className="flex items-center justify-between text-sm text-gray-500">
+            <div className="flex items-center">
+              <User className="h-4 w-4 mr-1 text-tech-purple" />
+              <span>{event.organization_name}</span>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={shareEvent}
+              className="text-gray-500 hover:text-tech-purple hover:bg-tech-purple/10"
+              title={t('event.share')}
+            >
+              <Share2 className="h-5 w-5" />
+            </Button>
           </div>
-          <div className="text-sm font-medium mt-1">{translation.event_edition}</div>
+          <div className="text-sm font-medium">{translation.event_edition}</div>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -165,33 +189,40 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 pt-2">
-            <div>
-              {event.is_free ? (
-                <span className="inline-block rounded-xl bg-green-100 text-green-700 border border-green-300 px-4 py-2 text-lg font-bold shadow-md animate-pulse ring-2 ring-green-200">
-                  {t('event.free')}
-                </span>
-              ) : (
-                <span className="inline-block rounded-xl bg-tech-purple/10 text-tech-purple border border-tech-purple px-4 py-2 text-xl font-extrabold shadow-md">
+          {/* Price Section */}
+          <div className="flex flex-col items-center justify-center py-4 border-t border-b border-gray-100">
+            {event.is_free ? (
+              <div className="flex flex-col items-center">
+                <span className="text-2xl font-medium text-green-600">{t('event.free')}</span>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center">
+                <span className="text-2xl font-medium text-gray-900">
                   {formatCurrency(translation.cost, translation.currency)}
                 </span>
-              )}
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={shareEvent}
-                className="text-tech-dark border-tech-purple hover:bg-tech-purple/10"
-              >
-                <Share2 className="h-4 w-4 mr-1" /> {t('event.share')}
-              </Button>
-              <Button size="sm" className="bg-tech-purple hover:bg-tech-purple/90" asChild>
-                <a href={event.event_link} target="_blank" rel="noopener noreferrer">
-                  {t('event.register')}
-                </a>
-              </Button>
-            </div>
+              </div>
+            )}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center justify-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-tech-dark border-tech-purple hover:bg-tech-purple/10"
+              asChild
+            >
+              <a href={event.event_link} target="_blank" rel="noopener noreferrer">
+                {t('event.details')}
+              </a>
+            </Button>
+            <Button
+              size="sm"
+              className="bg-tech-purple hover:bg-tech-purple/90"
+              onClick={goToEventPage}
+            >
+              {t('event.page')}
+            </Button>
           </div>
         </div>
       </DialogContent>

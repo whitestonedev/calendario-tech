@@ -9,6 +9,7 @@ export interface EventTranslation {
 }
 
 export interface EventInterface {
+  id: string;
   organization_name: string;
   event_name: string;
   start_datetime: string;

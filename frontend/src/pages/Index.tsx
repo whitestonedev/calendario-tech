@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useMemo } from 'react';
 import { isSameDay, parseISO, isPast } from 'date-fns';
 import { FilterState } from '@/components/EventFilters';
 import TechCalendar from '@/components/TechCalendar';
@@ -6,16 +6,15 @@ import EventFilters from '@/components/EventFilters';
 import EventCard from '@/components/EventCard';
 import { Button } from '@/components/ui/button';
 import SubmitEventDialog from '@/components/SubmitEventDialog';
-import { CalendarDays, ArrowUp } from 'lucide-react';
+import { CalendarDays } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { useEventApi } from '@/hooks/useEventApi';
 import { DateRange } from 'react-day-picker';
+import ScrollToTopButton from '@/components/ScrollToTopButton';
 
 const Index = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [clearCalendarSelection, setClearCalendarSelection] = useState(false);
-  const [showScrollTop, setShowScrollTop] = useState(false);
-  const lastScrollY = useRef(0);
   const [filters, setFilters] = useState<FilterState>({
     search: '',
     location: '',
@@ -173,34 +172,6 @@ const Index = () => {
     setTimeout(() => setClearCalendarSelection(false), 100);
   };
 
-  // Modify useEffect to control scroll direction
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // If scrolling up (current < last) or at the top
-      if (currentScrollY < lastScrollY.current || currentScrollY === 0) {
-        setShowScrollTop(false);
-      }
-      // If scrolling down and past threshold
-      else if (currentScrollY > 300) {
-        setShowScrollTop(true);
-      }
-
-      lastScrollY.current = currentScrollY;
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
-
   const renderContent = () => {
     if (isLoading) {
       return (
@@ -326,18 +297,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Floating button to go back to top */}
-      <button
-        onClick={scrollToTop}
-        className={`fixed bottom-6 right-6 w-12 h-12 rounded-full bg-tech-purple text-white shadow-lg flex items-center justify-center transition-all duration-300 hover:bg-tech-purple/90 md:hidden ${
-          showScrollTop
-            ? 'opacity-100 translate-y-0'
-            : 'opacity-0 translate-y-10 pointer-events-none'
-        }`}
-        aria-label={t('index.scrollToTop')}
-      >
-        <ArrowUp className="w-6 h-6" />
-      </button>
+      <ScrollToTopButton />
     </div>
   );
 };

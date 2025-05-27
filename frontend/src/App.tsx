@@ -9,6 +9,8 @@ import Layout from './components/Layout';
 import Index from './pages/Index';
 import Contribute from './pages/Contribute';
 import NotFound from './pages/NotFound';
+import EventPage from './pages/EventPage';
+import ScrollToTopOnRouteChange from './components/ScrollToTopOnRouteChange';
 
 const queryClient = new QueryClient();
 
@@ -19,10 +21,12 @@ const App = () => (
         <Toaster />
         <Sonner />
         <HashRouter>
+          <ScrollToTopOnRouteChange />
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<Index />} />
               <Route path="/contribute" element={<Contribute />} />
+              <Route path="/:dateStart/:eventId/:title" element={<EventPage />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>

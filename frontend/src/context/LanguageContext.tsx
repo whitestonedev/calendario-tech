@@ -54,6 +54,8 @@ const translations = {
     'event.share': 'Compartilhar',
     'event.viewBanner': 'Visualizar banner',
     'event.past': 'Evento Finalizado',
+    'event.page': 'Detalhes',
+    'event.details': 'Página do Evento',
 
     // Form steps titles
     'form.step.basicInfo': 'Informações Básicas',
@@ -124,7 +126,6 @@ const translations = {
     // Event details
     'event.basicInfo': 'Informações Básicas',
     'event.dateLocation': 'Data e Local',
-    'event.details': 'Detalhes do Evento',
     'event.organization': 'Organização:',
     'event.event': 'Evento:',
     'event.edition': 'Edição:',
@@ -264,6 +265,18 @@ const translations = {
     'languages.en-us': 'English (US)',
     'languages.es-es': 'Español',
     'languages.other': 'Outro',
+
+    // Common
+    'common.back': 'Voltar',
+    'common.loading': 'Carregando...',
+    'common.notFound': 'Não encontrado',
+    'common.error': 'Erro',
+    'common.linkCopied': 'Link copiado',
+    'common.linkCopiedDesc': 'O link do evento foi copiado para a área de transferência',
+
+    // Event messages
+    'event.linkCopied': 'Link copiado',
+    'event.linkCopiedDesc': 'O link do evento foi copiado para a área de transferência',
   },
   'en-us': {
     // Navbar
@@ -317,6 +330,8 @@ const translations = {
     'event.share': 'Share',
     'event.viewBanner': 'View banner',
     'event.past': 'Event Ended',
+    'event.page': 'Details',
+    'event.details': 'Event Page',
 
     // Form steps titles
     'form.step.basicInfo': 'Basic Information',
@@ -387,7 +402,6 @@ const translations = {
     // Event details
     'event.basicInfo': 'Basic Information',
     'event.dateLocation': 'Date and Location',
-    'event.details': 'Event Details',
     'event.organization': 'Organization:',
     'event.event': 'Event:',
     'event.edition': 'Edition:',
@@ -525,11 +539,23 @@ const translations = {
     'languages.en-us': 'English (US)',
     'languages.es-es': 'Spanish',
     'languages.other': 'Other',
+
+    // Common
+    'common.back': 'Back',
+    'common.loading': 'Loading...',
+    'common.notFound': 'Not found',
+    'common.error': 'Error',
+    'common.linkCopied': 'Link copied',
+    'common.linkCopiedDesc': 'The event link has been copied to clipboard',
+
+    // Event messages
+    'event.linkCopied': 'Link copied',
+    'event.linkCopiedDesc': 'The event link has been copied to clipboard',
   },
   'es-es': {
     // Navbar
     'nav.contribute': 'Contribuir',
-    'nav.addEvent': 'Añadir evento',
+    'nav.addEvent': 'Agregar Evento',
 
     // Index page
     'index.subtitle':
@@ -578,6 +604,8 @@ const translations = {
     'event.share': 'Compartir',
     'event.viewBanner': 'Ver banner',
     'event.past': 'Evento Finalizado',
+    'event.page': 'Detalles',
+    'event.details': 'Página del Evento',
 
     // Form steps titles
     'form.step.basicInfo': 'Información Básica',
@@ -648,7 +676,6 @@ const translations = {
     // Event details
     'event.basicInfo': 'Información Básica',
     'event.dateLocation': 'Fecha y Ubicación',
-    'event.details': 'Detalles del Evento',
     'event.organization': 'Organización:',
     'event.event': 'Evento:',
     'event.edition': 'Edición:',
@@ -788,6 +815,18 @@ const translations = {
     'languages.en-us': 'Inglés (US)',
     'languages.es-es': 'Español',
     'languages.other': 'Otro',
+
+    // Common
+    'common.back': 'Volver',
+    'common.loading': 'Cargando...',
+    'common.notFound': 'No encontrado',
+    'common.error': 'Error',
+    'common.linkCopied': 'Enlace copiado',
+    'common.linkCopiedDesc': 'El enlace del evento ha sido copiado al portapapeles',
+
+    // Event messages
+    'event.linkCopied': 'Enlace copiado',
+    'event.linkCopiedDesc': 'El enlace del evento ha sido copiado al portapapeles',
   },
 };
 
