@@ -72,6 +72,10 @@ const EventPage = () => {
     fetchEvent();
   }, [eventId, dateStart, title]);
 
+  const handleTagClick = (tag: string) => {
+    navigate('/', { state: { searchTag: tag } });
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -310,7 +314,8 @@ const EventPage = () => {
                     <Badge
                       key={tag}
                       variant="secondary"
-                      className="bg-gray-100 text-gray-700 hover:bg-gray-200 text-xs sm:text-sm px-2 sm:px-3 py-1 rounded-full"
+                      className="bg-gray-100 text-gray-700 hover:bg-gray-200 text-xs sm:text-sm px-2 sm:px-3 py-1 rounded-full cursor-pointer"
+                      onClick={() => handleTagClick(tag)}
                     >
                       {tag}
                     </Badge>

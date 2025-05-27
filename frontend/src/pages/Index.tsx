@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { isSameDay, parseISO, isPast } from 'date-fns';
 import { FilterState } from '@/components/EventFilters';
 import TechCalendar from '@/components/TechCalendar';
@@ -11,8 +11,10 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useEventApi } from '@/hooks/useEventApi';
 import { DateRange } from 'react-day-picker';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
+import { useLocation } from 'react-router-dom';
 
 const Index = () => {
+  const location = useLocation();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [clearCalendarSelection, setClearCalendarSelection] = useState(false);
   const [filters, setFilters] = useState<FilterState>({
@@ -38,6 +40,17 @@ const Index = () => {
     setSearchTerm,
     searchWithFilters,
   } = useEventApi();
+
+  useEffect(() => {
+    if (location.state?.searchTag) {
+      const newFilters = {
+        ...filters,
+        selectedTags: [location.state.searchTag],
+      };
+      setFilters(newFilters);
+      searchWithFilters(newFilters);
+    }
+  }, [location.state, filters, searchWithFilters]);
 
   const eventsSource = events;
 

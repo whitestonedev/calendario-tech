@@ -70,6 +70,11 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
     onOpenChange(false);
   };
 
+  const handleTagClick = (tag: string) => {
+    navigate('/', { state: { searchTag: tag } });
+    onOpenChange(false);
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto  bg-white">
@@ -181,7 +186,8 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
                 <Badge
                   key={tag}
                   variant="secondary"
-                  className="bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  className="bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
+                  onClick={() => handleTagClick(tag)}
                 >
                   {tag}
                 </Badge>
