@@ -57,7 +57,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
           />
           {isEventPast && (
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-12 z-20">
-              <Badge className="bg-red-500 text-white px-6 py-3 text-lg font-bold shadow-lg animate-pulse">
+              <Badge className="bg-red-500 text-white px-6 py-3 text-lg font-bold shadow-lg animate-pulse whitespace-nowrap">
                 {t('event.past')}
               </Badge>
             </div>
@@ -97,7 +97,12 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
             {!event.online && (
               <div className="flex items-center text-sm">
                 <MapPin className="h-4 w-4 mr-2 text-tech-purple" />
-                <span className="truncate">{event.address}</span>
+                <span className="truncate">
+                  {event.address}
+                  {event.state && (
+                    <span className="ml-1 text-tech-purple font-medium">({event.state})</span>
+                  )}
+                </span>
               </div>
             )}
             {event.online && (
