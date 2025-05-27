@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { isSameDay, parseISO } from 'date-fns';
+import { isSameDay, parseISO, isPast } from 'date-fns';
 import { FilterState } from '@/components/EventFilters';
 import TechCalendar from '@/components/TechCalendar';
 import EventFilters from '@/components/EventFilters';
@@ -120,7 +120,21 @@ const Index = () => {
       .sort((a, b) => {
         const dateA = parseISO(a.start_datetime);
         const dateB = parseISO(b.start_datetime);
-        return dateA.getTime() - dateB.getTime();
+        const isPastA = isPast(parseISO(a.end_datetime));
+        const isPastB = isPast(parseISO(b.end_datetime));
+
+        // If both events are past or both are future, sort by date
+        if (isPastA === isPastB) {
+          return dateA.getTime() - dateB.getTime();
+        }
+
+        // If A is past and B is future, B comes first
+        if (isPastA && !isPastB) {
+          return 1;
+        }
+
+        // If A is future and B is past, A comes first
+        return -1;
       });
   }, [selectedDate, filters, eventsSource, apiFilteredEvents, events.length, language]);
 
