@@ -9,10 +9,11 @@ import {
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Filter, X } from 'lucide-react';
+import { Filter, X, Info, Trash2 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { CalendarIcon } from 'lucide-react';
@@ -58,6 +59,10 @@ const EventFilters: React.FC<EventFiltersProps> = ({
   });
 
   const [isExpanded, setIsExpanded] = React.useState(false);
+
+  const handleSearch = () => {
+    console.log('Filtros atuais:', filters);
+  };
 
   // If external filters are provided, use them
   React.useEffect(() => {
@@ -115,7 +120,7 @@ const EventFilters: React.FC<EventFiltersProps> = ({
         </Button>
       </div>
 
-      <div className="flex flex-col md:flex-row flex-wrap gap-3 md:items-center">
+      <div className="flex flex-col md:flex-row flex-wrap gap-3 md:items-end">
         <div className="flex-1 w-full">
           <label className="text-sm font-medium mb-1 block">{t('index.searchEvents')}</label>
           <Input
@@ -126,40 +131,69 @@ const EventFilters: React.FC<EventFiltersProps> = ({
           />
         </div>
 
-        <div className="flex flex-row gap-3 w-full md:w-auto">
-          <div className="flex-1 md:w-48">
-            <label className="text-sm font-medium mb-1 block">{t('index.eventType')}</label>
-            <Select
-              value={filters.eventType}
-              onValueChange={(value) => handleFilterChange('eventType', value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={t('index.eventType')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('index.all')}</SelectItem>
-                <SelectItem value="online">{t('event.online')}</SelectItem>
-                <SelectItem value="in-person">{t('event.inPerson')}</SelectItem>
-              </SelectContent>
-            </Select>
+        <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto md:items-end">
+          <div className="flex flex-row gap-3 w-full md:w-auto">
+            <div className="flex-1 md:w-48">
+              <label className="text-sm font-medium mb-1 block">{t('index.eventType')}</label>
+              <Select
+                value={filters.eventType}
+                onValueChange={(value) => handleFilterChange('eventType', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={t('index.eventType')} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{t('index.all')}</SelectItem>
+                  <SelectItem value="online">{t('event.online')}</SelectItem>
+                  <SelectItem value="in-person">{t('event.inPerson')}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex-1 md:w-48">
+              <label className="text-sm font-medium mb-1 block">{t('index.cost')}</label>
+              <Select
+                value={filters.cost}
+                onValueChange={(value) => handleFilterChange('cost', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={t('index.cost')} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{t('index.all')}</SelectItem>
+                  <SelectItem value="free">{t('event.free')}</SelectItem>
+                  <SelectItem value="paid">{t('index.paid')}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
-          <div className="flex-1 md:w-48">
-            <label className="text-sm font-medium mb-1 block">{t('index.cost')}</label>
-            <Select
-              value={filters.cost}
-              onValueChange={(value) => handleFilterChange('cost', value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={t('index.cost')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('index.all')}</SelectItem>
-                <SelectItem value="free">{t('event.free')}</SelectItem>
-                <SelectItem value="paid">{t('index.paid')}</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          {!isExpanded && (
+            <div className="flex items-end md:items-center">
+              <TooltipProvider>
+                <Tooltip delayDuration={50}>
+                  <TooltipTrigger asChild>
+                    <div className="flex flex-col items-center w-full md:w-auto">
+                      <Button
+                        className="bg-tech-purple hover:bg-tech-purple/90 h-10 gap-2 w-full md:w-auto"
+                        onClick={handleSearch}
+                      >
+                        {t('index.search')}
+                        <Info className="h-4 w-4 text-white/80" />
+                      </Button>
+                      <span className="text-xs text-gray-500 italic mt-1 md:hidden flex items-center gap-1">
+                        <Info className="h-3 w-3" />
+                        {t('index.applyFilterTooltip')}
+                      </span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="hidden md:block">
+                    <p>{t('index.applyFilterTooltip')}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          )}
         </div>
 
         <div className="flex justify-end md:hidden mt-1">
@@ -324,16 +358,49 @@ const EventFilters: React.FC<EventFiltersProps> = ({
             </div>
           </div>
 
-          <div className="flex justify-end">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleClearFilters}
-              className="text-sm flex items-center gap-1"
-            >
-              <X className="h-4 w-4" />
-              {t('index.clearAllFilters')}
-            </Button>
+          <div className="flex flex-col md:flex-row justify-end gap-2">
+            <div className="flex gap-2 justify-center md:justify-end">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleClearFilters}
+                className="text-sm flex items-center gap-1"
+              >
+                <Trash2 className="h-4 w-4" />
+                {t('index.clearAllFilters')}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsExpanded(false)}
+                className="text-sm flex items-center gap-1"
+              >
+                <X className="h-4 w-4" />
+                {t('index.hideFilters')}
+              </Button>
+            </div>
+            <TooltipProvider>
+              <Tooltip delayDuration={50}>
+                <TooltipTrigger asChild>
+                  <div className="flex flex-col items-center w-full md:w-auto">
+                    <Button
+                      className="bg-tech-purple hover:bg-tech-purple/90 gap-2 w-full md:w-auto"
+                      onClick={handleSearch}
+                    >
+                      {t('index.search')}
+                      <Info className="h-4 w-4 text-white/80" />
+                    </Button>
+                    <span className="text-xs text-gray-500 italic mt-1 md:hidden flex items-center gap-1">
+                      <Info className="h-3 w-3" />
+                      {t('index.applyFilterTooltip')}
+                    </span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent className="hidden md:block">
+                  <p>{t('index.applyFilterTooltip')}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
       )}

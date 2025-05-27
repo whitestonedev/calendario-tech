@@ -38,6 +38,10 @@ const translations = {
     'index.selectDate': 'Selecione uma data',
     'index.paid': 'Pago',
     'loading.events': 'Carregando eventos...',
+    'index.basicInfo': 'Informações Básicas',
+    'index.address': 'Endereço',
+    'index.applyFilterTooltip': 'Aplicar filtro em uma nova pesquisa',
+    'index.search': 'Pesquisar',
 
     // Event card
     'event.online': 'Online',
@@ -253,9 +257,6 @@ const translations = {
     'validation.translation.costCurrency.required':
       'Moeda é obrigatória para eventos pagos nesta tradução',
 
-    'index.basicInfo': 'Informações Básicas',
-    'index.address': 'Endereço',
-
     // Language names
     'languages.pt-br': 'Português (BR)',
     'languages.en-us': 'English (US)',
@@ -298,6 +299,10 @@ const translations = {
     'index.selectDate': 'Select a date',
     'index.paid': 'Paid',
     'loading.events': 'Loading events...',
+    'index.basicInfo': 'Basic Information',
+    'index.address': 'Address',
+    'index.applyFilterTooltip': 'Apply filter in a new search',
+    'index.search': 'Search',
 
     // Event card
     'event.online': 'Online',
@@ -511,9 +516,6 @@ const translations = {
     'validation.translation.costCurrency.required':
       'Currency is required for paid events in this translation',
 
-    'index.basicInfo': 'Basic Information',
-    'index.address': 'Address',
-
     // Language names
     'languages.pt-br': 'Portuguese (BR)',
     'languages.en-us': 'English (US)',
@@ -556,6 +558,10 @@ const translations = {
     'index.selectDate': 'Seleccione una fecha',
     'index.paid': 'Pago',
     'loading.events': 'Cargando eventos...',
+    'index.basicInfo': 'Información Básica',
+    'index.address': 'Dirección',
+    'index.applyFilterTooltip': 'Aplicar filtro en una nueva búsqueda',
+    'index.search': 'Buscar',
 
     // Event card
     'event.online': 'En línea',
@@ -770,9 +776,6 @@ const translations = {
       'El valor del costo es obligatorio y no puede ser negativo para eventos pagos en esta traducción',
     'validation.translation.costCurrency.required':
       'La moneda es obligatoria para eventos pagos en esta traducción',
-
-    'index.basicInfo': 'Información Básica',
-    'index.address': 'Dirección',
 
     // Language names
     'languages.pt-br': 'Portugués (BR)',
