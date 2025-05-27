@@ -42,6 +42,7 @@ const translations = {
     'index.address': 'Endereço',
     'index.applyFilterTooltip': 'Aplicar filtro em uma nova pesquisa',
     'index.search': 'Pesquisar',
+    'index.scrollToTop': 'Voltar ao topo',
 
     // Event card
     'event.online': 'Online',
@@ -304,6 +305,7 @@ const translations = {
     'index.address': 'Address',
     'index.applyFilterTooltip': 'Apply filter in a new search',
     'index.search': 'Search',
+    'index.scrollToTop': 'Back to top',
 
     // Event card
     'event.online': 'Online',
@@ -564,6 +566,7 @@ const translations = {
     'index.address': 'Dirección',
     'index.applyFilterTooltip': 'Aplicar filtro en una nueva búsqueda',
     'index.search': 'Buscar',
+    'index.scrollToTop': 'Volver al principio',
 
     // Event card
     'event.online': 'En línea',
