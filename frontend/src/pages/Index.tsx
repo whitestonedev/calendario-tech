@@ -306,6 +306,7 @@ const Index = () => {
             onFilterChange={handleFilterChange}
             availableTags={allTags}
             onSearch={handleSearch}
+            isLoading={isLoading}
           />
 
           <div className="flex items-center justify-between mb-6">

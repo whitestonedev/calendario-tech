@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Filter, X, Info, Trash2 } from 'lucide-react';
+import { Filter, X, Info, Trash2, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -24,6 +24,7 @@ interface EventFiltersProps {
   availableTags: string[];
   filters?: FilterState;
   onSearch: (filters: FilterState) => void;
+  isLoading?: boolean;
 }
 
 export interface FilterState {
@@ -44,6 +45,7 @@ const EventFilters: React.FC<EventFiltersProps> = ({
   availableTags,
   filters: externalFilters,
   onSearch,
+  isLoading = false,
 }) => {
   const { t } = useLanguage();
   const [filters, setFilters] = React.useState<FilterState>({
@@ -178,9 +180,14 @@ const EventFilters: React.FC<EventFiltersProps> = ({
                       <Button
                         className="bg-tech-purple hover:bg-tech-purple/90 h-10 gap-2 w-full md:w-auto"
                         onClick={handleSearch}
+                        disabled={isLoading}
                       >
                         {t('index.search')}
-                        <Info className="h-4 w-4 text-white/80" />
+                        {isLoading ? (
+                          <Loader2 className="h-4 w-4 text-white/80 animate-spin" />
+                        ) : (
+                          <Info className="h-4 w-4 text-white/80" />
+                        )}
                       </Button>
                       <span className="text-xs text-gray-500 italic mt-1 md:hidden flex items-center gap-1">
                         <Info className="h-3 w-3" />
@@ -387,9 +394,14 @@ const EventFilters: React.FC<EventFiltersProps> = ({
                     <Button
                       className="bg-tech-purple hover:bg-tech-purple/90 gap-2 w-full md:w-auto"
                       onClick={handleSearch}
+                      disabled={isLoading}
                     >
                       {t('index.search')}
-                      <Info className="h-4 w-4 text-white/80" />
+                      {isLoading ? (
+                        <Loader2 className="h-4 w-4 text-white/80 animate-spin" />
+                      ) : (
+                        <Info className="h-4 w-4 text-white/80" />
+                      )}
                     </Button>
                     <span className="text-xs text-gray-500 italic mt-1 md:hidden flex items-center gap-1">
                       <Info className="h-3 w-3" />
