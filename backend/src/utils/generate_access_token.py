@@ -20,8 +20,8 @@ def generate_access_token():
 
     access_token = jwt.encode(
         {
-            "scope": "calendar_api",  # You can set any relevant claim here
-            "exp": datetime.datetime.utcnow() + datetime.timedelta(days=1),
+            "scope": "calendar_api",
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(days=360),
         },
         SECRET_KEY,
         algorithm="HS256",
