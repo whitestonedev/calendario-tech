@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { EventInterface } from '@/types/event';
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, isPast } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, MapPin, Globe } from 'lucide-react';
@@ -27,6 +27,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
 
   const startDate = parseISO(event.start_datetime);
   const endDate = parseISO(event.end_datetime);
+  const isEventPast = isPast(endDate);
 
   const formatDate = (date: Date) => {
     return format(date, 'PPP', {
@@ -43,7 +44,9 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   return (
     <>
       <Card
-        className="overflow-hidden flex flex-col h-full cursor-pointer hover:shadow-md transition-shadow"
+        className={`overflow-hidden flex flex-col h-full cursor-pointer hover:shadow-md transition-shadow ${
+          isEventPast ? 'grayscale opacity-75' : ''
+        }`}
         onClick={() => setModalOpen(true)}
       >
         <div className="relative h-48 overflow-hidden">
@@ -52,6 +55,13 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
             alt={event.event_name}
             className="w-full h-full object-cover"
           />
+          {isEventPast && (
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-12 z-20">
+              <Badge className="bg-red-500 text-white px-6 py-3 text-lg font-bold shadow-lg animate-pulse">
+                {t('event.past')}
+              </Badge>
+            </div>
+          )}
           <div className="absolute top-2 right-2 flex flex-col items-end gap-2">
             {event.online ? (
               <Badge className="bg-tech-blue">{t('event.online')}</Badge>

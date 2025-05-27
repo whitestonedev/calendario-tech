@@ -52,6 +52,7 @@ const translations = {
     'event.viewMap': 'Ver no mapa',
     'event.share': 'Compartilhar',
     'event.viewBanner': 'Visualizar banner',
+    'event.past': 'Evento Finalizado',
 
     // Form steps titles
     'form.step.basicInfo': 'Informações Básicas',
@@ -313,6 +314,7 @@ const translations = {
     'event.viewMap': 'View map',
     'event.share': 'Share',
     'event.viewBanner': 'View banner',
+    'event.past': 'Event Ended',
 
     // Form steps titles
     'form.step.basicInfo': 'Basic Information',
@@ -572,6 +574,7 @@ const translations = {
     'event.viewMap': 'Ver en el mapa',
     'event.share': 'Compartir',
     'event.viewBanner': 'Ver banner',
+    'event.past': 'Evento Finalizado',
 
     // Form steps titles
     'form.step.basicInfo': 'Información Básica',

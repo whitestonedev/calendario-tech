@@ -11,7 +11,7 @@ import {
 import { UseFormReturn } from 'react-hook-form';
 import { EventFormValues } from '@/lib/form-schemas';
 import { useLanguage } from '@/context/LanguageContext';
-import { TURNSTILE_SITE_KEY } from '@/lib/constants';
+import { TURNSTILE_SITE_KEY } from '@/config/constants';
 
 interface VerificationStepProps {
   form: UseFormReturn<EventFormValues>;

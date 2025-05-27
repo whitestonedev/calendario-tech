@@ -1,6 +1,6 @@
 import React from 'react';
 import { EventInterface } from '@/types/event';
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, isPast } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
@@ -27,6 +27,7 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
 
   const startDate = parseISO(event.start_datetime);
   const endDate = parseISO(event.end_datetime);
+  const isEventPast = isPast(endDate);
 
   const formatDate = (date: Date) => {
     return format(date, 'PPP', {
@@ -63,8 +64,15 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
           <img
             src={translation.banner_link}
             alt={event.event_name}
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover ${isEventPast ? 'grayscale opacity-75' : ''}`}
           />
+          {isEventPast && (
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-12 z-20">
+              <Badge className="bg-red-500 text-white px-6 py-3 text-xl font-bold shadow-lg animate-pulse">
+                {t('event.past')}
+              </Badge>
+            </div>
+          )}
           <div className="absolute bottom-4 left-4 flex gap-2 z-10">
             {event.online ? (
               <Badge className="bg-tech-blue">{t('event.online')}</Badge>
