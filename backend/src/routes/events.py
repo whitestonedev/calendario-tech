@@ -38,9 +38,14 @@ review_tag = Tag(
 
 logger = logging.getLogger(__name__)
 
-
+# TODO: remove this double route
 @event_bp.get(
     "",
+    tags=[public_tag],
+    summary="Retrieve events",
+)
+@event_bp.get(
+    "/",
     tags=[public_tag],
     summary="Retrieve events",
 )
