@@ -13,6 +13,8 @@ import { DateRange } from 'react-day-picker';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
 import { useLocation } from 'react-router-dom';
 import { RateLimitTurnstile } from '@/components/RateLimitTurnstile';
+import { TypewriterEffect, TypewriterEffectSmooth } from '@/components/ui/typewriter-effect';
+import { cn } from '@/lib/utils';
 
 const Index = () => {
   const location = useLocation();
@@ -275,13 +277,22 @@ const Index = () => {
           </div>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-2">{t('index.subtitle')}</p>
           <p className="text-sm text-tech-purple">
-            <a
-              href="https://whitestonedev.com.br/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-tech-purple/80 font-medium"
-            >
-              {t('index.initiative')}
+            <a href="https://whitestonedev.com.br/" target="_blank" rel="noopener noreferrer">
+              <TypewriterEffect
+                key={language}
+                words={t('index.initiative')
+                  .split(' ')
+                  .map((word) => ({
+                    text: word,
+                    className: word.toLowerCase().includes('whitestone_dev')
+                      ? 'text-tech-purple'
+                      : 'text-neutral-600 dark:text-neutral-200',
+                  }))}
+                className={cn('flex justify-center items-center', 'w-full')}
+                textClassName={'text-sm sm:text-base'}
+                cursorClassName="bg-tech-purple"
+                fontWeight="normal"
+              />
             </a>
           </p>
         </div>

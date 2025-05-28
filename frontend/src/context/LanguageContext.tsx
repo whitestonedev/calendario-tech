@@ -10,7 +10,7 @@ const translations = {
     // Index page
     'index.subtitle':
       'Encontre os melhores eventos de tecnologia próximos a você, mantidos pela comunidade para a comunidade.',
-    'index.initiative': 'Uma iniciativa whiteStone_dev',
+    'index.initiative': 'Um projeto whiteStone_dev',
     'index.clearDateFilter': 'Limpar filtro de data',
     'index.eventsFound': 'Encontrados',
     'index.eventFound': 'Encontrado',
@@ -292,7 +292,7 @@ const translations = {
     // Index page
     'index.subtitle':
       'Find the best tech events near you, maintained by the community for the community.',
-    'index.initiative': 'A whiteStone_dev initiative',
+    'index.initiative': 'A whiteStone_dev project',
     'index.clearDateFilter': 'Clear date filter',
     'index.eventsFound': 'Found',
     'index.eventFound': 'Found',
@@ -572,7 +572,7 @@ const translations = {
     // Index page
     'index.subtitle':
       'Encuentra los mejores eventos de tecnología cerca de ti, mantenidos por la comunidad para la comunidad.',
-    'index.initiative': 'Una iniciativa de whiteStone_dev',
+    'index.initiative': 'Un proyecto de whiteStone_dev',
     'index.clearDateFilter': 'Borrar filtro de fecha',
     'index.eventsFound': 'Encontrados',
     'index.eventFound': 'Encontrado',
