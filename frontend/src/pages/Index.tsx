@@ -48,9 +48,8 @@ const Index = () => {
         selectedTags: [location.state.searchTag],
       };
       setFilters(newFilters);
-      searchWithFilters(newFilters);
     }
-  }, [location.state, filters, searchWithFilters]);
+  }, [location.state, filters]);
 
   const eventsSource = events;
 

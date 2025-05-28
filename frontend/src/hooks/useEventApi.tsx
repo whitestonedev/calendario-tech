@@ -1,14 +1,20 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { format, addMonths, parseISO, isSameDay } from 'date-fns';
 import { fetchEvents, searchEvents } from '@/services/api';
 import { EventInterface } from '@/types/event';
 import { FilterState } from '@/components/EventFilters';
+import { useToast } from '@/hooks/use-toast';
+
+const DEBOUNCE_DELAY = 500; // 500ms de debounce
+const MAX_RETRIES = 3;
 
 export const useEventApi = (initialSearchTerm: string = '') => {
   const [events, setEvents] = useState<EventInterface[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>(initialSearchTerm);
+  const [retryCount, setRetryCount] = useState(0);
+  const { toast } = useToast();
 
   // Calculate date range: from today to 12 months in the future
   const dateRange = useMemo(() => {
@@ -30,16 +36,29 @@ export const useEventApi = (initialSearchTerm: string = '') => {
       try {
         const data = await fetchEvents(dateRange.startDate, dateRange.endDate);
         setEvents(data);
+        setRetryCount(0); // Reset retry count on successful fetch
       } catch (err) {
         setError('Failed to load events. Please try again later.');
         console.error(err);
+
+        if (retryCount < MAX_RETRIES) {
+          setRetryCount((prev) => prev + 1);
+          setTimeout(loadEvents, 1000 * retryCount); // Exponential backoff
+        } else {
+          toast({
+            title: 'Erro ao carregar eventos',
+            description:
+              'Não foi possível carregar os eventos. Por favor, tente novamente mais tarde.',
+            variant: 'destructive',
+          });
+        }
       } finally {
         setIsLoading(false);
       }
     };
 
     loadEvents();
-  }, [dateRange.startDate, dateRange.endDate]);
+  }, [dateRange.startDate, dateRange.endDate, retryCount, toast]);
 
   // Filter events based on search term
   const filteredEvents = useMemo(() => {
@@ -69,19 +88,48 @@ export const useEventApi = (initialSearchTerm: string = '') => {
     return eventDates.some((eventDate) => isSameDay(eventDate, date));
   };
 
-  const searchWithFilters = async (_filters: FilterState) => {
-    setIsLoading(true);
-    setError(null);
+  // Debounced search function
+  const debouncedSearch = useCallback(
+    (filters: FilterState) => {
+      let timeoutId: NodeJS.Timeout;
 
-    try {
-      const data = await searchEvents(_filters);
-      setEvents(data);
-    } catch (err) {
-      setError('Failed to fetch events.');
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
+      return new Promise<void>((resolve) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(async () => {
+          setIsLoading(true);
+          setError(null);
+
+          try {
+            const data = await searchEvents(filters);
+            setEvents(data);
+            setRetryCount(0);
+          } catch (err) {
+            setError('Failed to fetch events.');
+            console.error(err);
+
+            if (retryCount < MAX_RETRIES) {
+              setRetryCount((prev) => prev + 1);
+              setTimeout(() => debouncedSearch(filters), 1000 * retryCount);
+            } else {
+              toast({
+                title: 'Erro na busca',
+                description:
+                  'Não foi possível realizar a busca. Por favor, tente novamente mais tarde.',
+                variant: 'destructive',
+              });
+            }
+          } finally {
+            setIsLoading(false);
+            resolve();
+          }
+        }, DEBOUNCE_DELAY);
+      });
+    },
+    [retryCount, toast]
+  );
+
+  const searchWithFilters = async (filters: FilterState) => {
+    await debouncedSearch(filters);
   };
 
   return {
