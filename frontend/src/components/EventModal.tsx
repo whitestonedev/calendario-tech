@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { EventInterface } from '@/types/event';
 import { format, parseISO, isPast } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, MapPin, Globe, Share2, Tag, User, Info, Ticket } from 'lucide-react';
+import {
+  Calendar,
+  Clock,
+  MapPin,
+  Globe,
+  Share2,
+  Tag,
+  User,
+  Info,
+  Ticket,
+  ChevronDown,
+} from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useLanguage } from '@/context/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
@@ -23,6 +34,8 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
   const { language, t } = useLanguage();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [showArrow, setShowArrow] = useState(true);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const firstAvailableTranslation = Object.values(event.intl)[0];
   const translation = event.intl[language as LanguageCode] || firstAvailableTranslation;
@@ -75,10 +88,23 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
     onOpenChange(false);
   };
 
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+    if (target.scrollTop > 20) {
+      setShowArrow(false);
+    } else {
+      setShowArrow(true);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto  bg-white">
-        <div className="relative h-48 md:h-64 -m-6 mb-0">
+      <DialogContent
+        className="max-w-[95%] sm:max-w-[550px] max-h-[85vh] sm:px-6 overflow-y-auto overflow-x-hidden bg-white [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+        onScroll={handleScroll}
+        ref={contentRef}
+      >
+        <div className="relative h-40 md:h-56 -m-6 mb-0">
           <img
             src={translation.banner_link}
             alt={event.event_name}
@@ -176,25 +202,6 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
             <p className="text-sm">{translation.short_description}</p>
           </div>
 
-          <div>
-            <div className="flex items-center mb-2">
-              <Tag className="h-4 w-4 mr-2 text-tech-purple" />
-              <h3 className="font-medium">{t('form.tagsLabel')}</h3>
-            </div>
-            <div className="flex flex-wrap gap-1">
-              {event.tags.map((tag) => (
-                <Badge
-                  key={tag}
-                  variant="secondary"
-                  className="bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
-                  onClick={() => handleTagClick(tag)}
-                >
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
           {/* Price Section */}
           <div className="flex flex-col items-center justify-center py-4 border-t border-b border-gray-100">
             {event.is_free ? (
@@ -231,7 +238,31 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
               {t('event.page')}
             </Button>
           </div>
+
+          <div>
+            <div className="flex items-center mb-2">
+              <Tag className="h-4 w-4 mr-2 text-tech-purple" />
+              <h3 className="font-medium">{t('form.tagsLabel')}</h3>
+            </div>
+            <div className="flex flex-wrap gap-1">
+              {event.tags.map((tag) => (
+                <Badge
+                  key={tag}
+                  variant="secondary"
+                  className="bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
+                  onClick={() => handleTagClick(tag)}
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          </div>
         </div>
+        {showArrow && (
+          <div className="fixed bottom-4 right-4 animate-bounce">
+            <ChevronDown className="h-6 w-6 text-tech-purple/50" />
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );
