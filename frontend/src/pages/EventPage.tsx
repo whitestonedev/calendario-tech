@@ -15,6 +15,7 @@ import {
   Info,
   ArrowLeft,
   ExternalLink,
+  Ticket,
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useLanguage } from '@/context/LanguageContext';
@@ -141,7 +142,7 @@ const EventPage = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8">
+      <div className="max-w-[1200px] mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8">
         {/* Header with back button */}
         <div className="mb-4 sm:mb-8">
           <Button
@@ -339,24 +340,32 @@ const EventPage = () => {
                   )}
                 </div>
                 <div className="flex flex-col gap-3 sm:gap-4 w-full">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={shareEvent}
-                    className="text-gray-500 hover:text-tech-purple hover:bg-tech-purple/10 self-center"
-                    title={t('event.share')}
-                  >
-                    <Share2 className="h-5 w-5" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="text-tech-dark border-tech-purple hover:bg-tech-purple/10 text-sm sm:text-base py-3 sm:py-4"
-                    asChild
-                  >
-                    <a href={event.event_link} target="_blank" rel="noopener noreferrer">
-                      {t('event.details')}
-                    </a>
-                  </Button>
+                  <div className="flex gap-3 w-full">
+                    <Button
+                      variant="outline"
+                      className="flex-1 text-tech-dark border-tech-purple hover:bg-tech-purple/10 text-sm sm:text-base py-3 sm:py-4"
+                      asChild
+                    >
+                      <a
+                        href={event.event_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2"
+                      >
+                        <Ticket className="h-4 w-4" />
+                        {t('event.details')}
+                      </a>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={shareEvent}
+                      className="text-gray-500 hover:text-tech-purple hover:bg-tech-purple/10"
+                      title={t('event.share')}
+                    >
+                      <Share2 className="h-5 w-5" />
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

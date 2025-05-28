@@ -289,7 +289,7 @@ const Index = () => {
 
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
         <div className="lg:col-span-4">
-          <div className="sticky top-4">
+          <div className="sticky top-20">
             <TechCalendar
               events={events}
               onRangeSelect={handleRangeSelect}

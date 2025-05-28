@@ -5,7 +5,7 @@ import { ptBR } from 'date-fns/locale';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, MapPin, Globe, Share2, Tag, User, Info } from 'lucide-react';
+import { Calendar, Clock, MapPin, Globe, Share2, Tag, User, Info, Ticket } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useLanguage } from '@/context/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
@@ -219,6 +219,7 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
               asChild
             >
               <a href={event.event_link} target="_blank" rel="noopener noreferrer">
+                <Ticket className="h-4 w-4" />
                 {t('event.details')}
               </a>
             </Button>
