@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { isSameDay, parseISO, isPast } from 'date-fns';
 import { FilterState } from '@/components/EventFilters';
 import TechCalendar from '@/components/TechCalendar';
@@ -39,17 +39,59 @@ const Index = () => {
     error,
     setSearchTerm,
     searchWithFilters,
+    CaptchaComponent,
   } = useEventApi();
 
+  // Memoize handlers to prevent unnecessary re-renders
+  const handleFilterChange = useCallback(
+    (newFilters: FilterState) => {
+      setFilters(newFilters);
+      // Sync the search filter with the API search term
+      if (newFilters.search !== filters.search) {
+        setSearchTerm(newFilters.search);
+      }
+    },
+    [filters.search, setSearchTerm]
+  );
+
+  const handleSearch = useCallback(
+    (searchFilters: FilterState) => {
+      setFilters(searchFilters);
+      searchWithFilters(searchFilters);
+    },
+    [searchWithFilters]
+  );
+
+  const handleRangeSelect = useCallback((range: DateRange | undefined) => {
+    setFilters((prev) => ({
+      ...prev,
+      startDate: range?.from,
+      endDate: range?.to,
+    }));
+  }, []);
+
+  const clearDateFilter = useCallback(() => {
+    setSelectedDate(undefined);
+    setFilters((prev) => ({
+      ...prev,
+      startDate: undefined,
+      endDate: undefined,
+    }));
+    setClearCalendarSelection(true);
+    setTimeout(() => setClearCalendarSelection(false), 100);
+  }, []);
+
+  // Otimizar o useEffect para evitar chamadas desnecessárias
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if (location.state?.searchTag) {
+    if (location.state?.searchTag && !filters.selectedTags.includes(location.state.searchTag)) {
       const newFilters = {
         ...filters,
         selectedTags: [location.state.searchTag],
       };
       setFilters(newFilters);
     }
-  }, [location.state, filters]);
+  }, [location.state?.searchTag, filters.selectedTags]);
 
   const eventsSource = events;
 
@@ -151,39 +193,6 @@ const Index = () => {
       });
   }, [selectedDate, filters, eventsSource, apiFilteredEvents, events.length, language]);
 
-  const handleRangeSelect = (range: DateRange | undefined) => {
-    setFilters((prev) => ({
-      ...prev,
-      startDate: range?.from,
-      endDate: range?.to,
-    }));
-  };
-
-  const handleFilterChange = (newFilters: FilterState) => {
-    setFilters(newFilters);
-    // Sync the search filter with the API search term
-    if (newFilters.search !== filters.search) {
-      setSearchTerm(newFilters.search);
-    }
-  };
-
-  const handleSearch = (searchFilters: FilterState) => {
-    setFilters(searchFilters);
-    searchWithFilters(searchFilters);
-  };
-
-  const clearDateFilter = () => {
-    setSelectedDate(undefined);
-    setFilters((prev) => ({
-      ...prev,
-      startDate: undefined,
-      endDate: undefined,
-    }));
-    setClearCalendarSelection(true);
-    // Reset the clear flag after a short delay
-    setTimeout(() => setClearCalendarSelection(false), 100);
-  };
-
   const renderContent = () => {
     if (isLoading) {
       return (
@@ -243,6 +252,7 @@ const Index = () => {
 
   return (
     <div>
+      <CaptchaComponent />
       <section className="mb-8">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-4 mb-3">
