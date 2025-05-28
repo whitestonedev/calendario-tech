@@ -1,27 +1,26 @@
-import { useState, useCallback, useEffect } from 'react';
-import { useToast } from '@/hooks/use-toast';
-import { TURNSTILE_SITE_KEY } from '@/config/constants';
-import Turnstile from 'react-cloudflare-turnstile';
+import { useState, useEffect, useCallback } from 'react';
 
 const MAX_REQUESTS = 10;
-const TIME_WINDOW = 60000; // 1 minuto em milissegundos
+const TIME_WINDOW = 60000; // 1 minute in milliseconds
 
 export const useRateLimit = () => {
   const [requestCount, setRequestCount] = useState(0);
-  const [lastRequestTime, setLastRequestTime] = useState<number>(0);
   const [showCaptcha, setShowCaptcha] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const { toast } = useToast();
+  const [lastRequestTime, setLastRequestTime] = useState<number>(0);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [isValidated, setIsValidated] = useState(false);
 
   const resetCounter = useCallback(() => {
     setRequestCount(0);
     setLastRequestTime(Date.now());
+    setTurnstileToken(null);
+    // Don't reset isValidated here
   }, []);
 
   useEffect(() => {
-    // Reset counter after TIME_WINDOW
     const timer = setInterval(() => {
-      if (Date.now() - lastRequestTime >= TIME_WINDOW) {
+      const now = Date.now();
+      if (now - lastRequestTime >= TIME_WINDOW) {
         resetCounter();
       }
     }, 1000);
@@ -32,95 +31,50 @@ export const useRateLimit = () => {
   const checkRateLimit = useCallback(() => {
     const now = Date.now();
 
-    // Se passou o tempo da janela, reseta o contador
     if (now - lastRequestTime >= TIME_WINDOW) {
       resetCounter();
-      return true;
     }
 
-    // Se atingiu o limite de requisições
-    if (requestCount >= MAX_REQUESTS) {
+    if (requestCount >= MAX_REQUESTS && !turnstileToken) {
       setShowCaptcha(true);
-      toast({
-        title: 'Limite de requisições excedido',
-        description: 'Por favor, complete a verificação para continuar.',
-        variant: 'destructive',
-      });
       return false;
     }
 
-    // Incrementa o contador
     setRequestCount((prev) => prev + 1);
     setLastRequestTime(now);
     return true;
-  }, [requestCount, lastRequestTime, resetCounter, toast]);
+  }, [requestCount, lastRequestTime, resetCounter, turnstileToken]);
 
-  const handleCaptchaSuccess = useCallback(
-    (token: string) => {
-      setCaptchaToken(token);
-      setShowCaptcha(false);
-      resetCounter();
-    },
-    [resetCounter]
-  );
+  const handleTurnstileSuccess = useCallback((token: string) => {
+    setTurnstileToken(token);
+    setIsValidated(true);
+  }, []);
 
-  const handleCaptchaError = useCallback(
-    (error: string) => {
-      console.error('Turnstile error:', error);
-      setCaptchaToken(null);
-      toast({
-        title: 'Erro na verificação',
-        description: 'Por favor, tente novamente.',
-        variant: 'destructive',
-      });
-    },
-    [toast]
-  );
+  const handleTurnstileError = useCallback(() => {
+    setTurnstileToken(null);
+    setIsValidated(false);
+  }, []);
 
-  const handleCaptchaExpired = useCallback(() => {
-    setCaptchaToken(null);
-    toast({
-      title: 'Verificação expirada',
-      description: 'Por favor, complete a verificação novamente.',
-      variant: 'destructive',
-    });
-  }, [toast]);
+  const handleTurnstileExpired = useCallback(() => {
+    setTurnstileToken(null);
+    setIsValidated(false);
+  }, []);
 
-  const CaptchaComponent = useCallback(() => {
-    if (!showCaptcha) return null;
-
-    return (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
-          <h3 className="text-lg font-medium mb-4">Verificação necessária</h3>
-          <p className="text-gray-600 mb-4">
-            Você atingiu o limite de requisições. Por favor, complete a verificação para continuar.
-          </p>
-          <div className="flex justify-center">
-            <Turnstile
-              turnstileSiteKey={TURNSTILE_SITE_KEY}
-              callback={handleCaptchaSuccess}
-              errorCallback={handleCaptchaError}
-              expiredCallback={handleCaptchaExpired}
-              theme="light"
-              size="normal"
-              execution="render"
-              action="rate_limit"
-              refreshExpired="auto"
-              retry="auto"
-              retryInterval={5000}
-              refreshTimeout="auto"
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }, [showCaptcha, handleCaptchaSuccess, handleCaptchaError, handleCaptchaExpired]);
+  const handleClose = useCallback(() => {
+    setShowCaptcha(false);
+    setIsValidated(false); // Reset isValidated only when modal is closed
+    resetCounter();
+  }, [resetCounter]);
 
   return {
-    checkRateLimit,
-    captchaToken,
-    CaptchaComponent,
     showCaptcha,
+    checkRateLimit,
+    turnstileToken,
+    handleTurnstileSuccess,
+    handleTurnstileError,
+    handleTurnstileExpired,
+    handleClose,
+    requestCount,
+    isValidated,
   };
 };

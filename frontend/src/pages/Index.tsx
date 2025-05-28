@@ -12,6 +12,7 @@ import { useEventApi } from '@/hooks/useEventApi';
 import { DateRange } from 'react-day-picker';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
 import { useLocation } from 'react-router-dom';
+import { RateLimitTurnstile } from '@/components/RateLimitTurnstile';
 
 const Index = () => {
   const location = useLocation();
@@ -39,7 +40,12 @@ const Index = () => {
     error,
     setSearchTerm,
     searchWithFilters,
-    CaptchaComponent,
+    showCaptcha,
+    handleTurnstileSuccess,
+    handleTurnstileError,
+    handleTurnstileExpired,
+    handleClose,
+    isValidated,
   } = useEventApi();
 
   // Memoize handlers to prevent unnecessary re-renders
@@ -252,7 +258,16 @@ const Index = () => {
 
   return (
     <div>
-      <CaptchaComponent />
+      {showCaptcha && (
+        <RateLimitTurnstile
+          onSuccess={handleTurnstileSuccess}
+          onError={handleTurnstileError}
+          onExpired={handleTurnstileExpired}
+          onClose={handleClose}
+          isValidated={isValidated}
+        />
+      )}
+
       <section className="mb-8">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-4 mb-3">

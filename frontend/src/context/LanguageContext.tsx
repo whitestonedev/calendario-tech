@@ -274,6 +274,12 @@ const translations = {
     'common.linkCopied': 'Link copiado',
     'common.linkCopiedDesc': 'O link do evento foi copiado para a área de transferência',
 
+    // Rate Limit
+    'rateLimit.title': 'Limite de Requisições',
+    'rateLimit.description':
+      'Você atingiu o limite de requisições. Por favor, complete a verificação para continuar.',
+    'rateLimit.close': 'Fechar',
+
     // Event messages
     'event.linkCopied': 'Link copiado',
     'event.linkCopiedDesc': 'O link do evento foi copiado para a área de transferência',
@@ -547,6 +553,12 @@ const translations = {
     'common.error': 'Error',
     'common.linkCopied': 'Link copied',
     'common.linkCopiedDesc': 'The event link has been copied to clipboard',
+
+    // Rate Limit
+    'rateLimit.title': 'Request Limit',
+    'rateLimit.description':
+      'You have reached the request limit. Please complete the verification to continue.',
+    'rateLimit.close': 'Close',
 
     // Event messages
     'event.linkCopied': 'Link copied',
@@ -823,6 +835,12 @@ const translations = {
     'common.error': 'Error',
     'common.linkCopied': 'Enlace copiado',
     'common.linkCopiedDesc': 'El enlace del evento ha sido copiado al portapapeles',
+
+    // Rate Limit
+    'rateLimit.title': 'Límite de Solicitudes',
+    'rateLimit.description':
+      'Has alcanzado el límite de solicitudes. Por favor, completa la verificación para continuar.',
+    'rateLimit.close': 'Cerrar',
 
     // Event messages
     'event.linkCopied': 'Enlace copiado',

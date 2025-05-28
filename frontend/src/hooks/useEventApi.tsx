@@ -16,7 +16,15 @@ export const useEventApi = (initialSearchTerm: string = '') => {
   const [searchTerm, setSearchTerm] = useState<string>(initialSearchTerm);
   const [retryCount, setRetryCount] = useState(0);
   const { toast } = useToast();
-  const { checkRateLimit, CaptchaComponent } = useRateLimit();
+  const {
+    showCaptcha,
+    checkRateLimit,
+    handleTurnstileSuccess,
+    handleTurnstileError,
+    handleTurnstileExpired,
+    handleClose: handleRateLimitClose,
+    isValidated,
+  } = useRateLimit();
 
   // Calculate date range: from today to 12 months in the future
   const dateRange = useMemo(() => {
@@ -32,22 +40,20 @@ export const useEventApi = (initialSearchTerm: string = '') => {
   // Fetch events when component mounts or date range changes
   useEffect(() => {
     const loadEvents = async () => {
-      if (!checkRateLimit()) return;
-
       setIsLoading(true);
       setError(null);
 
       try {
         const data = await fetchEvents(dateRange.startDate, dateRange.endDate);
         setEvents(data);
-        setRetryCount(0);
+        setRetryCount(0); // Reset retry count on successful fetch
       } catch (err) {
         setError('Failed to load events. Please try again later.');
         console.error(err);
 
         if (retryCount < MAX_RETRIES) {
           setRetryCount((prev) => prev + 1);
-          setTimeout(loadEvents, 1000 * retryCount);
+          setTimeout(loadEvents, 1000 * retryCount); // Exponential backoff
         } else {
           toast({
             title: 'Erro ao carregar eventos',
@@ -62,7 +68,7 @@ export const useEventApi = (initialSearchTerm: string = '') => {
     };
 
     loadEvents();
-  }, [dateRange.startDate, dateRange.endDate, retryCount, toast, checkRateLimit]);
+  }, [dateRange.startDate, dateRange.endDate, retryCount, toast]);
 
   // Filter events based on search term
   const filteredEvents = useMemo(() => {
@@ -101,7 +107,11 @@ export const useEventApi = (initialSearchTerm: string = '') => {
         clearTimeout(timeoutId);
         timeoutId = setTimeout(async () => {
           if (!checkRateLimit()) {
-            resolve();
+            toast({
+              title: 'Limite de requisições excedido',
+              description: 'Por favor, complete o captcha para continuar.',
+              variant: 'destructive',
+            });
             return;
           }
 
@@ -141,6 +151,10 @@ export const useEventApi = (initialSearchTerm: string = '') => {
     await debouncedSearch(filters);
   };
 
+  const handleClose = useCallback(() => {
+    handleRateLimitClose();
+  }, [handleRateLimitClose]);
+
   return {
     events,
     filteredEvents,
@@ -151,6 +165,11 @@ export const useEventApi = (initialSearchTerm: string = '') => {
     eventDates,
     hasEventsOnDate,
     searchWithFilters,
-    CaptchaComponent,
+    showCaptcha,
+    handleTurnstileSuccess,
+    handleTurnstileError,
+    handleTurnstileExpired,
+    handleClose,
+    isValidated,
   };
 };
