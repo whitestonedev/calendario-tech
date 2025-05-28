@@ -857,14 +857,22 @@ type LanguageContextType = {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<LanguageCode>(LanguageCodes.PORTUGUESE);
+  const [language, setLanguage] = useState<LanguageCode>(() => {
+    const savedLanguage = localStorage.getItem('preferredLanguage');
+    return (savedLanguage as LanguageCode) || LanguageCodes.PORTUGUESE;
+  });
+
+  const handleSetLanguage = (lang: LanguageCode) => {
+    setLanguage(lang);
+    localStorage.setItem('preferredLanguage', lang);
+  };
 
   const t = (key: string): string => {
     return translations[language][key as keyof (typeof translations)[typeof language]] || key;
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
