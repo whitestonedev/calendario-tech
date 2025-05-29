@@ -1,5 +1,6 @@
 import logging
 import os
+import re
 from pathlib import Path
 
 from flask import render_template_string, send_from_directory
@@ -37,7 +38,24 @@ DATABASE_URL = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
+CORS(
+    app,
+    resources={
+        r"/*": {"origins": re.compile(r"^https:\/\/([a-z0-9-]+\.)*calendario\.tech$")}
+    },
+    supports_credentials=True,
+    expose_headers="Authorization",
+    allow_headers=["Content-Type", "Authorization"],
+)
+
+
+@app.after_request
+def after_request(response):
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
+    response.headers.add("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE")
+    return response
+
+
 db.init_app(app)
 migrate = Migrate(app, db)
 
