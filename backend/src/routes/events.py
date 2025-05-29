@@ -83,7 +83,6 @@ def create_event(body: EventIn):
     "/<int:event_id>",
     tags=[review_tag],
     summary="Delete event",
-    security=[{"BearerAuth": []}],
 )
 def delete_event(path: EventPath):
     is_valid_credentials = check_credentials()
@@ -117,7 +116,6 @@ def update_event(path: EventPath, body: EventUpdate):
     tags=[review_tag],
     summary="Retrieve events pending review",
     description="Fetches a list of events that are pending approval by the staff.",
-    security=[{"BearerAuth": []}],
 )
 def get_pending_events():
     is_valid_credentials = check_credentials()
@@ -137,7 +135,6 @@ def get_pending_events():
     tags=[review_tag],
     summary="Manage submitted event, approve or decline",
     description="Sets the status of an event to 'approved' or 'declined'.",
-    security=[{"BearerAuth": []}],
 )
 def manage_submitted_update_event(path: EventPath, body: ManageSubmittedEventBody):
     is_valid_credentials = check_credentials()
