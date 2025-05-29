@@ -58,9 +58,11 @@ logger = logging.getLogger(__name__)
 # Scheduler for database backup
 scheduler = BackgroundScheduler()
 scheduler.add_job(
-    run_database_backup_job, "cron", hour=0, minute=0
-)  # Daily at midnight
+    run_database_backup_job, "interval", minutes=10
+)
 scheduler.start()
+# TO TEST ONLY
+
 
 app.register_api(event_bp)
 
