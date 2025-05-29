@@ -43,7 +43,12 @@ logger = logging.getLogger(__name__)
 
 
 def get_allowed_origins():
-    origins = ["https://*.calendario.tech"]
+    origins = [
+        "https://api.calendario.tech",
+        "https://manage.calendario.tech",
+        "https://www.calendario.tech",
+        "https://calendario.tech"
+    ]
     if os.getenv("DEBUG", "False").lower() == "true":
         origins.extend(
             [
