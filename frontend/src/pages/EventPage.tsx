@@ -25,6 +25,7 @@ import { LanguageCodes, LanguageCode } from '@/types/language';
 import { EventInterface } from '@/types/event';
 import { API_BASE_URL } from '@/config/constants';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
+import { QrCodeModal } from '@/components/QrCodeModal';
 
 const EventPage = () => {
   const { eventId, dateStart, title } = useParams();
@@ -34,6 +35,7 @@ const EventPage = () => {
   const [event, setEvent] = useState<EventInterface | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isSharing, setIsSharing] = useState(false);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -122,21 +124,30 @@ const EventPage = () => {
     });
   };
 
-  const shareEvent = () => {
+  const shareEvent = async () => {
     const eventUrl = `https://calendario.tech/#/${dateStart}/${eventId}/${title}`;
 
-    if (navigator.share) {
-      navigator.share({
-        title: event.event_name,
-        text: translation.short_description,
-        url: eventUrl,
-      });
-    } else {
-      navigator.clipboard.writeText(eventUrl);
-      toast({
-        title: t('event.linkCopied'),
-        description: t('event.linkCopiedDesc'),
-      });
+    if (isSharing) return;
+    setIsSharing(true);
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: event?.event_name,
+          text: translation?.short_description,
+          url: eventUrl,
+        });
+      } else {
+        await navigator.clipboard.writeText(eventUrl);
+        toast({
+          title: t('event.linkCopied'),
+          description: t('event.linkCopiedDesc'),
+        });
+      }
+    } catch (err) {
+      console.error('Erro ao compartilhar:', err);
+    } finally {
+      setIsSharing(false);
     }
   };
 
@@ -201,15 +212,10 @@ const EventPage = () => {
                 )}
               </div>
               <div className="flex gap-3 w-full">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={shareEvent}
-                  className="text-gray-500 hover:text-tech-purple hover:bg-tech-purple/10"
-                  title={t('event.share')}
-                >
-                  <Share2 className="h-5 w-5" />
-                </Button>
+                <QrCodeModal
+                  event={event}
+                  eventUrl={`https://calendario.tech/#/${dateStart}/${eventId}/${title}`}
+                />
                 <Button
                   variant="outline"
                   className="flex-1 text-tech-dark border-tech-purple hover:bg-tech-purple/10 text-sm py-2"
@@ -218,6 +224,15 @@ const EventPage = () => {
                   <a href={event.event_link} target="_blank" rel="noopener noreferrer">
                     {t('event.details')}
                   </a>
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={shareEvent}
+                  className="text-gray-500 hover:text-tech-purple hover:bg-tech-purple/10"
+                  title={t('event.share')}
+                >
+                  <Share2 className="h-5 w-5" />
                 </Button>
               </div>
             </div>
@@ -365,6 +380,10 @@ const EventPage = () => {
                     >
                       <Share2 className="h-5 w-5" />
                     </Button>
+                    <QrCodeModal
+                      event={event}
+                      eventUrl={`https://calendario.tech/#/${dateStart}/${eventId}/${title}`}
+                    />
                   </div>
                 </div>
               </div>
