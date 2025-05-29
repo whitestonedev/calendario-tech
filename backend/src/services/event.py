@@ -2,7 +2,7 @@ from src.exceptions import DuplicateEventException, EventNotFoundException
 from src.models import db, Event, EventIntl, Tag as TagModel, EventStatus, Tag
 from src.schemas import Event as EventDOT
 import sqlalchemy as sa
-
+from sqlalchemy import func
 from src.schemas import EventIn, EventUpdate, EventQuery
 
 
@@ -247,3 +247,38 @@ def update_event_status(event_id: int, status: str) -> Event:
     db.session.commit()
 
     return event
+
+
+def get_events_calendar() -> list[dict]:
+    """
+    Retrieve a list of dates that have events and their respective event IDs.
+
+    Returns:
+        list[dict]: A list of dictionaries containing dates and their event IDs.
+        Each dictionary has the format:
+        {
+            "date": "YYYY-MM-DD",
+            "event_ids": [1, 2, 3]
+        }
+    """
+
+    dates_query = (
+        db.session.query(func.date(Event.start_datetime).label("date"))
+        .filter(Event.status == EventStatus.approved)
+        .group_by(func.date(Event.start_datetime))
+        .order_by(func.date(Event.start_datetime))
+    )
+
+    result = []
+    for row in dates_query.all():
+        event_ids = [
+            event.id
+            for event in Event.query.filter(
+                func.date(Event.start_datetime) == row.date,
+                Event.status == EventStatus.approved,
+            ).all()
+        ]
+
+        result.append({"date": row.date, "event_ids": event_ids})
+
+    return result

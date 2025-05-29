@@ -20,6 +20,7 @@ from src.services.event import (
     get_event as get_event_service,
     delete_event as delete_event_service,
     update_event_status,
+    get_events_calendar,
 )
 from src.services.event import update_event as update_event_service
 
@@ -37,6 +38,7 @@ review_tag = Tag(
 
 
 logger = logging.getLogger(__name__)
+
 
 # TODO: remove this double route
 @event_bp.get(
@@ -156,3 +158,14 @@ def manage_submitted_update_event(path: EventPath, body: ManageSubmittedEventBod
 
     except EventNotFoundException as e:
         return jsonify({"error": str(e)}), 404
+
+
+@event_bp.get(
+    "/calendar",
+    tags=[public_tag],
+    summary="Retrieve dates with events",
+    description="Returns a list of dates that have events and their respective event IDs.",
+)
+def get_calendar():
+    calendar_data = get_events_calendar()
+    return jsonify(calendar_data), 200
