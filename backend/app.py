@@ -3,7 +3,6 @@ import os
 from pathlib import Path
 
 from flask import render_template_string, send_from_directory
-from flask_cors import CORS
 import mistune
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask_migrate import Migrate
@@ -33,11 +32,10 @@ app = OpenAPI(
         }
     },
 )
+
 DATABASE_URL = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DB')}"
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-cors = CORS()
 
 db.init_app(app)
 migrate = Migrate(app, db)
