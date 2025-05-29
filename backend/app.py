@@ -1,5 +1,6 @@
 import logging
 import os
+import re
 from pathlib import Path
 
 from flask import render_template_string, send_from_directory
@@ -34,30 +35,33 @@ app = OpenAPI(
     },
 )
 
+
+allowed_origins = [
+    re.compile(r"^https:\/\/([a-z0-9-]+\.)*calendario\.tech$"),
+]
+
+if os.getenv("APP_ENV", "production").lower() == "development":
+    allowed_origins.extend(
+        [
+            "http://localhost:3000",
+            "http://localhost:8080",
+            "http://localhost:8081",
+            "http://localhost:8082",
+        ]
+    )
+
+
 CORS(
     app,
-    resources={
-        r"/*": {
-            "origins": "*",
-            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-            "allow_headers": ["Content-Type", "Authorization"],
-            "supports_credentials": True,
-            "expose_headers": ["Content-Type", "Authorization"],
-            "max_age": 3600,
-            "send_wildcard": True,
-            "vary_header": True,
-            "automatic_options": True,
-        }
-    },
+    resources={r"/*": {"origins": allowed_origins}},
+    supports_credentials=True,
+    expose_headers=["Content-Type", "Authorization"],
+    allow_headers=["Content-Type", "Authorization"],
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    max_age=3600,
+    vary_header=True,
+    automatic_options=True,
 )
-
-
-@app.after_request
-def after_request(response):
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
-    response.headers.add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS")
-    return response
 
 
 DATABASE_URL = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DB')}"

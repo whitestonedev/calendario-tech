@@ -1,5 +1,6 @@
 import logging
 import os
+from flask_cors import cross_origin
 
 from flask import jsonify
 from flask_openapi3 import Tag, APIBlueprint
@@ -71,6 +72,7 @@ def get_allowed_origins():
     tags=[public_tag],
     summary="Retrieve events",
 )
+@cross_origin(origins="*")
 def get_events(query: EventQuery):
     events = get_events_service(query)
     return jsonify(events), 200
@@ -81,6 +83,7 @@ def get_events(query: EventQuery):
     tags=[public_tag],
     summary="Retrieve event",
 )
+@cross_origin(origins="*")
 def get_event(path: EventPath):
     event = get_event_service(path.event_id)
     return jsonify(event.serialized), 200
@@ -91,6 +94,7 @@ def get_event(path: EventPath):
     tags=[submission_tag],
     summary="Submit event for review",
 )
+@cross_origin(origins="*")
 def create_event(body: EventIn):
     try:
         event = submit_event(body)
@@ -179,6 +183,7 @@ def manage_submitted_update_event(path: EventPath, body: ManageSubmittedEventBod
     summary="Retrieve dates with events",
     description="Returns a list of dates that have events and their respective event IDs.",
 )
+@cross_origin(origins="*")
 def get_calendar():
     calendar_data = get_events_calendar()
     return jsonify(calendar_data), 200
