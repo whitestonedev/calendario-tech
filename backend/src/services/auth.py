@@ -7,6 +7,9 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 
 def check_credentials():
+    if request.method == "OPTIONS":
+        return None
+
     token = request.headers.get("Authorization", None)
     if not token:
         return jsonify({"message": "A valid token is missing!"}), 401
