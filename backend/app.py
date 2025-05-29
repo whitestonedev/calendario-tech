@@ -10,7 +10,7 @@ from flask_migrate import Migrate
 from alembic import command
 from alembic.config import Config as AlembicConfig
 from src.models import db
-
+from flask import request
 from flask_openapi3 import OpenAPI, Info
 
 from src.constants import LOGGER_FORMAT, README_FILE
@@ -34,29 +34,25 @@ app = OpenAPI(
     },
 )
 
-# Configuração do CORS
-origins = [
-    "https://api.calendario.tech",
-    "https://manage.calendario.tech",
-    "https://www.calendario.tech",
-    "https://calendario.tech",
-]
-
-if os.getenv("DEBUG", "False").lower() == "true":
-    origins.extend(
-        [
-            "http://localhost:8080",
-            "http://localhost:8081",
-            "http://localhost:8082",
-            "http://localhost:3000",
-        ]
-    )
-
 CORS(
     app,
     resources={
-        r"/*": {
-            "origins": origins,
+        # Endpoints públicos
+        r"/events$": {"origins": "*"},
+        r"/events/$": {"origins": "*"},
+        r"/events/\d+$": {"origins": "*"},
+        r"/events/calendar$": {"origins": "*"},
+        r"/health_check$": {"origins": "*"},
+        r"/$": {"origins": "*"},
+        r"/favicon.ico$": {"origins": "*"},
+        # Endpoints que precisam de autenticação
+        r"/events/submit/*": {
+            "origins": [
+                "https://api.calendario.tech",
+                "https://manage.calendario.tech",
+                "https://www.calendario.tech",
+                "https://calendario.tech",
+            ],
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"],
             "supports_credentials": True,
@@ -65,14 +61,26 @@ CORS(
             "send_wildcard": False,
             "vary_header": True,
             "automatic_options": True,
-        }
+        },
     },
 )
 
 
 @app.after_request
 def after_request(response):
-    response.headers.add("Access-Control-Allow-Origin", "*")
+    if "/events/submit/" in request.path:
+        origin = request.headers.get("Origin")
+        allowed_origins = [
+            "https://api.calendario.tech",
+            "https://manage.calendario.tech",
+            "https://www.calendario.tech",
+            "https://calendario.tech",
+        ]
+        if origin in allowed_origins:
+            response.headers.add("Access-Control-Allow-Origin", origin)
+    else:
+        response.headers.add("Access-Control-Allow-Origin", "*")
+
     response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
     response.headers.add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS")
     return response
