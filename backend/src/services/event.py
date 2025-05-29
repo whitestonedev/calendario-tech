@@ -1,10 +1,10 @@
 from src.exceptions import DuplicateEventException, EventNotFoundException
 from src.models import db, Event, EventIntl, Tag as TagModel, EventStatus, Tag
 from src.schemas import Event as EventDOT
-import sqlalchemy as sa
 from sqlalchemy import func
 from sqlalchemy.orm import joinedload
 from src.schemas import EventIn, EventUpdate, EventQuery
+from datetime import datetime
 
 
 def submit_event(data: EventIn) -> Event:
@@ -203,6 +203,12 @@ def get_events_calendar() -> list[dict]:
             ).all()
         ]
 
-        result.append({"date": row.date, "event_ids": event_ids})
+        # Converte a data do tipo date para datetime com hora fixa (ex: 17:00:00)
+        formatted_datetime = datetime.combine(
+            row.date, datetime.strptime("17:00:00", "%H:%M:%S").time()
+        )
+        iso_date = formatted_datetime.strftime("%Y-%m-%dT%H:%M:%S")
+
+        result.append({"date": iso_date, "event_ids": event_ids})
 
     return result
