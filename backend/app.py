@@ -38,8 +38,6 @@ app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 cors = CORS()
-cors.init_app(app, supports_credentials=True)
-
 
 db.init_app(app)
 migrate = Migrate(app, db)
