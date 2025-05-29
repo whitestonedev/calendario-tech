@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 from flask import render_template_string, send_from_directory
+from flask_cors import CORS
 import mistune
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask_migrate import Migrate
@@ -29,6 +30,36 @@ app = OpenAPI(
             "type": "http",
             "scheme": "bearer",
             "bearerFormat": "JWT",
+        }
+    },
+)
+
+# Configuração do CORS
+origins = [
+    "https://api.calendario.tech",
+    "https://manage.calendario.tech",
+    "https://www.calendario.tech",
+    "https://calendario.tech",
+]
+
+if os.getenv("DEBUG", "False").lower() == "true":
+    origins.extend(
+        [
+            "http://localhost:8080",
+            "http://localhost:8081",
+            "http://localhost:8082",
+            "http://localhost:3000",
+        ]
+    )
+
+CORS(
+    app,
+    resources={
+        r"/*": {
+            "origins": origins,
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "supports_credentials": True,
         }
     },
 )
