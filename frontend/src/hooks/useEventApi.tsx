@@ -26,13 +26,14 @@ export const useEventApi = (initialSearchTerm: string = '') => {
     isValidated,
   } = useRateLimit();
 
-  // Calculate date range: from today to 12 months in the future
+  // Calculate date range: from 2 months before to 12 months in the future
   const dateRange = useMemo(() => {
     const today = new Date();
+    const startDate = addMonths(today, -2);
     const endDate = addMonths(today, 12);
 
     return {
-      startDate: format(today, 'yyyy-MM-dd'),
+      startDate: format(startDate, 'yyyy-MM-dd'),
       endDate: format(endDate, 'yyyy-MM-dd'),
     };
   }, []);
