@@ -1,4 +1,5 @@
 import logging
+import os
 from pathlib import Path
 
 from flask import render_template_string, send_from_directory
@@ -6,14 +7,15 @@ from flask_cors import CORS
 import mistune
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask_migrate import Migrate
-
+from alembic import command
+from alembic.config import Config as AlembicConfig
 from src.models import db
 
 from flask_openapi3 import OpenAPI, Info
 
 from src.constants import LOGGER_FORMAT, README_FILE
 from src.routes.events import event_bp
-from src.services.version_db import run_db_versioning_job
+from src.services.backup_db_pr import run_database_backup_job
 
 
 DB_PATH = Path(__file__).parent / "events.sqlite3"
@@ -31,12 +33,21 @@ app = OpenAPI(
         }
     },
 )
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH.resolve()}"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 db.init_app(app)
 migrate = Migrate(app, db)
+
+
+def run_migrations():
+    alembic_cfg = AlembicConfig(str(Path(__file__).parent / "alembic.ini"))
+    command.upgrade(alembic_cfg, "head")
+
+
+with app.app_context():
+    run_migrations()
 
 logging.basicConfig(
     level=logging.INFO,
@@ -46,7 +57,9 @@ logger = logging.getLogger(__name__)
 
 # Scheduler for database backup
 scheduler = BackgroundScheduler()
-scheduler.add_job(run_db_versioning_job, "cron", hour=0, minute=0)  # Daily at midnight
+scheduler.add_job(
+    run_database_backup_job, "cron", hour=0, minute=0
+)  # Daily at midnight
 scheduler.start()
 
 app.register_api(event_bp)

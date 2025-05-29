@@ -1,5 +1,6 @@
+import os
 from logging.config import fileConfig
-from sqlalchemy import engine_from_config, pool
+from sqlalchemy import create_engine, pool
 from alembic import context
 
 import sys
@@ -9,18 +10,20 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 from src.models import db
 
+# Load Alembic config and logging
 config = context.config
 fileConfig(config.config_file_name)
 
+# SQLAlchemy model metadata
 target_metadata = db.metadata
 
 
 def run_migrations_online():
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section),
-        prefix="sqlalchemy.",
-        poolclass=pool.NullPool,
-    )
+    database_url = os.getenv("DATABASE_URL")
+    if not database_url:
+        raise EnvironmentError("DATABASE_URL is not set")
+
+    connectable = create_engine(database_url, poolclass=pool.NullPool)
 
     with connectable.connect() as connection:
         context.configure(
@@ -28,7 +31,6 @@ def run_migrations_online():
             target_metadata=target_metadata,
             compare_type=True,
         )
-
         with context.begin_transaction():
             context.run_migrations()
 
