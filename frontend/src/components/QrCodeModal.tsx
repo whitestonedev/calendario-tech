@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogFooter,
   DialogTrigger,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import { QRCodeSVG } from 'qrcode.react';
 import { QrCode, Share2 } from 'lucide-react';
@@ -20,6 +21,7 @@ interface QrCodeModalProps {
 
 export const QrCodeModal: React.FC<QrCodeModalProps> = ({ event, eventUrl }) => {
   const [isQrCodeModalOpen, setIsQrCodeModalOpen] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
   const { t } = useLanguage();
 
   const downloadQrCodeAsPng = () => {
@@ -73,9 +75,13 @@ export const QrCodeModal: React.FC<QrCodeModalProps> = ({ event, eventUrl }) => 
   };
 
   const shareQrCodeImage = async () => {
+    if (isSharing) return;
+    setIsSharing(true);
+
     const svgElement = document.getElementById('qrcode-svg');
     if (!svgElement || !navigator.share) {
       console.log('Web Share API não suportada ou SVG não encontrado.');
+      setIsSharing(false);
       return;
     }
 
@@ -88,6 +94,7 @@ export const QrCodeModal: React.FC<QrCodeModalProps> = ({ event, eventUrl }) => 
 
       if (!ctx) {
         console.error('Não foi possível obter contexto 2D para o canvas.');
+        setIsSharing(false);
         return;
       }
 
@@ -120,9 +127,12 @@ export const QrCodeModal: React.FC<QrCodeModalProps> = ({ event, eventUrl }) => 
               setIsQrCodeModalOpen(false);
             } catch (error) {
               console.error('Erro ao compartilhar QR Code PNG:', error);
+            } finally {
+              setIsSharing(false);
             }
           } else {
             console.error('Falha ao criar Blob PNG.');
+            setIsSharing(false);
           }
         }, 'image/png');
       };
@@ -130,11 +140,13 @@ export const QrCodeModal: React.FC<QrCodeModalProps> = ({ event, eventUrl }) => 
       img.onerror = (error) => {
         console.error('Erro ao carregar imagem SVG para o canvas:', error);
         URL.revokeObjectURL(url);
+        setIsSharing(false);
       };
 
       img.src = url;
     } catch (error) {
       console.error('Erro geral ao gerar ou compartilhar QR Code PNG:', error);
+      setIsSharing(false);
     }
   };
 
@@ -153,6 +165,9 @@ export const QrCodeModal: React.FC<QrCodeModalProps> = ({ event, eventUrl }) => 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{t('event.qrCodeTitle')}</DialogTitle>
+          <DialogDescription>
+            {t('event.shareQrCodeMessage')} {eventUrl}
+          </DialogDescription>
         </DialogHeader>
         <div className="flex justify-center p-4">
           {event && (
@@ -177,12 +192,12 @@ export const QrCodeModal: React.FC<QrCodeModalProps> = ({ event, eventUrl }) => 
           <Button
             onClick={() => {
               shareQrCodeImage();
-              setIsQrCodeModalOpen(false);
             }}
+            disabled={isSharing}
             className="flex-1 w-full sm:w-auto bg-tech-purple hover:bg-tech-purple/90"
           >
             <Share2 className="h-5 w-5 mr-2" />
-            {t('event.share')}
+            {isSharing ? t('common.loading') : t('event.share')}
           </Button>
         </DialogFooter>
       </DialogContent>
