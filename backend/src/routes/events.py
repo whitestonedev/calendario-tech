@@ -1,7 +1,6 @@
 import logging
 
 from flask import jsonify
-from flask_cors import cross_origin
 from flask_openapi3 import Tag, APIBlueprint
 
 from src.exceptions import DuplicateEventException, EventNotFoundException
@@ -37,14 +36,6 @@ review_tag = Tag(
     description="Endpoints for reviewing and managing submitted events (staff only).",
 )
 
-CROSS_ORIGIN_SETTINGS = {
-    "origins": [
-        r"^https:\/\/([a-z0-9-]+\.)*calendario\.tech$",
-        "http://localhost:3000",
-    ],
-    "supports_credentials": True,
-}
-
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +51,6 @@ logger = logging.getLogger(__name__)
     tags=[public_tag],
     summary="Retrieve events",
 )
-@cross_origin(origin="*")
 def get_events(query: EventQuery):
     events = get_events_service(query)
     return jsonify(events), 200
@@ -71,7 +61,6 @@ def get_events(query: EventQuery):
     tags=[public_tag],
     summary="Retrieve event",
 )
-@cross_origin(origin="*")
 def get_event(path: EventPath):
     event = get_event_service(path.event_id)
     return jsonify(event.serialized), 200
@@ -82,7 +71,6 @@ def get_event(path: EventPath):
     tags=[submission_tag],
     summary="Submit event for review",
 )
-@cross_origin(origin="*")
 def create_event(body: EventIn):
     try:
         event = submit_event(body)
@@ -97,7 +85,6 @@ def create_event(body: EventIn):
     summary="Delete event",
     security=[{"BearerAuth": []}],
 )
-@cross_origin(**CROSS_ORIGIN_SETTINGS)
 def delete_event(path: EventPath):
     is_valid_credentials = check_credentials()
     if is_valid_credentials:
@@ -115,7 +102,6 @@ def delete_event(path: EventPath):
     tags=[review_tag],
     summary="Update event",
 )
-@cross_origin(**CROSS_ORIGIN_SETTINGS)
 def update_event(path: EventPath, body: EventUpdate):
     is_valid_credentials = check_credentials()
     if is_valid_credentials:
@@ -133,7 +119,6 @@ def update_event(path: EventPath, body: EventUpdate):
     description="Fetches a list of events that are pending approval by the staff.",
     security=[{"BearerAuth": []}],
 )
-@cross_origin(**CROSS_ORIGIN_SETTINGS)
 def get_pending_events():
     is_valid_credentials = check_credentials()
     if is_valid_credentials:
@@ -154,7 +139,6 @@ def get_pending_events():
     description="Sets the status of an event to 'approved' or 'declined'.",
     security=[{"BearerAuth": []}],
 )
-@cross_origin(**CROSS_ORIGIN_SETTINGS)
 def manage_submitted_update_event(path: EventPath, body: ManageSubmittedEventBody):
     is_valid_credentials = check_credentials()
     if is_valid_credentials:
@@ -182,7 +166,6 @@ def manage_submitted_update_event(path: EventPath, body: ManageSubmittedEventBod
     summary="Retrieve dates with events",
     description="Returns a list of dates that have events and their respective event IDs.",
 )
-@cross_origin(origin="*")
 def get_calendar():
     calendar_data = get_events_calendar()
     return jsonify(calendar_data), 200
