@@ -19,7 +19,7 @@ target_metadata = db.metadata
 
 
 def run_migrations_online():
-    database_url = os.getenv("DATABASE_URL")
+    database_url = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DB')}"
     if not database_url:
         raise EnvironmentError("DATABASE_URL is not set")
 

@@ -33,7 +33,8 @@ app = OpenAPI(
         }
     },
 )
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+DATABASE_URL = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DB')}"
+app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
