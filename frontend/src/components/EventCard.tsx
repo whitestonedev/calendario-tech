@@ -10,6 +10,7 @@ import EventModal from './EventModal';
 import { useLanguage } from '@/context/LanguageContext';
 import { formatCurrency } from '@/types/currency';
 import { LanguageCodes, LanguageCode } from '@/types/language';
+import { getStateLabel } from '@/lib/states';
 
 interface EventCardProps {
   event: EventInterface;
@@ -98,10 +99,12 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
               <div className="flex items-center text-sm">
                 <MapPin className="h-4 w-4 mr-2 text-tech-purple" />
                 <span className="truncate">
-                  {event.address}
                   {event.state && (
-                    <span className="ml-1 text-tech-purple font-medium">({event.state})</span>
-                  )}
+                    <span className="text-tech-purple font-medium">
+                      ({getStateLabel(event.state)})
+                    </span>
+                  )}{' '}
+                  {event.address}
                 </span>
               </div>
             )}

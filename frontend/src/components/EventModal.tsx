@@ -23,6 +23,7 @@ import { useToast } from '@/hooks/use-toast';
 import { formatCurrency } from '@/types/currency';
 import { LanguageCodes, LanguageCode } from '@/types/language';
 import { useNavigate } from 'react-router-dom';
+import { getStateLabel } from '@/lib/states';
 
 interface EventModalProps {
   event: EventInterface;
@@ -168,10 +169,12 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
                 <MapPin className="h-4 w-4 mr-2 mt-1 text-tech-purple" />
                 <div>
                   <p>
-                    {event.address}
                     {event.state && (
-                      <span className="ml-1 text-tech-purple font-medium">({event.state})</span>
-                    )}
+                      <span className="text-tech-purple font-medium">
+                        ({getStateLabel(event.state)})
+                      </span>
+                    )}{' '}
+                    {event.address}
                   </p>
                   <a
                     href={event.maps_link}

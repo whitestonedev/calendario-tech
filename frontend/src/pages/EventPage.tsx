@@ -26,6 +26,7 @@ import { EventInterface } from '@/types/event';
 import { API_BASE_URL } from '@/config/constants';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
 import { QrCodeModal } from '@/components/QrCodeModal';
+import { getStateLabel } from '@/lib/states';
 
 const EventPage = () => {
   const { eventId, dateStart, title } = useParams();
@@ -277,10 +278,12 @@ const EventPage = () => {
                     <MapPin className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3 mt-1 text-tech-purple" />
                     <div>
                       <p className="text-sm sm:text-base">
-                        {event.address}
                         {event.state && (
-                          <span className="ml-2 text-tech-purple font-medium">({event.state})</span>
-                        )}
+                          <span className="text-tech-purple font-medium">
+                            ({getStateLabel(event.state)})
+                          </span>
+                        )}{' '}
+                        {event.address}
                       </p>
                       <a
                         href={event.maps_link}

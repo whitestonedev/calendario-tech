@@ -1,4 +1,8 @@
 export const statesOfBrazil = [
+  { value: 'OL', label: 'Online/Digital' },
+  { value: 'SC', label: 'Santa Catarina' },
+  { value: 'SP', label: 'São Paulo' },
+  { value: 'RS', label: 'Rio Grande do Sul' },
   { value: 'AC', label: 'Acre' },
   { value: 'AL', label: 'Alagoas' },
   { value: 'AP', label: 'Amapá' },
@@ -19,11 +23,13 @@ export const statesOfBrazil = [
   { value: 'PI', label: 'Piauí' },
   { value: 'RJ', label: 'Rio de Janeiro' },
   { value: 'RN', label: 'Rio Grande do Norte' },
-  { value: 'RS', label: 'Rio Grande do Sul' },
   { value: 'RO', label: 'Rondônia' },
   { value: 'RR', label: 'Roraima' },
-  { value: 'SC', label: 'Santa Catarina' },
-  { value: 'SP', label: 'São Paulo' },
   { value: 'SE', label: 'Sergipe' },
   { value: 'TO', label: 'Tocantins' },
 ];
+
+export const getStateLabel = (stateValue: string): string => {
+  const state = statesOfBrazil.find((s) => s.value === stateValue.toUpperCase());
+  return state?.label || stateValue;
+};
