@@ -101,15 +101,15 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="max-w-[95%] sm:max-w-[550px] max-h-[85vh] sm:px-6 overflow-y-auto overflow-x-hidden bg-white [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+        className="max-w-[95%] sm:max-w-[550px] max-h-[85vh] sm:px-6 overflow-y-auto overflow-x-hidden bg-white [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] border-0 rounded-lg sm:rounded-none [&>button]:bg-white/80 [&>button]:backdrop-blur-sm [&>button]:shadow-lg [&>button]:rounded-full [&>button]:p-1 [&>button]:hover:bg-white/90"
         onScroll={handleScroll}
         ref={contentRef}
       >
-        <div className="relative h-40 md:h-56 -m-6 mb-0">
+        <div className="relative aspect-video -m-6 mb-0">
           <img
             src={translation.banner_link}
             alt={event.event_name}
-            className={`w-full h-full object-cover ${isEventPast ? 'grayscale opacity-75' : ''}`}
+            className={`w-full h-full object-cover object-center ${isEventPast ? 'grayscale opacity-75' : ''}`}
           />
           {isEventPast && (
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-12 z-20">

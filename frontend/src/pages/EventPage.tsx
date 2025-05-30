@@ -168,11 +168,11 @@ const EventPage = () => {
         </div>
 
         {/* Event banner */}
-        <div className="relative aspect-[16/9] md:aspect-[21/9] mb-6 sm:mb-12 rounded-xl sm:rounded-2xl overflow-hidden">
+        <div className="relative aspect-video mb-6 sm:mb-12 rounded-xl sm:rounded-2xl overflow-hidden">
           <img
             src={translation.banner_link}
             alt={event.event_name}
-            className={`w-full h-full object-cover ${isEventPast ? 'grayscale opacity-75' : ''}`}
+            className={`w-full h-full object-cover object-center ${isEventPast ? 'grayscale opacity-75' : ''}`}
           />
           {isEventPast && (
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-12 z-20">

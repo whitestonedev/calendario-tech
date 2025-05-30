@@ -50,11 +50,11 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
         }`}
         onClick={() => setModalOpen(true)}
       >
-        <div className="relative h-48 overflow-hidden">
+        <div className="relative aspect-video overflow-hidden">
           <img
             src={translation.banner_link}
             alt={event.event_name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
           {isEventPast && (
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-12 z-20">

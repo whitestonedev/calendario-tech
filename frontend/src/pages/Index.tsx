@@ -13,7 +13,7 @@ import { DateRange } from 'react-day-picker';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
 import { useLocation } from 'react-router-dom';
 import { RateLimitTurnstile } from '@/components/RateLimitTurnstile';
-import { TypewriterEffect, TypewriterEffectSmooth } from '@/components/ui/typewriter-effect';
+import { TypewriterEffect } from '@/components/ui/typewriter-effect';
 import { cn } from '@/lib/utils';
 
 const Index = () => {
@@ -276,7 +276,7 @@ const Index = () => {
             <img src="img/logotipo.png" alt="WhiteStone Dev Logo" className="max-h-24" />
           </div>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-2">{t('index.subtitle')}</p>
-          <p className="text-sm text-tech-purple">
+          <div className="text-sm text-tech-purple">
             <a href="https://whitestonedev.com.br/" target="_blank" rel="noopener noreferrer">
               <TypewriterEffect
                 key={language}
@@ -294,7 +294,7 @@ const Index = () => {
                 fontWeight="normal"
               />
             </a>
-          </p>
+          </div>
         </div>
       </section>
 
