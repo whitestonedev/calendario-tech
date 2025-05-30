@@ -28,6 +28,7 @@ def submit_event(data: EventIn) -> Event:
         maps_link=data.maps_link,
         online=data.online,
         event_link=data.event_link,
+        state=data.state,
     )
 
     db.session.add(event)
@@ -72,6 +73,7 @@ def update_event(event_id: int, event_data: EventUpdate) -> Event:
     event.online = event_data.online
     event.event_link = event_data.event_link
     event.status = event_data.status
+    event.state = event_data.state
 
     event.tags.clear()
     for tag_name in event_data.tags:

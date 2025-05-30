@@ -1,6 +1,5 @@
 import logging
 import os
-import re
 from pathlib import Path
 
 from flask import render_template_string, send_from_directory

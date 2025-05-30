@@ -38,6 +38,7 @@ class States(enum.Enum):
     SP = "SP"
     SE = "SE"
     TO = "TO"
+    OL = "OL"  # Other Locations, used for online events or events not in Brazil
 
 
 class Currency(enum.Enum):
