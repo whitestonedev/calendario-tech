@@ -254,9 +254,6 @@ const EventPage = () => {
                   <User className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-tech-purple" />
                   <span>{event.organization_name}</span>
                 </div>
-                <div className="text-sm sm:text-base font-medium text-tech-purple">
-                  {translation.event_edition}
-                </div>
               </div>
 
               <Separator className="mb-4 sm:mb-8" />

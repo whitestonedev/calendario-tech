@@ -149,7 +149,6 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
               <Share2 className="h-5 w-5" />
             </Button>
           </div>
-          <div className="text-sm font-medium">{translation.event_edition}</div>
         </DialogHeader>
 
         <div className="space-y-4">

@@ -81,7 +81,6 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
           <div className="mb-3">
             <h3 className="text-lg font-semibold mb-1">{event.event_name}</h3>
             <p className="text-sm text-gray-500">{event.organization_name}</p>
-            <p className="text-sm font-medium mt-1">{translation.event_edition}</p>
           </div>
 
           <div className="space-y-2 mb-3">
