@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { EventInterface } from '@/types/event';
-import { format, parseISO, isPast } from 'date-fns';
+import { format, parseISO, isPast, isToday } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, MapPin, Globe } from 'lucide-react';
@@ -11,6 +11,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { formatCurrency } from '@/types/currency';
 import { LanguageCodes, LanguageCode } from '@/types/language';
 import { getStateLabel } from '@/lib/states';
+import { SparklesText } from '@/components/ui/SparklesText';
 
 interface EventCardProps {
   event: EventInterface;
@@ -28,7 +29,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
 
   const startDate = parseISO(event.start_datetime);
   const endDate = parseISO(event.end_datetime);
-  const isEventPast = isPast(endDate);
+  const isEventPast = isPast(startDate);
 
   const formatDate = (date: Date) => {
     return format(date, 'PPP', {
@@ -64,13 +65,24 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
             </div>
           )}
           <div className="absolute top-2 right-2 flex flex-col items-end gap-2">
+            {isToday(startDate) && (
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-full px-6 py-2 shadow-lg">
+                <SparklesText
+                  className="text-base text-white"
+                  colors={{ first: '#ffffff', second: '#f0f0f0' }}
+                  sparklesCount={5}
+                >
+                  {t('event.today')}
+                </SparklesText>
+              </div>
+            )}
             {event.online ? (
               <Badge className="bg-tech-blue">{t('event.online')}</Badge>
             ) : (
               <Badge className="bg-tech-green">{t('event.inPerson')}</Badge>
             )}
             {event.is_free && (
-              <Badge className="bg-green-100 text-green-700 border border-green-300 shadow-md animate-pulse font-semibold ring-2 ring-green-300">
+              <Badge className="bg-green-100 text-green-700 font-semibold ">
                 {t('event.free')}
               </Badge>
             )}

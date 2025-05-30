@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { format, parseISO, isPast } from 'date-fns';
+import { format, parseISO, isPast, isToday } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -27,6 +27,7 @@ import { API_BASE_URL } from '@/config/constants';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
 import { QrCodeModal } from '@/components/QrCodeModal';
 import { getStateLabel } from '@/lib/states';
+import { SparklesText } from '@/components/ui/SparklesText';
 
 const EventPage = () => {
   const { eventId, dateStart, title } = useParams();
@@ -112,6 +113,7 @@ const EventPage = () => {
   const startDate = parseISO(event.start_datetime);
   const endDate = parseISO(event.end_datetime);
   const isEventPast = isPast(endDate);
+  const isEventToday = isToday(startDate);
 
   const formatDate = (date: Date) => {
     return format(date, 'PPP', {
@@ -181,6 +183,19 @@ const EventPage = () => {
               </Badge>
             </div>
           )}
+          {isEventToday && (
+            <div className="absolute top-4 left-4 z-20">
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-full px-6 py-2 shadow-lg">
+                <SparklesText
+                  className="text-base text-white"
+                  colors={{ first: '#ffffff', second: '#f0f0f0' }}
+                  sparklesCount={5}
+                >
+                  {t('event.today')}
+                </SparklesText>
+              </div>
+            </div>
+          )}
           <div className="absolute bottom-4 sm:bottom-8 left-4 sm:left-8 flex flex-wrap gap-2 sm:gap-3 z-20">
             {event.online ? (
               <Badge className="bg-tech-blue text-white px-2 sm:px-3 py-1 text-xs sm:text-sm">
@@ -192,7 +207,7 @@ const EventPage = () => {
               </Badge>
             )}
             {event.is_free && (
-              <Badge className="bg-green-100 text-green-700 border border-green-300 px-2 sm:px-3 py-1 text-xs sm:text-sm shadow-md animate-pulse font-semibold ring-2 ring-green-300">
+              <Badge className="bg-green-100 text-green-700  px-2 sm:px-3 py-1 text-xs sm:text-sm shadow-md  font-semibold ">
                 {t('event.free')}
               </Badge>
             )}
