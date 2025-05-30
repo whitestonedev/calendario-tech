@@ -29,6 +29,7 @@ def submit_event(data: EventIn) -> Event:
         online=data.online,
         event_link=data.event_link,
         state=data.state,
+        is_free=data.is_free
     )
 
     db.session.add(event)
@@ -74,6 +75,7 @@ def update_event(event_id: int, event_data: EventUpdate) -> Event:
     event.event_link = event_data.event_link
     event.status = event_data.status
     event.state = event_data.state
+    event.is_free = event_data.is_free
 
     event.tags.clear()
     for tag_name in event_data.tags:
