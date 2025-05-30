@@ -19,9 +19,6 @@ from src.routes.events import event_bp
 from src.services.backup_db_pr import run_database_backup_job
 
 
-DB_PATH = Path(__file__).parent / "events.sqlite3"
-
-
 info = Info(title="Events API", version="1.0.0")
 app = OpenAPI(
     __name__,
@@ -35,25 +32,9 @@ app = OpenAPI(
     },
 )
 
-
-allowed_origins = [
-    re.compile(r"^https:\/\/([a-z0-9-]+\.)*calendario\.tech$"),
-]
-
-if os.getenv("APP_ENV", "production").lower() == "development":
-    allowed_origins.extend(
-        [
-            "http://localhost:3000",
-            "http://localhost:8080",
-            "http://localhost:8081",
-            "http://localhost:8082",
-        ]
-    )
-
-
 CORS(
     app,
-    resources={r"/*": {"origins": allowed_origins}},
+    resources={r"/*": {"origins": "*"}},
     supports_credentials=True,
     expose_headers=["Content-Type", "Authorization"],
     allow_headers=["Content-Type", "Authorization"],
