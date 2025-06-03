@@ -18,9 +18,6 @@ from src.routes.events import event_bp
 from src.services.backup_db_pr import run_database_backup_job
 
 
-DB_PATH = Path(__file__).parent / "events.sqlite3"
-
-
 info = Info(title="Events API", version="1.0.0")
 app = OpenAPI(
     __name__,
@@ -33,11 +30,24 @@ app = OpenAPI(
         }
     },
 )
+
+CORS(
+    app,
+    resources={r"/*": {"origins": "*"}},
+    supports_credentials=True,
+    expose_headers=["Content-Type", "Authorization"],
+    allow_headers=["Content-Type", "Authorization"],
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    max_age=3600,
+    vary_header=True,
+    automatic_options=True,
+)
+
+
 DATABASE_URL = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DB')}"
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 db.init_app(app)
 migrate = Migrate(app, db)
 
@@ -58,11 +68,7 @@ logger = logging.getLogger(__name__)
 
 # Scheduler for database backup
 scheduler = BackgroundScheduler()
-scheduler.add_job(
-    run_database_backup_job, "interval", minutes=10
-)
-scheduler.start()
-# TO TEST ONLY
+scheduler.add_job(run_database_backup_job, "interval", hours=24)
 
 
 app.register_api(event_bp)

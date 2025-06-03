@@ -54,8 +54,13 @@ const translations = {
     'event.share': 'Compartilhar',
     'event.viewBanner': 'Visualizar banner',
     'event.past': 'Evento Finalizado',
+    'event.today': 'Evento rolando hoje 🚀',
     'event.page': 'Detalhes',
     'event.details': 'Página do Evento',
+    'event.generateQRCode': 'Gerar QR Code',
+    'event.qrCodeTitle': 'QR Code do Evento',
+    'event.shareQrCodeMessage': 'Compartilhe o QR Code deste evento:',
+    'event.downloadQrCode': 'Baixar QR Code',
 
     // Form steps titles
     'form.step.basicInfo': 'Informações Básicas',
@@ -336,8 +341,13 @@ const translations = {
     'event.share': 'Share',
     'event.viewBanner': 'View banner',
     'event.past': 'Event Ended',
+    'event.today': 'Event happening today 🚀',
     'event.page': 'Details',
     'event.details': 'Event Page',
+    'event.generateQRCode': 'Generate QR Code',
+    'event.qrCodeTitle': 'Event QR Code',
+    'event.shareQrCodeMessage': 'Share this event QR Code:',
+    'event.downloadQrCode': 'Download QR Code',
 
     // Form steps titles
     'form.step.basicInfo': 'Basic Information',
@@ -616,8 +626,13 @@ const translations = {
     'event.share': 'Compartir',
     'event.viewBanner': 'Ver banner',
     'event.past': 'Evento Finalizado',
+    'event.today': 'Evento en curso hoy 🚀',
     'event.page': 'Detalles',
     'event.details': 'Página del Evento',
+    'event.generateQRCode': 'Generar QR Code',
+    'event.qrCodeTitle': 'QR Code del Evento',
+    'event.shareQrCodeMessage': 'Comparte el QR Code de este evento:',
+    'event.downloadQrCode': 'Descargar QR Code',
 
     // Form steps titles
     'form.step.basicInfo': 'Información Básica',

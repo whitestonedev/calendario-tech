@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar } from '@/components/ui/calendar';
 import { isSameDay, parseISO } from 'date-fns';
 import { pt } from 'date-fns/locale';
 import { EventInterface } from '@/types/event';
 import { DateRange } from 'react-day-picker';
+import { fetchCalendarDays } from '@/services/api';
 
 interface TechCalendarProps {
   events: EventInterface[];
@@ -13,8 +14,22 @@ interface TechCalendarProps {
 
 const TechCalendar: React.FC<TechCalendarProps> = ({ events, onRangeSelect, clearSelection }) => {
   const [selectedRange, setSelectedRange] = useState<DateRange | undefined>();
+  const [eventDates, setEventDates] = useState<Date[]>([]);
 
-  const eventDates = events.map((event) => parseISO(event.start_datetime));
+  useEffect(() => {
+    const loadEventDates = async () => {
+      try {
+        const calendarData = await fetchCalendarDays();
+        const dates = calendarData.map((day) => parseISO(day.date));
+        setEventDates(dates);
+      } catch (error) {
+        console.error('Error loading event dates:', error);
+        setEventDates(events.map((event) => parseISO(event.start_datetime)));
+      }
+    };
+
+    loadEventDates();
+  }, [events]);
 
   const handleCalendarSelect = (range: DateRange | undefined) => {
     if (range?.from && range?.to) {

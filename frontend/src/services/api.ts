@@ -30,6 +30,11 @@ export interface EventSubmission {
   };
 }
 
+interface CalendarDay {
+  date: string;
+  event_ids: number[];
+}
+
 /**
  * Fetches events from the API within a specified date range
  * @param startDate Start date in YYYY-MM-DD format
@@ -59,13 +64,18 @@ export const fetchEvents = async (
 
 /**
  * Fetches calendar days with events (for highlighting in calendar)
- * Note: This endpoint is not ready yet, so we'll use the events endpoint data in the meantime
- * @returns Promise with dates that have events
+ * @returns Promise with dates that have events and their respective event IDs
  */
-export const fetchCalendarDays = async (): Promise<string[]> => {
+export const fetchCalendarDays = async (): Promise<CalendarDay[]> => {
   try {
-    // Placeholder until /calendar-days endpoint is available
-    return [];
+    const response = await fetch(`${API_BASE_URL}/events/calendar`);
+
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+
+    const data: CalendarDay[] = await response.json();
+    return data;
   } catch (error) {
     console.error('Error fetching calendar days:', error);
     return [];

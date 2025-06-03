@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { EventInterface } from '@/types/event';
-import { format, parseISO, isPast } from 'date-fns';
+import { format, parseISO, isPast, isToday } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, MapPin, Globe } from 'lucide-react';
@@ -10,6 +10,8 @@ import EventModal from './EventModal';
 import { useLanguage } from '@/context/LanguageContext';
 import { formatCurrency } from '@/types/currency';
 import { LanguageCodes, LanguageCode } from '@/types/language';
+import { getStateLabel } from '@/lib/states';
+import { SparklesText } from '@/components/ui/SparklesText';
 
 interface EventCardProps {
   event: EventInterface;
@@ -27,7 +29,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
 
   const startDate = parseISO(event.start_datetime);
   const endDate = parseISO(event.end_datetime);
-  const isEventPast = isPast(endDate);
+  const isEventPast = isPast(startDate);
 
   const formatDate = (date: Date) => {
     return format(date, 'PPP', {
@@ -49,11 +51,11 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
         }`}
         onClick={() => setModalOpen(true)}
       >
-        <div className="relative h-48 overflow-hidden">
+        <div className="relative aspect-video overflow-hidden">
           <img
             src={translation.banner_link}
             alt={event.event_name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
           {isEventPast && (
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-12 z-20">
@@ -63,13 +65,24 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
             </div>
           )}
           <div className="absolute top-2 right-2 flex flex-col items-end gap-2">
+            {isToday(startDate) && (
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-full px-6 py-2 shadow-lg">
+                <SparklesText
+                  className="text-base text-white"
+                  colors={{ first: '#ffffff', second: '#f0f0f0' }}
+                  sparklesCount={5}
+                >
+                  {t('event.today')}
+                </SparklesText>
+              </div>
+            )}
             {event.online ? (
               <Badge className="bg-tech-blue">{t('event.online')}</Badge>
             ) : (
               <Badge className="bg-tech-green">{t('event.inPerson')}</Badge>
             )}
             {event.is_free && (
-              <Badge className="bg-green-100 text-green-700 border border-green-300 shadow-md animate-pulse font-semibold ring-2 ring-green-300">
+              <Badge className="bg-green-100 text-green-700 font-semibold ">
                 {t('event.free')}
               </Badge>
             )}
@@ -80,7 +93,6 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
           <div className="mb-3">
             <h3 className="text-lg font-semibold mb-1">{event.event_name}</h3>
             <p className="text-sm text-gray-500">{event.organization_name}</p>
-            <p className="text-sm font-medium mt-1">{translation.event_edition}</p>
           </div>
 
           <div className="space-y-2 mb-3">
@@ -98,10 +110,12 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
               <div className="flex items-center text-sm">
                 <MapPin className="h-4 w-4 mr-2 text-tech-purple" />
                 <span className="truncate">
-                  {event.address}
                   {event.state && (
-                    <span className="ml-1 text-tech-purple font-medium">({event.state})</span>
-                  )}
+                    <span className="text-tech-purple font-medium">
+                      ({getStateLabel(event.state)})
+                    </span>
+                  )}{' '}
+                  {event.address}
                 </span>
               </div>
             )}

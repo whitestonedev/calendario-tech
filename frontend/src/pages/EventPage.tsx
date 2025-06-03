@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { format, parseISO, isPast } from 'date-fns';
+import { format, parseISO, isPast, isToday } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -25,6 +25,9 @@ import { LanguageCodes, LanguageCode } from '@/types/language';
 import { EventInterface } from '@/types/event';
 import { API_BASE_URL } from '@/config/constants';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
+import { QrCodeModal } from '@/components/QrCodeModal';
+import { getStateLabel } from '@/lib/states';
+import { SparklesText } from '@/components/ui/SparklesText';
 
 const EventPage = () => {
   const { eventId, dateStart, title } = useParams();
@@ -34,6 +37,7 @@ const EventPage = () => {
   const [event, setEvent] = useState<EventInterface | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isSharing, setIsSharing] = useState(false);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -109,6 +113,7 @@ const EventPage = () => {
   const startDate = parseISO(event.start_datetime);
   const endDate = parseISO(event.end_datetime);
   const isEventPast = isPast(endDate);
+  const isEventToday = isToday(startDate);
 
   const formatDate = (date: Date) => {
     return format(date, 'PPP', {
@@ -122,21 +127,30 @@ const EventPage = () => {
     });
   };
 
-  const shareEvent = () => {
+  const shareEvent = async () => {
     const eventUrl = `https://calendario.tech/#/${dateStart}/${eventId}/${title}`;
 
-    if (navigator.share) {
-      navigator.share({
-        title: event.event_name,
-        text: translation.short_description,
-        url: eventUrl,
-      });
-    } else {
-      navigator.clipboard.writeText(eventUrl);
-      toast({
-        title: t('event.linkCopied'),
-        description: t('event.linkCopiedDesc'),
-      });
+    if (isSharing) return;
+    setIsSharing(true);
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: event?.event_name,
+          text: translation?.short_description,
+          url: eventUrl,
+        });
+      } else {
+        await navigator.clipboard.writeText(eventUrl);
+        toast({
+          title: t('event.linkCopied'),
+          description: t('event.linkCopiedDesc'),
+        });
+      }
+    } catch (err) {
+      console.error('Erro ao compartilhar:', err);
+    } finally {
+      setIsSharing(false);
     }
   };
 
@@ -156,17 +170,30 @@ const EventPage = () => {
         </div>
 
         {/* Event banner */}
-        <div className="relative aspect-[16/9] md:aspect-[21/9] mb-6 sm:mb-12 rounded-xl sm:rounded-2xl overflow-hidden">
+        <div className="relative aspect-video mb-6 sm:mb-12 rounded-xl sm:rounded-2xl overflow-hidden">
           <img
             src={translation.banner_link}
             alt={event.event_name}
-            className={`w-full h-full object-cover ${isEventPast ? 'grayscale opacity-75' : ''}`}
+            className={`w-full h-full object-cover object-center ${isEventPast ? 'grayscale opacity-75' : ''}`}
           />
           {isEventPast && (
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-12 z-20">
               <Badge className="bg-red-500 text-white px-4 sm:px-6 py-1 sm:py-2 text-sm sm:text-base font-bold shadow-lg animate-pulse whitespace-nowrap">
                 {t('event.past')}
               </Badge>
+            </div>
+          )}
+          {isEventToday && (
+            <div className="absolute top-4 left-4 z-20">
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-full px-6 py-2 shadow-lg">
+                <SparklesText
+                  className="text-base text-white"
+                  colors={{ first: '#ffffff', second: '#f0f0f0' }}
+                  sparklesCount={5}
+                >
+                  {t('event.today')}
+                </SparklesText>
+              </div>
             </div>
           )}
           <div className="absolute bottom-4 sm:bottom-8 left-4 sm:left-8 flex flex-wrap gap-2 sm:gap-3 z-20">
@@ -180,7 +207,7 @@ const EventPage = () => {
               </Badge>
             )}
             {event.is_free && (
-              <Badge className="bg-green-100 text-green-700 border border-green-300 px-2 sm:px-3 py-1 text-xs sm:text-sm shadow-md animate-pulse font-semibold ring-2 ring-green-300">
+              <Badge className="bg-green-100 text-green-700  px-2 sm:px-3 py-1 text-xs sm:text-sm shadow-md  font-semibold ">
                 {t('event.free')}
               </Badge>
             )}
@@ -201,15 +228,10 @@ const EventPage = () => {
                 )}
               </div>
               <div className="flex gap-3 w-full">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={shareEvent}
-                  className="text-gray-500 hover:text-tech-purple hover:bg-tech-purple/10"
-                  title={t('event.share')}
-                >
-                  <Share2 className="h-5 w-5" />
-                </Button>
+                <QrCodeModal
+                  event={event}
+                  eventUrl={`https://calendario.tech/#/${dateStart}/${eventId}/${title}`}
+                />
                 <Button
                   variant="outline"
                   className="flex-1 text-tech-dark border-tech-purple hover:bg-tech-purple/10 text-sm py-2"
@@ -218,6 +240,15 @@ const EventPage = () => {
                   <a href={event.event_link} target="_blank" rel="noopener noreferrer">
                     {t('event.details')}
                   </a>
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={shareEvent}
+                  className="text-gray-500 hover:text-tech-purple hover:bg-tech-purple/10"
+                  title={t('event.share')}
+                >
+                  <Share2 className="h-5 w-5" />
                 </Button>
               </div>
             </div>
@@ -237,9 +268,6 @@ const EventPage = () => {
                 <div className="flex items-center text-sm sm:text-base text-gray-600 mb-2">
                   <User className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-tech-purple" />
                   <span>{event.organization_name}</span>
-                </div>
-                <div className="text-sm sm:text-base font-medium text-tech-purple">
-                  {translation.event_edition}
                 </div>
               </div>
 
@@ -262,10 +290,12 @@ const EventPage = () => {
                     <MapPin className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3 mt-1 text-tech-purple" />
                     <div>
                       <p className="text-sm sm:text-base">
-                        {event.address}
                         {event.state && (
-                          <span className="ml-2 text-tech-purple font-medium">({event.state})</span>
-                        )}
+                          <span className="text-tech-purple font-medium">
+                            ({getStateLabel(event.state)})
+                          </span>
+                        )}{' '}
+                        {event.address}
                       </p>
                       <a
                         href={event.maps_link}
@@ -365,6 +395,10 @@ const EventPage = () => {
                     >
                       <Share2 className="h-5 w-5" />
                     </Button>
+                    <QrCodeModal
+                      event={event}
+                      eventUrl={`https://calendario.tech/#/${dateStart}/${eventId}/${title}`}
+                    />
                   </div>
                 </div>
               </div>

@@ -1,4 +1,6 @@
 import logging
+import os
+from flask_cors import cross_origin
 
 from flask import jsonify
 from flask_openapi3 import Tag, APIBlueprint
@@ -40,6 +42,25 @@ review_tag = Tag(
 logger = logging.getLogger(__name__)
 
 
+def get_allowed_origins():
+    origins = [
+        "https://api.calendario.tech",
+        "https://manage.calendario.tech",
+        "https://www.calendario.tech",
+        "https://calendario.tech",
+    ]
+    if os.getenv("DEBUG", "False").lower() == "true":
+        origins.extend(
+            [
+                "http://localhost:8080",
+                "http://localhost:8081",
+                "http://localhost:8082",
+                "http://localhost:3000",
+            ]
+        )
+    return origins
+
+
 # TODO: remove this double route
 @event_bp.get(
     "",
@@ -51,6 +72,7 @@ logger = logging.getLogger(__name__)
     tags=[public_tag],
     summary="Retrieve events",
 )
+@cross_origin(origins="*")
 def get_events(query: EventQuery):
     events = get_events_service(query)
     return jsonify(events), 200
@@ -61,6 +83,7 @@ def get_events(query: EventQuery):
     tags=[public_tag],
     summary="Retrieve event",
 )
+@cross_origin(origins="*")
 def get_event(path: EventPath):
     event = get_event_service(path.event_id)
     return jsonify(event.serialized), 200
@@ -71,6 +94,7 @@ def get_event(path: EventPath):
     tags=[submission_tag],
     summary="Submit event for review",
 )
+@cross_origin(origins="*")
 def create_event(body: EventIn):
     try:
         event = submit_event(body)
@@ -83,7 +107,6 @@ def create_event(body: EventIn):
     "/<int:event_id>",
     tags=[review_tag],
     summary="Delete event",
-    security=[{"BearerAuth": []}],
 )
 def delete_event(path: EventPath):
     is_valid_credentials = check_credentials()
@@ -108,7 +131,6 @@ def update_event(path: EventPath, body: EventUpdate):
         return is_valid_credentials
 
     event = update_event_service(path.event_id, body)
-
     return jsonify(event.serialized)
 
 
@@ -117,7 +139,6 @@ def update_event(path: EventPath, body: EventUpdate):
     tags=[review_tag],
     summary="Retrieve events pending review",
     description="Fetches a list of events that are pending approval by the staff.",
-    security=[{"BearerAuth": []}],
 )
 def get_pending_events():
     is_valid_credentials = check_credentials()
@@ -137,7 +158,6 @@ def get_pending_events():
     tags=[review_tag],
     summary="Manage submitted event, approve or decline",
     description="Sets the status of an event to 'approved' or 'declined'.",
-    security=[{"BearerAuth": []}],
 )
 def manage_submitted_update_event(path: EventPath, body: ManageSubmittedEventBody):
     is_valid_credentials = check_credentials()
@@ -147,13 +167,10 @@ def manage_submitted_update_event(path: EventPath, body: ManageSubmittedEventBod
         event = get_event_service(path.event_id)
 
         if body.action == SubmittedActions.declined:
-            # If the event is declined, delete it (Just for now)
             delete_event_service(event.id)
-
             return jsonify({"message": "Event declined and deleted"}), 200
 
         update_event_status(event.id, body.action.value)
-
         return jsonify({"message": "Event status updated"}), 200
 
     except EventNotFoundException as e:
@@ -166,6 +183,7 @@ def manage_submitted_update_event(path: EventPath, body: ManageSubmittedEventBod
     summary="Retrieve dates with events",
     description="Returns a list of dates that have events and their respective event IDs.",
 )
+@cross_origin(origins="*")
 def get_calendar():
     calendar_data = get_events_calendar()
     return jsonify(calendar_data), 200

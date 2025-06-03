@@ -1,10 +1,10 @@
 from src.exceptions import DuplicateEventException, EventNotFoundException
 from src.models import db, Event, EventIntl, Tag as TagModel, EventStatus, Tag
 from src.schemas import Event as EventDOT
-import sqlalchemy as sa
 from sqlalchemy import func
 from sqlalchemy.orm import joinedload
 from src.schemas import EventIn, EventUpdate, EventQuery
+from datetime import datetime
 
 
 def submit_event(data: EventIn) -> Event:
@@ -28,6 +28,8 @@ def submit_event(data: EventIn) -> Event:
         maps_link=data.maps_link,
         online=data.online,
         event_link=data.event_link,
+        state=data.state,
+        is_free=data.is_free
     )
 
     db.session.add(event)
@@ -72,6 +74,8 @@ def update_event(event_id: int, event_data: EventUpdate) -> Event:
     event.online = event_data.online
     event.event_link = event_data.event_link
     event.status = event_data.status
+    event.state = event_data.state
+    event.is_free = event_data.is_free
 
     event.tags.clear()
     for tag_name in event_data.tags:
@@ -203,6 +207,12 @@ def get_events_calendar() -> list[dict]:
             ).all()
         ]
 
-        result.append({"date": row.date, "event_ids": event_ids})
+        # Converte a data do tipo date para datetime com hora fixa (ex: 17:00:00)
+        formatted_datetime = datetime.combine(
+            row.date, datetime.strptime("17:00:00", "%H:%M:%S").time()
+        )
+        iso_date = formatted_datetime.strftime("%Y-%m-%dT%H:%M:%S")
+
+        result.append({"date": iso_date, "event_ids": event_ids})
 
     return result
