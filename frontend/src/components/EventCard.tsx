@@ -29,7 +29,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
 
   const startDate = parseISO(event.start_datetime);
   const endDate = parseISO(event.end_datetime);
-  const isEventPast = isPast(startDate);
+  const isEventPast = isPast(endDate);
 
   const formatDate = (date: Date) => {
     return format(date, 'PPP', {
