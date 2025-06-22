@@ -15,11 +15,30 @@ import { useLocation } from 'react-router-dom';
 import { RateLimitTurnstile } from '@/components/RateLimitTurnstile';
 import { TypewriterEffect } from '@/components/ui/typewriter-effect';
 import { cn } from '@/lib/utils';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const Index = () => {
   const location = useLocation();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [clearCalendarSelection, setClearCalendarSelection] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [eventsPerPage, setEventsPerPage] = useState(10);
+
   const [filters, setFilters] = useState<FilterState>({
     search: '',
     location: '',
@@ -54,6 +73,7 @@ const Index = () => {
   const handleFilterChange = useCallback(
     (newFilters: FilterState) => {
       setFilters(newFilters);
+      setCurrentPage(1); // Reset to first page when filters change
       // Sync the search filter with the API search term
       if (newFilters.search !== filters.search) {
         setSearchTerm(newFilters.search);
@@ -65,6 +85,7 @@ const Index = () => {
   const handleSearch = useCallback(
     (searchFilters: FilterState) => {
       setFilters(searchFilters);
+      setCurrentPage(1); // Reset to first page when searching
       searchWithFilters(searchFilters);
     },
     [searchWithFilters]
@@ -76,6 +97,7 @@ const Index = () => {
       startDate: range?.from,
       endDate: range?.to,
     }));
+    setCurrentPage(1); // Reset to first page when date range changes
   }, []);
 
   const clearDateFilter = useCallback(() => {
@@ -85,6 +107,7 @@ const Index = () => {
       startDate: undefined,
       endDate: undefined,
     }));
+    setCurrentPage(1); // Reset to first page when clearing date filter
     setClearCalendarSelection(true);
     setTimeout(() => setClearCalendarSelection(false), 100);
   }, []);
@@ -201,31 +224,135 @@ const Index = () => {
       });
   }, [selectedDate, filters, eventsSource, apiFilteredEvents, events.length, language]);
 
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Scroll to top when changing pages with smooth animation
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  // Handle events per page change
+  const handleEventsPerPageChange = (value: string) => {
+    const newEventsPerPage = value === 'all' ? filteredEvents.length : parseInt(value);
+    setEventsPerPage(newEventsPerPage);
+    setCurrentPage(1); // Reset to first page when changing events per page
+    // Scroll to top when changing events per page
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
+  const startIndex = (currentPage - 1) * eventsPerPage;
+  const endIndex = startIndex + eventsPerPage;
+  const paginatedEvents = filteredEvents.slice(startIndex, endIndex);
+
+  // Generate page numbers for pagination
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+
+    if (totalPages <= maxVisiblePages) {
+      // Show all pages if total is small
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Show first page, last page, current page and neighbors
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) {
+          pages.push(i);
+        }
+        pages.push('ellipsis');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push('ellipsis');
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        pages.push(1);
+        pages.push('ellipsis');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(i);
+        }
+        pages.push('ellipsis');
+        pages.push(totalPages);
+      }
+    }
+
+    return pages;
+  };
+
   const renderContent = () => {
     if (isLoading) {
       return (
-        <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <h3 className="text-lg font-medium mb-2">{t('loading.events')}</h3>
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-tech-purple mx-auto mb-3"></div>
+          <h3 className="text-sm font-medium text-gray-600 mb-1">{t('loading.events')}</h3>
+          <p className="text-xs text-gray-500">{t('index.loadingEvents')}</p>
         </div>
       );
     }
 
     if (error) {
       return (
-        <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <h3 className="text-lg font-medium mb-2 text-red-500">{t('error.loading')}</h3>
-          <p className="text-gray-600 mb-4">{error}</p>
+        <div className="text-center py-12">
+          <div className="text-gray-400 mb-3">
+            <svg className="h-8 w-8 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+              />
+            </svg>
+          </div>
+          <h3 className="text-sm font-medium text-gray-600 mb-2">{t('error.loading')}</h3>
+          <p className="text-xs text-gray-500 mb-4 max-w-sm mx-auto">{error}</p>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => window.location.reload()}
+            className="text-gray-600 border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+          >
+            {t('index.tryAgain')}
+          </Button>
         </div>
       );
     }
 
-    if (filteredEvents.length === 0) {
+    if (paginatedEvents.length === 0) {
       return (
-        <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <h3 className="text-lg font-medium mb-2">{t('index.noEventsFound')}</h3>
-          <p className="text-gray-600 mb-4">{t('index.noEventsMessage')}</p>
+        <div className="text-center py-12">
+          <div className="text-gray-300 mb-3">
+            <svg
+              className="h-10 w-10 mx-auto"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33"
+              />
+            </svg>
+          </div>
+          <h3 className="text-sm font-medium text-gray-600 mb-2">{t('index.noEventsFound')}</h3>
+          <p className="text-xs text-gray-500 mb-4 max-w-sm mx-auto">
+            {t('index.noEventsMessage')}
+          </p>
           <Button
             variant="outline"
+            size="sm"
             onClick={() => {
               setFilters({
                 search: '',
@@ -241,7 +368,9 @@ const Index = () => {
               });
               setSelectedDate(undefined);
               setSearchTerm('');
+              setCurrentPage(1);
             }}
+            className="text-gray-600 border-gray-300 hover:bg-gray-50 hover:text-gray-700"
           >
             {t('index.clearAllFilters')}
           </Button>
@@ -250,9 +379,11 @@ const Index = () => {
     }
 
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {filteredEvents.map((event) => (
-          <EventCard key={event.event_name} event={event} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {paginatedEvents.map((event) => (
+          <div key={event.event_name} className="transition-opacity duration-200">
+            <EventCard event={event} />
+          </div>
         ))}
       </div>
     );
@@ -328,20 +459,122 @@ const Index = () => {
             isLoading={isLoading}
           />
 
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2">
-              <CalendarDays className="h-5 w-5 text-tech-purple" />
-              <h2 className="text-xl font-medium">
-                {filteredEvents.length}{' '}
-                {filteredEvents.length === 1
-                  ? `${t('index.event')} ${t('index.eventFound')}`
-                  : `${t('index.events')} ${t('index.eventsFound')}`}
-              </h2>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+            {/* Bloco da Esquerda (Contador e Seletor) */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+              {/* No mobile, este bloco contém o contador e o botão */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <CalendarDays className="h-5 w-5 text-tech-purple" />
+                  <h2 className="text-lg sm:text-xl font-medium">
+                    {filteredEvents.length}{' '}
+                    {filteredEvents.length === 1
+                      ? `${t('index.event')} ${t('index.eventFound')}`
+                      : `${t('index.events')} ${t('index.eventsFound')}`}
+                  </h2>
+                </div>
+                {/* Botão visível apenas no mobile */}
+                <div className="sm:hidden">
+                  <SubmitEventDialog />
+                </div>
+              </div>
+
+              {/* Seletor de quantidade */}
+              <div className="flex items-center gap-2 text-sm text-gray-500">
+                <span>{t('index.showPerPage')}:</span>
+                <Select
+                  value={eventsPerPage === filteredEvents.length ? 'all' : eventsPerPage.toString()}
+                  onValueChange={handleEventsPerPageChange}
+                >
+                  <SelectTrigger className="w-16 h-7 text-sm border-gray-200 bg-white hover:bg-gray-50 focus:ring-1 focus:ring-tech-purple/20">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="10" className="text-sm">
+                      10
+                    </SelectItem>
+                    <SelectItem value="20" className="text-sm">
+                      20
+                    </SelectItem>
+                    <SelectItem value="50" className="text-sm">
+                      50
+                    </SelectItem>
+                    <SelectItem value="all" className="text-sm">
+                      {t('index.all')}
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <SubmitEventDialog />
+
+            {/* Bloco da Direita (Botão visível apenas no desktop) */}
+            <div className="hidden sm:block">
+              <SubmitEventDialog />
+            </div>
           </div>
 
           {renderContent()}
+
+          {/* Pagination */}
+          {totalPages > 1 && eventsPerPage !== filteredEvents.length && (
+            <div className="mt-6 pt-6 border-t border-gray-100">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <Pagination className="flex-wrap gap-1 flex-shrink-0">
+                  <PaginationContent className="flex-wrap gap-1">
+                    <PaginationItem>
+                      <PaginationPrevious
+                        onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                        className={cn(
+                          'cursor-pointer transition-colors text-sm',
+                          currentPage === 1
+                            ? 'pointer-events-none opacity-40 text-gray-400'
+                            : 'hover:bg-gray-100 hover:text-gray-700'
+                        )}
+                      />
+                    </PaginationItem>
+
+                    {/* Show page numbers only on larger screens */}
+                    <div className="hidden sm:flex">
+                      {getPageNumbers().map((page, index) => (
+                        <PaginationItem key={index}>
+                          {page === 'ellipsis' ? (
+                            <PaginationEllipsis className="text-gray-400" />
+                          ) : (
+                            <PaginationLink
+                              onClick={() => handlePageChange(page as number)}
+                              isActive={currentPage === page}
+                              className={cn(
+                                'cursor-pointer transition-colors text-sm',
+                                currentPage === page
+                                  ? 'bg-tech-purple text-white border-tech-purple hover:bg-tech-purple/90'
+                                  : 'hover:bg-gray-100 hover:text-gray-700'
+                              )}
+                            >
+                              {page}
+                            </PaginationLink>
+                          )}
+                        </PaginationItem>
+                      ))}
+                    </div>
+
+                    <PaginationItem>
+                      <PaginationNext
+                        onClick={() =>
+                          currentPage < totalPages && handlePageChange(currentPage + 1)
+                        }
+                        className={cn(
+                          'cursor-pointer transition-colors text-sm',
+                          currentPage === totalPages
+                            ? 'pointer-events-none opacity-40 text-gray-400'
+                            : 'hover:bg-gray-100 hover:text-gray-700'
+                        )}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
