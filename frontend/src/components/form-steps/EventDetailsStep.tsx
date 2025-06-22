@@ -33,6 +33,9 @@ const EventDetailsStep: React.FC<EventDetailsStepProps> = ({ form }) => {
     if (costType === 'free') {
       form.setValue('cost_value', null);
       form.setValue('cost_currency', null);
+    } else if (costType === 'undefined') {
+      form.setValue('cost_value', 0);
+      form.setValue('cost_currency', Currency.BRL);
     }
   }, [costType, form]);
 
@@ -70,6 +73,7 @@ const EventDetailsStep: React.FC<EventDetailsStepProps> = ({ form }) => {
                   <SelectContent>
                     <SelectItem value="free">{t('event.free')}</SelectItem>
                     <SelectItem value="paid">{t('index.paid')}</SelectItem>
+                    <SelectItem value="undefined">{t('form.costUndefined')}</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -77,7 +81,7 @@ const EventDetailsStep: React.FC<EventDetailsStepProps> = ({ form }) => {
             )}
           />
 
-          {costType === 'paid' && (
+          {(costType === 'paid' || costType === 'undefined') && (
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -96,8 +100,12 @@ const EventDetailsStep: React.FC<EventDetailsStepProps> = ({ form }) => {
                           field.onChange(e.target.value === '' ? null : parseFloat(e.target.value))
                         }
                         value={field.value === null || field.value === undefined ? '' : field.value}
+                        disabled={costType === 'undefined'}
                       />
                     </FormControl>
+                    {costType === 'undefined' && (
+                      <FormDescription>{t('form.costUndefinedDesc')}</FormDescription>
+                    )}
                     <FormMessage />
                   </FormItem>
                 )}

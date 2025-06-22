@@ -150,6 +150,7 @@ const TranslationStep: React.FC<TranslationStepProps> = ({ form, translationLang
                 <SelectContent>
                   <SelectItem value="free">{t('event.free')}</SelectItem>
                   <SelectItem value="paid">{t('index.paid')}</SelectItem>
+                  <SelectItem value="undefined">{t('form.costUndefined')}</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -157,7 +158,7 @@ const TranslationStep: React.FC<TranslationStepProps> = ({ form, translationLang
           )}
         />
 
-        {primaryCostType === 'paid' && (
+        {(primaryCostType === 'paid' || primaryCostType === 'undefined') && (
           <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -176,6 +177,7 @@ const TranslationStep: React.FC<TranslationStepProps> = ({ form, translationLang
                         field.onChange(e.target.value === '' ? null : parseFloat(e.target.value))
                       }
                       value={field.value === null || field.value === undefined ? '' : field.value}
+                      disabled={primaryCostType === 'undefined'}
                     />
                   </FormControl>
                   {primaryCostType === 'paid' && primaryCostValue && primaryCostCurrency && (
@@ -183,6 +185,9 @@ const TranslationStep: React.FC<TranslationStepProps> = ({ form, translationLang
                       {t('form.originalCost')}:{' '}
                       {formatCurrency(primaryCostValue, primaryCostCurrency)}
                     </FormDescription>
+                  )}
+                  {primaryCostType === 'undefined' && (
+                    <FormDescription>{t('form.costUndefinedDesc')}</FormDescription>
                   )}
                   <FormMessage />
                 </FormItem>

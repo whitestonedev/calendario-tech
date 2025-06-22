@@ -168,7 +168,10 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
             >
               {event.is_free
                 ? t('event.free')
-                : formatCurrency(translation.cost, translation.currency)}
+                : (() => {
+                    const formattedCost = formatCurrency(translation.cost, translation.currency);
+                    return formattedCost || t('event.notProvided');
+                  })()}
             </span>
           </div>
         </CardFooter>

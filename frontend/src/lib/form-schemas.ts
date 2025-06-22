@@ -24,7 +24,7 @@ export interface FormEventValues {
 
   // Details
   event_link: string;
-  cost_type: 'free' | 'paid';
+  cost_type: 'free' | 'paid' | 'undefined';
   cost_value?: number | null;
   cost_currency?: Currency | null;
   short_description: string;
@@ -45,7 +45,7 @@ export interface FormEventValues {
 export interface Translation {
   event_name?: string;
   event_edition?: string;
-  cost_type?: 'free' | 'paid';
+  cost_type?: 'free' | 'paid' | 'undefined';
   cost_value?: number;
   cost_currency?: Currency;
   short_description?: string;
@@ -57,7 +57,7 @@ const TranslationSchema = z
     event_name: z.string().optional(),
     event_edition: z.string().optional(),
     short_description: z.string().optional(),
-    cost_type: z.enum(['free', 'paid']).optional(),
+    cost_type: z.enum(['free', 'paid', 'undefined']).optional(),
     cost_value: z.preprocess((val) => {
       if (val === '' || val === null || val === undefined) return null;
       const num = parseFloat(val as string);
@@ -131,7 +131,7 @@ export const eventFormSchema = z
     event_edition: z.string().min(1, {
       message: 'validation.eventEdition.required',
     }),
-    cost_type: z.enum(['free', 'paid'], {
+    cost_type: z.enum(['free', 'paid', 'undefined'], {
       required_error: 'validation.costType.required',
     }),
     cost_value: z.preprocess(
@@ -179,6 +179,24 @@ export const eventFormSchema = z
           code: ZodIssueCode.custom,
           path: ['cost_value'],
           message: 'validation.costValue.invalid',
+        });
+      }
+
+      if (data.cost_currency === null || data.cost_currency === undefined) {
+        ctx.addIssue({
+          code: ZodIssueCode.custom,
+          path: ['cost_currency'],
+          message: 'validation.costCurrency.required',
+        });
+      }
+    }
+
+    if (data.cost_type === 'undefined') {
+      if (data.cost_value !== 0) {
+        ctx.addIssue({
+          code: ZodIssueCode.custom,
+          path: ['cost_value'],
+          message: 'validation.costValue.undefined',
         });
       }
 
@@ -286,6 +304,24 @@ export const eventFormSchema = z
               code: ZodIssueCode.custom,
               path: ['translations', lang, 'cost_value'],
               message: 'validation.costValue.required',
+            });
+          }
+
+          if (!trans.cost_currency) {
+            ctx.addIssue({
+              code: ZodIssueCode.custom,
+              path: ['translations', lang, 'cost_currency'],
+              message: 'validation.costCurrency.required',
+            });
+          }
+        }
+
+        if (data.cost_type === 'undefined') {
+          if (trans.cost_value !== 0) {
+            ctx.addIssue({
+              code: ZodIssueCode.custom,
+              path: ['translations', lang, 'cost_value'],
+              message: 'validation.costValue.undefined',
             });
           }
 

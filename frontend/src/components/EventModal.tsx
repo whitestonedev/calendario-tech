@@ -228,7 +228,10 @@ const EventModal = ({ event, open, onOpenChange }: EventModalProps) => {
             ) : (
               <div className="flex flex-col items-center">
                 <span className="text-2xl font-medium text-gray-900">
-                  {formatCurrency(translation.cost, translation.currency)}
+                  {(() => {
+                    const formattedCost = formatCurrency(translation.cost, translation.currency);
+                    return formattedCost || t('event.notProvided');
+                  })()}
                 </span>
               </div>
             )}

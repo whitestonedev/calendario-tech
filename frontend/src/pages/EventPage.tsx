@@ -223,7 +223,10 @@ const EventPage = () => {
                   <div className="text-xl font-bold text-green-600">{t('event.free')}</div>
                 ) : (
                   <div className="text-xl font-bold text-gray-900">
-                    {formatCurrency(translation.cost, translation.currency)}
+                    {(() => {
+                      const formattedCost = formatCurrency(translation.cost, translation.currency);
+                      return formattedCost || t('event.notProvided');
+                    })()}
                   </div>
                 )}
               </div>
@@ -365,7 +368,13 @@ const EventPage = () => {
                     <div className="text-2xl font-bold text-green-600">{t('event.free')}</div>
                   ) : (
                     <div className="text-2xl font-bold text-gray-900">
-                      {formatCurrency(translation.cost, translation.currency)}
+                      {(() => {
+                        const formattedCost = formatCurrency(
+                          translation.cost,
+                          translation.currency
+                        );
+                        return formattedCost || t('event.notProvided');
+                      })()}
                     </div>
                   )}
                 </div>

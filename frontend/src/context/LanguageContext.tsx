@@ -126,6 +126,8 @@ const translations = {
     'form.state': 'Estado',
     'form.selectState': 'Selecione um estado',
     'form.selectCurrency': 'Selecione uma moeda',
+    'form.costUndefined': 'Custo ainda não definido',
+    'form.costUndefinedDesc': 'O valor será definido posteriormente',
     'event.notProvided': 'Não informado',
 
     // Event details
@@ -251,6 +253,7 @@ const translations = {
     'validation.costType.required': 'Selecione o tipo de custo',
     'validation.costValue.required': 'Digite um valor válido ex: 29.90',
     'validation.costValue.invalid': 'Digite um valor válido ex: 29.90',
+    'validation.costValue.undefined': 'O valor deve ser 0 para custo ainda não definido',
     'validation.costCurrency.required': 'Moeda é obrigatória para eventos pagos',
     'validation.bannerLink.invalid': 'URL do banner inválida',
     'validation.description.min': 'Descrição deve ter pelo menos 10 caracteres',
@@ -413,6 +416,8 @@ const translations = {
     'form.state': 'State',
     'form.selectState': 'Select a state',
     'form.selectCurrency': 'Select a currency',
+    'form.costUndefined': 'Cost still undefined',
+    'form.costUndefinedDesc': 'The value will be defined later',
     'event.notProvided': 'Not provided',
 
     // Event details
@@ -536,6 +541,7 @@ const translations = {
     'validation.costType.required': 'Please select the cost type',
     'validation.costValue.required': 'Enter a valid value ex: 29.90',
     'validation.costValue.invalid': 'Enter a valid value ex: 29.90',
+    'validation.costValue.undefined': 'The value must be 0 for cost still undefined',
     'validation.costCurrency.required': 'Currency is required for paid events',
     'validation.bannerLink.invalid': 'Invalid banner URL',
     'validation.description.min': 'Description must have at least 10 characters',
@@ -698,6 +704,8 @@ const translations = {
     'form.state': 'Estado',
     'form.selectState': 'Seleccione un estado',
     'form.selectCurrency': 'Seleccione una moneda',
+    'form.costUndefined': 'Costo aún no definido',
+    'form.costUndefinedDesc': 'El valor se definirá más adelante',
     'event.notProvided': 'No proporcionado',
 
     // Event details
@@ -823,6 +831,7 @@ const translations = {
     'validation.costType.required': 'Por favor seleccione el tipo de costo',
     'validation.costValue.required': 'Ingrese un valor válido ej: 29.90',
     'validation.costValue.invalid': 'Ingrese un valor válido ej: 29.90',
+    'validation.costValue.undefined': 'El valor debe ser 0 para costo aún no definido',
     'validation.costCurrency.required': 'La moneda es obligatoria para eventos pagos',
     'validation.bannerLink.invalid': 'URL del banner inválida',
     'validation.description.min': 'La descripción debe tener al menos 10 caracteres',

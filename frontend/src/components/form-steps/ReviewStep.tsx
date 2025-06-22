@@ -179,7 +179,15 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ form }) => {
                       {' '}
                       {data.cost_type === 'free'
                         ? t('event.free')
-                        : formatCurrency(data.cost_value || 0, data.cost_currency)}
+                        : data.cost_type === 'undefined'
+                          ? t('form.costUndefined')
+                          : (() => {
+                              const formattedCost = formatCurrency(
+                                data.cost_value,
+                                data.cost_currency
+                              );
+                              return formattedCost || t('event.notProvided');
+                            })()}
                     </div>
                   }
                 />
@@ -294,17 +302,25 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ form }) => {
                               label={t('event.cost')}
                               value={
                                 <div className="flex items-center gap-2">
-                                  {translation.cost_type === 'free' ||
-                                  (!translation.cost_type && main.cost_type === 'free')
-                                    ? t('event.free')
-                                    : translation.cost_value && translation.cost_currency
-                                      ? formatCurrency(
-                                          translation.cost_value,
-                                          translation.cost_currency
-                                        )
-                                      : main.cost_value && main.cost_currency
-                                        ? formatCurrency(main.cost_value, main.cost_currency)
-                                        : t('event.notProvided')}
+                                  {(() => {
+                                    if (
+                                      translation.cost_type === 'free' ||
+                                      (!translation.cost_type && main.cost_type === 'free')
+                                    ) {
+                                      return t('event.free');
+                                    }
+                                    if (
+                                      translation.cost_type === 'undefined' ||
+                                      (!translation.cost_type && main.cost_type === 'undefined')
+                                    ) {
+                                      return t('form.costUndefined');
+                                    }
+                                    const formattedCost = formatCurrency(
+                                      translation.cost_value,
+                                      translation.cost_currency
+                                    );
+                                    return formattedCost || t('event.notProvided');
+                                  })()}
                                 </div>
                               }
                             />

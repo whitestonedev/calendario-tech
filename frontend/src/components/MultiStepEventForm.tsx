@@ -87,7 +87,7 @@ const MultiStepEventForm: React.FC = () => {
 
   // Helper para formatar o custo
   const formatCost = (
-    type: 'free' | 'paid' | undefined,
+    type: 'free' | 'paid' | 'undefined' | undefined,
     value: number | null | undefined,
     currency: Currency | null | undefined,
     _lang: string
@@ -96,6 +96,8 @@ const MultiStepEventForm: React.FC = () => {
       return { value: undefined, currency: undefined };
     } else if (type === 'paid' && value !== undefined && value !== null && currency) {
       return { value, currency };
+    } else if (type === 'undefined' && value === 0 && currency) {
+      return { value: 0, currency };
     }
     return { value: undefined, currency: undefined };
   };

@@ -100,6 +100,29 @@ export const useFormSteps = (form: UseFormReturn<EventFormValues>) => {
             return;
           }
         }
+
+        if (form.getValues('cost_type') === 'undefined') {
+          fieldsToValidate.push('cost_value', 'cost_currency');
+
+          const costValue = form.getValues('cost_value');
+          const costCurrency = form.getValues('cost_currency');
+
+          if (costValue !== 0) {
+            form.setError('cost_value', {
+              type: 'manual',
+              message: t('validation.costValue.undefined'),
+            });
+            return;
+          }
+
+          if (costCurrency === null || costCurrency === undefined) {
+            form.setError('cost_currency', {
+              type: 'manual',
+              message: t('validation.costCurrency.required'),
+            });
+            return;
+          }
+        }
         break;
       case 4:
         fieldsToValidate = ['tags'];
