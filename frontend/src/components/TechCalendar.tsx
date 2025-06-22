@@ -35,7 +35,15 @@ const TechCalendar: React.FC<TechCalendarProps> = ({ events, onRangeSelect, clea
     if (range?.from && range?.to) {
       const adjustedRange = {
         from: range.from,
-        to: new Date(range.to.setHours(23, 59, 59, 999)),
+        to: new Date(
+          range.to.getFullYear(),
+          range.to.getMonth(),
+          range.to.getDate(),
+          23,
+          59,
+          59,
+          999
+        ),
       };
       setSelectedRange(adjustedRange);
       onRangeSelect(adjustedRange);
