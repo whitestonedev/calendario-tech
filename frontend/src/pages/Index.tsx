@@ -464,17 +464,19 @@ const Index = () => {
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               {/* No mobile, este bloco contém o contador e o botão */}
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <CalendarDays className="h-5 w-5 text-tech-purple" />
-                  <h2 className="text-lg sm:text-xl font-medium">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
+                  <CalendarDays className="h-5 w-5 text-tech-purple flex-shrink-0" />
+                  <h2 className="text-lg sm:text-xl font-medium truncate">
                     {filteredEvents.length}{' '}
-                    {filteredEvents.length === 1
-                      ? `${t('index.event')} ${t('index.eventFound')}`
-                      : `${t('index.events')} ${t('index.eventsFound')}`}
+                    <span className="whitespace-nowrap">
+                      {filteredEvents.length === 1
+                        ? `${t('index.event')} ${t('index.eventFound')}`
+                        : `${t('index.events')} ${t('index.eventsFound')}`}
+                    </span>
                   </h2>
                 </div>
                 {/* Botão visível apenas no mobile */}
-                <div className="sm:hidden">
+                <div className="sm:hidden flex-shrink-0">
                   <SubmitEventDialog />
                 </div>
               </div>
