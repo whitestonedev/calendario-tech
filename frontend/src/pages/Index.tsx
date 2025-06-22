@@ -535,8 +535,8 @@ const Index = () => {
                       />
                     </PaginationItem>
 
-                    {/* Show page numbers only on larger screens */}
-                    <div className="hidden sm:flex">
+                    {/* Show page numbers on all screens */}
+                    <div className="flex">
                       {getPageNumbers().map((page, index) => (
                         <PaginationItem key={index}>
                           {page === 'ellipsis' ? (
