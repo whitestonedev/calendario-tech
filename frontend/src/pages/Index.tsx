@@ -466,12 +466,14 @@ const Index = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 min-w-0 flex-1">
                   <CalendarDays className="h-5 w-5 text-tech-purple flex-shrink-0" />
-                  <h2 className="text-lg sm:text-xl font-medium truncate">
-                    {filteredEvents.length}{' '}
-                    <span className="whitespace-nowrap">
-                      {filteredEvents.length === 1
-                        ? `${t('index.event')} ${t('index.eventFound')}`
-                        : `${t('index.events')} ${t('index.eventsFound')}`}
+                  <h2 className="font-medium text-[clamp(0.875rem,2.5vw,1.25rem)] leading-tight w-full">
+                    <span className="inline-block w-full break-words">
+                      {filteredEvents.length}{' '}
+                      <span className="whitespace-nowrap">
+                        {filteredEvents.length === 1
+                          ? `${t('index.event')} ${t('index.eventFound')}`
+                          : `${t('index.events')} ${t('index.eventsFound')}`}
+                      </span>
                     </span>
                   </h2>
                 </div>
