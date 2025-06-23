@@ -40,6 +40,16 @@ export interface FilterState {
   state: string;
 }
 
+const FIXED_TAGS = [
+  'Amazon Web Services',
+  'Python',
+  'Kubernetes',
+  'DevOps',
+  'Cloud',
+  'Data Science',
+  'AI',
+];
+
 const EventFilters: React.FC<EventFiltersProps> = ({
   onFilterChange,
   availableTags,
@@ -62,6 +72,7 @@ const EventFilters: React.FC<EventFiltersProps> = ({
   });
 
   const [isExpanded, setIsExpanded] = React.useState(false);
+  const [tagSearch, setTagSearch] = React.useState('');
 
   const handleSearch = () => {
     onSearch(filters);
@@ -103,7 +114,22 @@ const EventFilters: React.FC<EventFiltersProps> = ({
     };
     setFilters(newFilters);
     onFilterChange(newFilters);
+    onSearch(newFilters);
   };
+
+  // Separar tags fixas e as demais
+  const fixedTags = FIXED_TAGS.filter((tag) => availableTags.includes(tag));
+  const otherTags = availableTags.filter(
+    (tag) => !FIXED_TAGS.includes(tag)
+  );
+
+  // Filtrar tags conforme busca
+  const filteredFixedTags = fixedTags.filter((tag) =>
+    tag.toLowerCase().includes(tagSearch.toLowerCase())
+  ).sort((a, b) => a.localeCompare(b, 'pt-BR'));
+  const filteredOtherTags = otherTags
+    .filter((tag) => tag.toLowerCase().includes(tagSearch.toLowerCase()))
+    .sort((a, b) => a.localeCompare(b, 'pt-BR'));
 
   return (
     <div className="bg-white border rounded-lg shadow-sm p-4 mb-6">
@@ -348,8 +374,35 @@ const EventFilters: React.FC<EventFiltersProps> = ({
           {/* Grupo: Tags */}
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-gray-700">{t('index.tags')}</h3>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {availableTags.map((tag) => (
+            {/* Campo de busca de tags */}
+            <Input
+              placeholder="Buscar tag..."
+              value={tagSearch}
+              onChange={(e) => setTagSearch(e.target.value)}
+              className="w-full mb-2"
+            />
+            {/* Tags fixas em destaque */}
+            {filteredFixedTags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-2">
+                {filteredFixedTags.map((tag) => (
+                  <Badge
+                    key={tag}
+                    variant={filters.selectedTags.includes(tag) ? 'default' : 'outline'}
+                    className={`cursor-pointer border-2 border-yellow-400 ${
+                      filters.selectedTags.includes(tag)
+                        ? 'bg-tech-purple hover:bg-tech-purple/90'
+                        : 'hover:bg-yellow-100'
+                    }`}
+                    onClick={() => handleTagSelect(tag)}
+                  >
+                    ⭐ {tag}
+                  </Badge>
+                ))}
+              </div>
+            )}
+            {/* Outras tags filtradas */}
+            <div className="flex flex-wrap gap-2 mt-2 max-h-40 overflow-y-auto">
+              {filteredOtherTags.map((tag) => (
                 <Badge
                   key={tag}
                   variant={filters.selectedTags.includes(tag) ? 'default' : 'outline'}
@@ -363,6 +416,9 @@ const EventFilters: React.FC<EventFiltersProps> = ({
                   {tag}
                 </Badge>
               ))}
+              {filteredOtherTags.length === 0 && filteredFixedTags.length === 0 && (
+                <span className="text-xs text-gray-400">Nenhuma tag encontrada.</span>
+              )}
             </div>
           </div>
 

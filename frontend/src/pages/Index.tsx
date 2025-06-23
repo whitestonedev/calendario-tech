@@ -69,6 +69,8 @@ const Index = () => {
     isValidated,
   } = useEventApi();
 
+  const [initialTagApplied, setInitialTagApplied] = useState(false);
+
   // Memoize handlers to prevent unnecessary re-renders
   const handleFilterChange = useCallback(
     (newFilters: FilterState) => {
@@ -115,14 +117,19 @@ const Index = () => {
   // Otimizar o useEffect para evitar chamadas desnecessárias
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if (location.state?.searchTag && !filters.selectedTags.includes(location.state.searchTag)) {
+    if (
+      location.state?.searchTag &&
+      !initialTagApplied &&
+      filters.selectedTags.length === 0
+    ) {
       const newFilters = {
         ...filters,
         selectedTags: [location.state.searchTag],
       };
       setFilters(newFilters);
+      setInitialTagApplied(true);
     }
-  }, [location.state?.searchTag, filters.selectedTags]);
+  }, [location.state?.searchTag, filters.selectedTags, initialTagApplied, filters]);
 
   const eventsSource = events;
 
@@ -192,7 +199,7 @@ const Index = () => {
         // Filter by tags
         if (
           filters.selectedTags.length > 0 &&
-          !filters.selectedTags.some((tag) => event.tags.includes(tag))
+          !filters.selectedTags.every((tag) => event.tags.includes(tag))
         ) {
           return false;
         }
